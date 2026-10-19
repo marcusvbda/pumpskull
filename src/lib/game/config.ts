@@ -47,3 +47,26 @@ export const URGENCY = [
 ] as const;
 export const URGENCY_LAST_SECONDS = { seconds: 5, musicRate: 1.3 } as const;
 export const MAX_EFFECT_HZ = 2; // never flash faster than this
+
+// Every scene file is 2048x1280 (docs/ASSETS.md). Height divided by width, used by the distance formula.
+export const SCENE_ASPECT = 1280 / 2048;
+
+// Layout generator (spec section 6). Distances use the same metric as scoring (scene widths).
+export const LAYOUT = {
+  minSlotDistance: 0.08, // two targets never closer than this
+  maxAttempts: 20, // re-rolls with seed progression before giving up
+  defaultMaxCopies: 1, // copies of one item type in a scene, unless the item says otherwise
+} as const;
+
+// Reveal colours (spec section 4).
+export const REVEAL = { green: 0.8, yellow: 0.4 } as const;
+
+// subscribeRoom (spec section 2).
+export const SYNC = {
+  realtimeTimeoutMs: 6000, // no SUBSCRIBED within this time: start polling
+  pollMinMs: 1500,
+  pollMaxMs: 2000, // random interval in [min, max] so phones do not poll in lockstep
+  debounceMs: 200, // coalesce bursts of realtime events into one fetch
+  resyncMs: 15000, // safety refetch while realtime is healthy, in case an event was missed
+  realtimeRetryMs: 15000, // while polling, try to open realtime again after this delay
+} as const;

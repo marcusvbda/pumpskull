@@ -18,7 +18,7 @@ npm test
 ## Supabase
 
 1. Create a free project at supabase.com.
-2. Run `supabase/migrations/0001_init.sql` in the SQL editor.
+2. Run every file in `supabase/migrations/` in order (`0001_init.sql`, `0002_room_snapshot.sql`, ...) in the SQL editor.
 3. Copy the project URL, anon key and service-role key into `.env.local` (and into Vercel environment variables).
 4. The free project pauses after a week without use: open it the day before the class.
 

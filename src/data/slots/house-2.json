@@ -1,0 +1,112 @@
+{
+  "id": "house-2",
+  "scene": "house",
+  "placeholder": true,
+  "slots": [
+    {
+      "id": "s01",
+      "x": 0.15,
+      "y": 0.15,
+      "type": "wall",
+      "scale": 0.1
+    },
+    {
+      "id": "s02",
+      "x": 0.5,
+      "y": 0.15,
+      "type": "wall",
+      "scale": 0.1
+    },
+    {
+      "id": "s03",
+      "x": 0.85,
+      "y": 0.15,
+      "type": "wall",
+      "scale": 0.1
+    },
+    {
+      "id": "s04",
+      "x": 0.05,
+      "y": 0.4,
+      "type": "wall",
+      "scale": 0.1
+    },
+    {
+      "id": "s05",
+      "x": 0.95,
+      "y": 0.4,
+      "type": "wall",
+      "scale": 0.1
+    },
+    {
+      "id": "s06",
+      "x": 0.25,
+      "y": 0.38,
+      "type": "window",
+      "scale": 0.09
+    },
+    {
+      "id": "s07",
+      "x": 0.75,
+      "y": 0.38,
+      "type": "window",
+      "scale": 0.09
+    },
+    {
+      "id": "s08",
+      "x": 0.25,
+      "y": 0.58,
+      "type": "window",
+      "scale": 0.09
+    },
+    {
+      "id": "s09",
+      "x": 0.5,
+      "y": 0.5,
+      "type": "door",
+      "scale": 0.1
+    },
+    {
+      "id": "s10",
+      "x": 0.1,
+      "y": 0.9,
+      "type": "floor",
+      "scale": 0.13
+    },
+    {
+      "id": "s11",
+      "x": 0.26,
+      "y": 0.9,
+      "type": "floor",
+      "scale": 0.13
+    },
+    {
+      "id": "s12",
+      "x": 0.42,
+      "y": 0.9,
+      "type": "floor",
+      "scale": 0.13
+    },
+    {
+      "id": "s13",
+      "x": 0.58,
+      "y": 0.9,
+      "type": "floor",
+      "scale": 0.13
+    },
+    {
+      "id": "s14",
+      "x": 0.74,
+      "y": 0.9,
+      "type": "floor",
+      "scale": 0.13
+    },
+    {
+      "id": "s15",
+      "x": 0.9,
+      "y": 0.9,
+      "type": "floor",
+      "scale": 0.13
+    }
+  ]
+}

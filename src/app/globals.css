@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
+/* The game is always the deep indigo night of the mockups, in light and dark mode. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #1e1b4b;
+  --foreground: #fdf6e3;
 }
 
 @theme inline {
@@ -10,13 +11,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
