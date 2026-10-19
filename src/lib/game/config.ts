@@ -36,6 +36,9 @@ export const GAME = {
   nicknameMin: 2,
   nicknameMax: 12,
   avatarCount: 50,
+  heartbeatSeconds: 30, // players.last_seen refresh; every write is also a realtime event for the whole room
+  pinAttempts: 20, // tries to find an unused PIN before giving up
+  roomMaxAgeHours: 24,
 } as const;
 
 // Urgency phases by fraction of time left (spec section 8). First match wins, top to bottom.
