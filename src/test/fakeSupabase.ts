@@ -1,4 +1,4 @@
-// Tiny in-memory stand-in for the supabase-js query builder, just enough for the lobby server actions:
+// Tiny in-memory stand-in for the supabase-js query builder, just enough for the lobby and play server actions:
 // select / insert / update / delete, eq / lt filters, order, single / maybeSingle.
 // It mimics the parts of supabase/migrations/0001_init.sql that the rules depend on: primary keys, the
 // one-phone-per-team index, defaults, ON DELETE CASCADE / SET NULL. It does not check CHECK constraints.
@@ -16,7 +16,16 @@ interface Result {
 type Filter = (row: Row) => boolean;
 
 export function createFakeDb() {
-  const tables: Record<string, Row[]> = { rooms: [], players: [], player_tokens: [], plays: [] };
+  const tables: Record<string, Row[]> = {
+    rooms: [], players: [], player_tokens: [], plays: [], play_targets: [], placements: [], play_results: [],
+  };
+  // Primary keys of the tables keyed by room (supabase/migrations/0001_init.sql).
+  const KEYS: Record<string, string[]> = {
+    plays: ["room_pin", "idx"],
+    play_targets: ["room_pin", "play_idx"],
+    placements: ["room_pin", "play_idx", "builder_id"],
+    play_results: ["room_pin", "play_idx"],
+  };
   let clock = Date.parse("2026-10-20T10:00:00Z");
   const tick = () => new Date((clock += 1000)).toISOString(); // every insert is 1 s after the previous one
   let nextId = 1;
@@ -43,6 +52,11 @@ export function createFakeDb() {
         return { message: "duplicate team", code: "23505" };
       }
     }
+    const key = KEYS[table];
+    if (key) {
+      if (!tables.rooms.some((r) => r.pin === row.room_pin)) return { message: "no such room", code: "23503" };
+      if (others.some((r) => key.every((k) => r[k] === row[k]))) return { message: `duplicate ${table}`, code: "23505" };
+    }
     if (table === "player_tokens") {
       if (!tables.players.some((r) => r.id === row.player_id)) return { message: "no such player", code: "23503" };
       if (others.some((r) => r.player_id === row.player_id)) return { message: "duplicate token", code: "23505" };
@@ -54,10 +68,11 @@ export function createFakeDb() {
     tables[table] = tables[table].filter((r) => r !== row);
     if (table === "rooms") {
       for (const p of tables.players.filter((p) => p.room_pin === row.pin)) removeRow("players", p);
-      tables.plays = tables.plays.filter((p) => p.room_pin !== row.pin);
+      for (const t of Object.keys(KEYS)) tables[t] = tables[t].filter((p) => p.room_pin !== row.pin);
     }
     if (table === "players") {
       tables.player_tokens = tables.player_tokens.filter((t) => t.player_id !== row.id);
+      tables.placements = tables.placements.filter((p) => p.builder_id !== row.id);
       for (const r of tables.rooms) if (r.host_id === row.id) r.host_id = null;
     }
   }

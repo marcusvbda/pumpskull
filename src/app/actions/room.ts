@@ -5,88 +5,27 @@
 // input and checks the phone's token (and host rights) itself. A room holds one phone per team; each
 // phone is one row in players.
 
-import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
+import { randomBytes } from "node:crypto";
 import { GAME } from "@/lib/game/config";
-import {
-  DEFAULT_SETTINGS,
-  canStart,
-  fail,
-  freeTeam,
-  nextHost,
-  parsePin,
-  parseSettings,
-  randomPin,
-  type ActionResult,
-} from "@/lib/game/room";
+import { DEFAULT_SETTINGS, canStart, fail, freeTeam, nextHost, parsePin, parseSettings, randomPin } from "@/lib/game/room";
 import type { Team } from "@/lib/game/types";
 import { supabaseAdmin } from "@/lib/supabase/server";
-import type { PlayerRow, RoomRow, RoomSettings } from "@/lib/supabase/types";
-
-type Db = ReturnType<typeof supabaseAdmin>;
-
-interface Credentials {
-  pin: string;
-  playerId: string;
-  token: string;
-}
-
-const UNIQUE_VIOLATION = "23505";
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+import type { PlayerRow, RoomSettings } from "@/lib/supabase/types";
+import { createPlays, deletePlays } from "./playData";
+import {
+  authenticate,
+  getPlayers,
+  getRoom,
+  guard,
+  isUniqueViolation,
+  must,
+  parseCredentials,
+  tokenMatches,
+  type Credentials,
+  type Db,
+} from "./shared";
 
 // ---------- helpers (not exported: a "use server" file may only export actions) ----------
-
-function must<T>(res: { data: T; error: { message: string } | null }): T {
-  if (res.error) throw new Error(res.error.message);
-  return res.data;
-}
-
-function isUniqueViolation(error: { code?: string } | null): boolean {
-  return error?.code === UNIQUE_VIOLATION;
-}
-
-async function guard<T extends object>(run: () => Promise<ActionResult<T>>): Promise<ActionResult<T>> {
-  try {
-    return await run();
-  } catch (error) {
-    console.error("[room action]", error);
-    return fail("server");
-  }
-}
-
-function parseCredentials(input: unknown): Credentials | null {
-  if (typeof input !== "object" || input === null) return null;
-  const { pin, playerId, token } = input as Record<string, unknown>;
-  const validPin = parsePin(pin);
-  if (!validPin || typeof playerId !== "string" || !UUID.test(playerId)) return null;
-  if (typeof token !== "string" || token.length < 16 || token.length > 200) return null;
-  return { pin: validPin, playerId, token };
-}
-
-const digest = (text: string) => createHash("sha256").update(text).digest();
-
-async function tokenMatches(db: Db, playerId: string, token: string): Promise<boolean> {
-  const row = must(await db.from("player_tokens").select("token").eq("player_id", playerId).maybeSingle()) as {
-    token: string;
-  } | null;
-  return row !== null && timingSafeEqual(digest(row.token), digest(token));
-}
-
-async function getPlayers(db: Db, pin: string): Promise<PlayerRow[]> {
-  return must(await db.from("players").select("*").eq("room_pin", pin).order("joined_at")) as PlayerRow[];
-}
-
-async function getRoom(db: Db, pin: string): Promise<RoomRow | null> {
-  return must(await db.from("rooms").select("*").eq("pin", pin).maybeSingle()) as RoomRow | null;
-}
-
-// Token ok + the phone really belongs to this room.
-async function authenticate(db: Db, creds: Credentials): Promise<PlayerRow | null> {
-  if (!(await tokenMatches(db, creds.playerId, creds.token))) return null;
-  const player = must(
-    await db.from("players").select("*").eq("id", creds.playerId).eq("room_pin", creds.pin).maybeSingle(),
-  ) as PlayerRow | null;
-  return player;
-}
 
 // Creates the phone's player row and its private token row. Returns null when that team already has a
 // phone (the players_room_team_uq index), which also covers two phones joining at the same moment.
@@ -201,6 +140,15 @@ export async function startGame(input: Credentials) {
         .select("pin"),
     ) as { pin: string }[];
     if (started.length === 0) return fail("game_started");
+
+    try {
+      await createPlays(db, room);
+    } catch (error) {
+      // Back to the lobby so the host can press Start again.
+      await deletePlays(db, creds.pin);
+      await db.from("rooms").update({ status: "lobby", phase: "lobby", phase_started_at: new Date().toISOString() }).eq("pin", creds.pin);
+      throw error;
+    }
     return { ok: true };
   });
 }

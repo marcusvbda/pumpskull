@@ -41,10 +41,19 @@ export interface PlayRow {
   describer_team: Team;
 }
 
+// One entry per target item, written at reveal time (never before: it holds the target positions).
+export interface PlayResultItem {
+  item_id: string;
+  target: { x: number; y: number };
+  scale: number; // size of the target slot, fraction of scene width
+  placed: { x: number; y: number } | null;
+  score: number; // 0..1
+}
+
 export interface PlayResultRow {
   room_pin: string;
   play_idx: number;
-  results: unknown;
+  results: { items: PlayResultItem[]; total: number };
   spirit_gain: number;
 }
 

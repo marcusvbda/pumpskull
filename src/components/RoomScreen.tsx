@@ -1,7 +1,7 @@
 "use client";
 
 // /room/[pin]: decides what this phone sees. Not in the room yet -> join card for the free team.
-// In the room -> the screen for the room's phase (only the lobby exists so far).
+// In the room -> the lobby, then the game screens.
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,7 @@ import { enterRoom } from "@/lib/enterRoom";
 import { clearIdentity, useStoredIdentity, type Identity } from "@/lib/identity";
 import { fetchRoomSnapshot } from "@/lib/supabase/subscribeRoom";
 import { useRoom } from "@/lib/useRoom";
+import { GameScreen } from "./GameScreen";
 import { Lobby } from "./Lobby";
 import { TEAM_META } from "./teams";
 import { Button, ErrorText, Shell } from "./ui";
@@ -78,7 +79,7 @@ export function RoomScreen({ pin }: { pin: string }) {
 function Room({ pin }: { pin: string }) {
   const router = useRouter();
   const stored = useStoredIdentity();
-  const { snapshot, mode, failed, refresh } = useRoom(pin);
+  const { snapshot, mode, failed, refresh, offsetMs } = useRoom(pin);
 
   const identity: Identity | null = stored && stored.pin === pin ? stored : null;
   const me = identity && snapshot ? snapshot.players.find((p) => p.id === identity.playerId) : undefined;
@@ -162,20 +163,5 @@ function Room({ pin }: { pin: string }) {
     );
   }
 
-  // Build step 4 (countdown, describer, builder) is not built yet.
-  const team = TEAM_META[me.team];
-  return (
-    <Shell>
-      <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
-        <h1 className="text-3xl font-black text-amber-400">The game has started!</h1>
-        <p className={`text-xl font-bold ${team.title}`}>
-          {team.icon} This phone plays for {team.name}
-        </p>
-        <p className="text-indigo-200">The play screens come in the next build step.</p>
-        <Button variant="secondary" onClick={() => router.push("/")}>
-          Home
-        </Button>
-      </div>
-    </Shell>
-  );
+  return <GameScreen snapshot={snapshot} me={me} identity={identity} offsetMs={offsetMs} refresh={refresh} />;
 }

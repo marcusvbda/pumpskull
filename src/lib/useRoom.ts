@@ -1,21 +1,29 @@
 "use client";
 
 // React wrapper around subscribeRoom. snapshot: undefined = loading, null = room does not exist.
+// Also estimates the clock offset to the server (spec section 8, Time sync): every snapshot carries the
+// server time, and the largest recent "server minus phone" sample is the one with the least network delay.
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchRoomSnapshot, subscribeRoom, type SyncMode } from "@/lib/supabase/subscribeRoom";
 import type { RoomSnapshot } from "@/lib/supabase/types";
+
+const CLOCK_SAMPLES = 8;
 
 export function useRoom(pin: string) {
   const [snapshot, setSnapshot] = useState<RoomSnapshot | null | undefined>(undefined);
   const [mode, setMode] = useState<SyncMode>("connecting");
   const [failed, setFailed] = useState(false);
   const newest = useRef(0);
+  const samples = useRef<number[]>([]);
+  const [offsetMs, setOffsetMs] = useState(0);
 
   // A slow response must not overwrite a newer snapshot (refresh() and realtime can cross).
   const apply = useCallback((next: RoomSnapshot | null) => {
     if (next) {
       const time = Date.parse(next.serverTime);
+      samples.current = [...samples.current.slice(-(CLOCK_SAMPLES - 1)), time - Date.now()];
+      setOffsetMs(Math.max(...samples.current));
       if (time < newest.current) return;
       newest.current = time;
     }
@@ -42,5 +50,5 @@ export function useRoom(pin: string) {
     }
   }, [pin, apply]);
 
-  return { snapshot, mode, failed, refresh };
+  return { snapshot, mode, failed, refresh, offsetMs };
 }

@@ -37,6 +37,16 @@ export const GAME = {
   roomMaxAgeHours: 24,
 } as const;
 
+// Play loop (spec sections 3 and 9).
+export const PLAY = {
+  finishGraceSeconds: 3, // after the timer, the building phone's last save is still accepted this long
+  earlySeconds: 0.5, // timer transitions accepted this early, for clock differences between phone and server
+  builderItemScale: 0.1, // size of items the builder drags, as a fraction of scene width (slots use 0.09 to 0.1)
+  maxPlacedItems: 40, // longest placement list the server accepts
+  resultsRetrySeconds: 3, // reveal without results this long: ask the server to score again
+  timerRetrySeconds: 2, // a phone asks again if a timer transition did not show up
+} as const;
+
 // Urgency phases by fraction of time left (spec section 8). First match wins, top to bottom.
 export const URGENCY = [
   { minLeft: 0.5, phase: 0, musicRate: 1.0 },

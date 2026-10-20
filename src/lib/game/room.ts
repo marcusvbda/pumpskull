@@ -17,6 +17,9 @@ export const ROOM_ERRORS = {
   not_host: "Only the host can do that.",
   not_in_room: "You are not in this room.",
   need_phones: "Waiting for the other team's phone.",
+  not_ready: "The play is not ready yet.",
+  play_over: "That play is over.",
+  not_allowed: "Your phone can't do that right now.",
   no_pin: "We could not create a room. Try again.",
   server: "Something went wrong. Try again.",
 } as const;

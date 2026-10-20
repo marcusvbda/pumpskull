@@ -3,7 +3,7 @@
 // The phone's player id and secret token live in localStorage so a reload (or a locked phone) keeps it in the room.
 // One identity per browser. Everything is wrapped in try/catch: private mode and blocked storage must not crash the game.
 
-import { useSyncExternalStore } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 
 export interface Identity {
   pin: string;
@@ -70,7 +70,8 @@ function subscribe(onChange: () => void) {
 }
 
 // undefined while rendering on the server / before hydration, then the stored identity or null.
+// Same object while the stored value is the same, so effects that depend on it do not re-run every render.
 export function useStoredIdentity(): Identity | null | undefined {
   const raw = useSyncExternalStore(subscribe, readRaw, () => undefined);
-  return raw === undefined ? undefined : parse(raw);
+  return useMemo(() => (raw === undefined ? undefined : parse(raw)), [raw]);
 }
