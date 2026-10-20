@@ -17,7 +17,7 @@ interface Props {
   label: string; // alt text, and the text on the placeholder
   className?: string;
   style?: CSSProperties;
-  variant?: "item" | "scene" | "avatar";
+  variant?: "item" | "scene";
 }
 
 export function GameImage({ src, label, className = "", style, variant = "item" }: Props) {
@@ -35,9 +35,7 @@ export function GameImage({ src, label, className = "", style, variant = "item" 
     const shape =
       variant === "scene"
         ? "rounded-xl bg-indigo-950 text-indigo-300 border-2 border-dashed border-indigo-500"
-        : variant === "avatar"
-          ? "rounded-full text-indigo-950"
-          : "rounded-2xl text-indigo-950 border-2 border-indigo-950/40";
+        : "rounded-2xl text-indigo-950 border-2 border-indigo-950/40";
     return (
       <div
         role="img"

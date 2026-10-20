@@ -1,4 +1,4 @@
-// Row shapes of the PUBLIC tables (supabase/migrations/0001_init.sql). Column names stay snake_case.
+// Row shapes of the PUBLIC tables (supabase/migrations/0001_init.sql, changed by 0003). Column names stay snake_case.
 
 import type { Difficulty } from "@/lib/game/config";
 import type { Scene, Team } from "@/lib/game/types";
@@ -24,11 +24,10 @@ export interface RoomRow {
   created_at: string;
 }
 
+// One row per phone: at most 2 per room, one per team.
 export interface PlayerRow {
   id: string;
   room_pin: string;
-  nickname: string;
-  avatar: number;
   team: Team;
   joined_at: string;
   last_seen: string;
@@ -40,8 +39,6 @@ export interface PlayRow {
   scene: Scene;
   background_id: string;
   describer_team: Team;
-  pairs: { describer_id: string; builder_id: string }[];
-  waiting: string[];
 }
 
 export interface PlayResultRow {
@@ -70,8 +67,8 @@ export interface TeamScoreRow {
   room_pin: string;
   play_idx: number;
   team: Team;
-  avg_points: number;
-  avg_ms: number;
+  points: number; // sum of Culture Check points so far
+  total_ms: number; // sum of answer times, the tie-break
 }
 
 // What subscribeRoom delivers: everything a client may know about a room, nothing private.

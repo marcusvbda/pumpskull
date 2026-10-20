@@ -1,6 +1,6 @@
 "use client";
 
-// The player's id and secret token live in localStorage so a reload (or a locked phone) keeps them in the room.
+// The phone's player id and secret token live in localStorage so a reload (or a locked phone) keeps it in the room.
 // One identity per browser. Everything is wrapped in try/catch: private mode and blocked storage must not crash the game.
 
 import { useSyncExternalStore } from "react";

@@ -1,16 +1,14 @@
 "use client";
 
-// Screen 2: the lobby. PIN, team columns, host crown, Start (host), Settings tab.
+// Screen 2: the lobby. PIN, the two team cards (one phone each), host crown, Start (host), Settings tab.
 
 import { useState } from "react";
 import { leaveRoom, startGame } from "@/app/actions/room";
-import { GAME } from "@/lib/game/config";
-import { canStart, teamCounts } from "@/lib/game/teams";
+import { canStart } from "@/lib/game/room";
 import type { Team } from "@/lib/game/types";
 import type { Identity } from "@/lib/identity";
 import type { SyncMode } from "@/lib/supabase/subscribeRoom";
 import type { PlayerRow, RoomSnapshot } from "@/lib/supabase/types";
-import { Avatar } from "./Avatar";
 import { SettingsPanel } from "./SettingsPanel";
 import { TEAM_META } from "./teams";
 import { Button, ErrorText, Logo, Shell } from "./ui";
@@ -24,35 +22,27 @@ interface Props {
   onLeft: () => void;
 }
 
-function TeamColumn({ team, players, hostId, myId }: { team: Team; players: PlayerRow[]; hostId: string | null; myId: string }) {
+function TeamCard({ team, phone, hostId, myId }: { team: Team; phone: PlayerRow | undefined; hostId: string | null; myId: string }) {
   const meta = TEAM_META[team];
+  const status = !phone ? "Waiting for the other phone…" : phone.id === myId ? "This phone" : "Phone ready";
   return (
-    <section aria-label={meta.name} className={`flex min-w-0 flex-col gap-2 rounded-2xl border-2 p-2 ${meta.panel}`}>
-      <header className="flex flex-col items-center gap-1 text-center">
-        <h2 className={`text-base font-black ${meta.title}`}>
-          <span aria-hidden>{meta.icon}</span> {meta.name}
-        </h2>
-        <span className={`rounded-full px-2 py-0.5 text-sm font-extrabold ${meta.badge}`}>
-          {players.length}/{GAME.maxPerTeam}
+    <section
+      aria-label={meta.name}
+      className={`flex min-w-0 flex-col items-center gap-1 rounded-2xl border-2 p-3 text-center ${meta.panel} ${phone ? "" : "border-dashed opacity-80"}`}
+    >
+      <span aria-hidden className="text-4xl">
+        {meta.icon}
+      </span>
+      <h2 className={`text-base font-black ${meta.title}`}>{meta.name}</h2>
+      <span className={`rounded-full px-2 py-0.5 text-sm font-extrabold ${phone ? meta.badge : "bg-indigo-950/70 text-indigo-200"}`}>
+        {phone ? "✓ " : ""}
+        {status}
+      </span>
+      {phone && phone.id === hostId && (
+        <span className="text-sm font-bold text-amber-300">
+          <span aria-hidden>👑</span> Host
         </span>
-      </header>
-      <ul className="flex flex-col gap-1.5">
-        {players.map((p) => (
-          <li key={p.id} className="flex min-h-11 items-center gap-2 rounded-xl bg-indigo-950/70 px-1.5 py-1">
-            <Avatar n={p.avatar} size={36} />
-            <span className="min-w-0 flex-1 truncate text-sm font-bold">
-              {p.nickname}
-              {p.id === myId && <span className="ml-1 text-xs font-semibold text-teal-300">(you)</span>}
-            </span>
-            {p.id === hostId && (
-              <span role="img" aria-label="Host" title="Host">
-                👑
-              </span>
-            )}
-          </li>
-        ))}
-        {players.length === 0 && <li className="px-2 py-3 text-center text-sm text-indigo-300">Waiting for players…</li>}
-      </ul>
+      )}
     </section>
   );
 }
@@ -60,15 +50,13 @@ function TeamColumn({ team, players, hostId, myId }: { team: Team; players: Play
 export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Props) {
   const { room, players } = snapshot;
   const isHost = room.host_id === me.id;
-  const [tab, setTab] = useState<"players" | "settings">("players");
+  const [tab, setTab] = useState<"teams" | "settings">("teams");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [confirmLeave, setConfirmLeave] = useState(false);
   const [shared, setShared] = useState<string | null>(null);
 
-  const members = players.map((p) => ({ id: p.id, team: p.team, joinedAt: p.joined_at }));
-  const counts = teamCounts(members);
-  const ready = canStart(members);
+  const ready = canStart(players);
   const link = typeof window === "undefined" ? "" : `${window.location.origin}/room/${room.pin}`;
 
   async function start() {
@@ -127,7 +115,7 @@ export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Pro
       </section>
 
       <div role="tablist" className="grid grid-cols-2 gap-2">
-        {(["players", "settings"] as const).map((t) => (
+        {(["teams", "settings"] as const).map((t) => (
           <button
             key={t}
             role="tab"
@@ -143,16 +131,16 @@ export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Pro
         ))}
       </div>
 
-      {tab === "players" ? (
+      {tab === "teams" ? (
         <>
-          <p className="text-center text-sm font-bold text-indigo-200">
-            {players.length}/{GAME.maxPlayers} players
-          </p>
-          <div className="grid grid-cols-2 items-start gap-2">
+          <div className="grid grid-cols-2 items-stretch gap-2">
             {([1, 2] as const).map((team) => (
-              <TeamColumn key={team} team={team} players={players.filter((p) => p.team === team)} hostId={room.host_id} myId={me.id} />
+              <TeamCard key={team} team={team} phone={players.find((p) => p.team === team)} hostId={room.host_id} myId={me.id} />
             ))}
           </div>
+          <p className="rounded-2xl bg-indigo-900/70 p-3 text-center text-sm font-bold text-teal-300">
+            One phone per team. Gather your team around your phone!
+          </p>
         </>
       ) : (
         <SettingsPanel room={room} isHost={isHost} identity={identity} refresh={refresh} />
@@ -165,11 +153,7 @@ export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Pro
             <Button onClick={start} disabled={!ready || busy} className="w-full text-xl">
               Start game
             </Button>
-            {!ready && (
-              <p className="text-center text-sm text-indigo-200">
-                Each team needs at least 1 player ({TEAM_META[1].name} {counts[1]}, {TEAM_META[2].name} {counts[2]}).
-              </p>
-            )}
+            {!ready && <p className="text-center text-sm text-indigo-200">The other team joins with PIN {room.pin} on their phone.</p>}
           </>
         ) : (
           <p className="rounded-2xl bg-indigo-900/70 p-3 text-center font-bold text-indigo-100">Waiting for the host to start…</p>

@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { createRng } from "./rng";
-import { fail, nextHost, parseAvatar, parsePin, parseSettings, randomPin } from "./room";
-import type { TeamMember } from "./teams";
+import { canStart, fail, freeTeam, nextHost, parsePin, parseSettings, randomPin, type Phone } from "./room";
 
-const member = (id: string, joinedAt: number): TeamMember => ({ id, team: 1, joinedAt });
+const marigold: Phone = { id: "a", team: 1 };
+const pumpkin: Phone = { id: "b", team: 2 };
 
 describe("parsePin / randomPin", () => {
   it("accepts exactly 4 digits", () => {
@@ -16,14 +16,6 @@ describe("parsePin / randomPin", () => {
     expect(randomPin(() => 0.99999)).toBe("9999");
     const rng = createRng("pins");
     for (let i = 0; i < 200; i++) expect(parsePin(randomPin(rng))).not.toBeNull();
-  });
-});
-
-describe("parseAvatar", () => {
-  it("accepts integers 1 to 50 only", () => {
-    expect(parseAvatar(1)).toBe(1);
-    expect(parseAvatar(50)).toBe(50);
-    for (const bad of [0, 51, -1, 1.5, "7", NaN, null]) expect(parseAvatar(bad)).toBeNull();
   });
 });
 
@@ -46,15 +38,39 @@ describe("parseSettings", () => {
   });
 });
 
+describe("freeTeam", () => {
+  it("makes the first phone Team Marigold and the second Team Pumpkin", () => {
+    expect(freeTeam([])).toBe(1);
+    expect(freeTeam([marigold])).toBe(2);
+  });
+
+  it("gives Marigold to the next phone when the Marigold phone left first", () => {
+    expect(freeTeam([pumpkin])).toBe(1);
+  });
+
+  it("refuses a third phone", () => {
+    expect(freeTeam([marigold, pumpkin])).toBeNull();
+    expect(freeTeam([pumpkin, marigold])).toBeNull();
+  });
+});
+
+describe("canStart", () => {
+  it("needs both team phones", () => {
+    expect(canStart([])).toBe(false);
+    expect(canStart([marigold])).toBe(false);
+    expect(canStart([pumpkin])).toBe(false);
+    expect(canStart([marigold, pumpkin])).toBe(true);
+  });
+});
+
 describe("nextHost", () => {
-  it("is the oldest player who stays", () => {
-    const players = [member("c", 30), member("a", 10), member("b", 20)];
-    expect(nextHost(players, "a")).toBe("b");
-    expect(nextHost(players, "c")).toBe("a");
+  it("is the other phone", () => {
+    expect(nextHost([marigold, pumpkin], "a")).toBe("b");
+    expect(nextHost([marigold, pumpkin], "b")).toBe("a");
   });
 
   it("is null when nobody is left", () => {
-    expect(nextHost([member("a", 1)], "a")).toBeNull();
+    expect(nextHost([marigold], "a")).toBeNull();
   });
 });
 

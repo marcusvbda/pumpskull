@@ -20,23 +20,19 @@ export const DIFFICULTY: Record<Difficulty, DifficultyConfig> = {
 };
 
 export const GAME = {
-  maxPlayers: 20,
-  maxPerTeam: 10,
+  phonesPerRoom: 2, // one per team (spec section 3, Lobby)
   timeOptionsMinutes: [2, 3, 4, 5],
   defaultTimeMinutes: 4,
   roundOptions: [2, 4],
   defaultRounds: 2,
   countdownSeconds: 3,
   roleBannerSeconds: 2,
-  cultureSeconds: 15,
-  cultureFastSeconds: 5,
+  cultureSeconds: 20,
+  cultureFastSeconds: 8,
   correctPoints: 1,
   fastBonus: 0.5,
   builderAutosaveSeconds: 5,
-  nicknameMin: 2,
-  nicknameMax: 12,
-  avatarCount: 50,
-  heartbeatSeconds: 30, // players.last_seen refresh; every write is also a realtime event for the whole room
+  heartbeatSeconds: 30, // players.last_seen refresh (one row per phone); every write is also a realtime event for the whole room
   pinAttempts: 20, // tries to find an unused PIN before giving up
   roomMaxAgeHours: 24,
 } as const;

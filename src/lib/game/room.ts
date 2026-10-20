@@ -1,27 +1,22 @@
-// Room rules that need no database (spec sections 3 and 9): input parsing, settings, PIN, host handover.
+// Room rules that need no database (spec sections 3 and 9): input parsing, settings, PIN, the team of a new
+// phone, Start, host handover. A room holds one phone per team.
 // The server actions in src/app/actions/room.ts wrap these with Supabase reads and writes.
 
 import { GAME, type Difficulty } from "./config";
 import type { Rng } from "./rng";
-import { byJoinOrder, type TeamMember } from "./teams";
-import type { NicknameProblem } from "./nickname";
+import type { Team } from "./types";
 import type { RoomSettings } from "@/lib/supabase/types";
 
 export const ROOM_ERRORS = {
   invalid_pin: "The PIN has 4 digits.",
   unknown_pin: "We can't find that room. Check the PIN.",
-  room_full: "This room is full (20 players).",
+  room_full: "This room is full: both team phones are already in.",
   game_started: "This game has already started.",
-  nickname_length: `Your nickname needs ${GAME.nicknameMin} to ${GAME.nicknameMax} characters.`,
-  nickname_chars: "Use only letters, numbers, spaces, _ - and .",
-  nickname_bad: "Please pick a different nickname.",
-  nickname_taken: "Someone in this room already has that nickname.",
-  invalid_avatar: "Pick an avatar.",
   invalid_settings: "Those settings are not allowed.",
   invalid_request: "Something is wrong with that request.",
   not_host: "Only the host can do that.",
   not_in_room: "You are not in this room.",
-  need_players: "Each team needs at least 1 player to start.",
+  need_phones: "Waiting for the other team's phone.",
   no_pin: "We could not create a room. Try again.",
   server: "Something went wrong. Try again.",
 } as const;
@@ -34,18 +29,8 @@ export function fail(error: RoomError): { ok: false; error: RoomError; message: 
   return { ok: false, error, message: ROOM_ERRORS[error] };
 }
 
-export const NICKNAME_ERROR: Record<NicknameProblem, RoomError> = {
-  length: "nickname_length",
-  chars: "nickname_chars",
-  bad_word: "nickname_bad",
-};
-
 export function parsePin(value: unknown): string | null {
   return typeof value === "string" && /^\d{4}$/.test(value) ? value : null;
-}
-
-export function parseAvatar(value: unknown): number | null {
-  return typeof value === "number" && Number.isInteger(value) && value >= 1 && value <= GAME.avatarCount ? value : null;
 }
 
 export function randomPin(rng: Rng): string {
@@ -80,7 +65,25 @@ export function parseSettings(value: unknown): Partial<RoomSettings> | null {
   return Object.keys(out).length > 0 ? out : null;
 }
 
-// If the host leaves, the oldest player still in the room takes over (spec section 3, Lobby).
-export function nextHost(players: readonly TeamMember[], leavingId: string): string | null {
-  return byJoinOrder(players.filter((p) => p.id !== leavingId))[0]?.id ?? null;
+export interface Phone {
+  id: string;
+  team: Team;
+}
+
+// The first phone is Team Marigold. The next one gets whichever team is free (Marigold again if the
+// first phone left before Start). Null when both teams already have a phone.
+export function freeTeam(phones: readonly Phone[]): Team | null {
+  if (phones.length >= GAME.phonesPerRoom) return null;
+  if (!phones.some((p) => p.team === 1)) return 1;
+  if (!phones.some((p) => p.team === 2)) return 2;
+  return null;
+}
+
+export function canStart(phones: readonly Phone[]): boolean {
+  return phones.some((p) => p.team === 1) && phones.some((p) => p.team === 2);
+}
+
+// If the host phone leaves, the other phone takes over (spec section 3, Lobby).
+export function nextHost(phones: readonly Phone[], leavingId: string): string | null {
+  return phones.find((p) => p.id !== leavingId)?.id ?? null;
 }

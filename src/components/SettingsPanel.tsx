@@ -1,6 +1,6 @@
 "use client";
 
-// Screen 4: the host edits, everyone else sees the same screen read-only.
+// Screen 4: the host phone edits, the other phone sees the same screen read-only.
 
 import { useState } from "react";
 import { updateSettings } from "@/app/actions/room";
@@ -64,7 +64,7 @@ export function SettingsPanel({ room, isHost, identity, refresh }: Props) {
 
   return (
     <div className="flex flex-col gap-4">
-      {!isHost && <p className="rounded-xl bg-indigo-900/70 p-2 text-center text-sm font-bold text-indigo-100">Only the host can change the settings.</p>}
+      {!isHost && <p className="rounded-xl bg-indigo-900/70 p-2 text-center text-sm font-bold text-indigo-100">Only the host phone can change the settings.</p>}
       <ErrorText>{error}</ErrorText>
 
       <fieldset className="flex flex-col gap-2">

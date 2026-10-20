@@ -1,21 +1,22 @@
 "use client";
 
-// /room/[pin]: decides what this phone sees. Not in the room yet -> nickname + avatar (join).
+// /room/[pin]: decides what this phone sees. Not in the room yet -> join card for the free team.
 // In the room -> the screen for the room's phase (only the lobby exists so far).
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { heartbeat } from "@/app/actions/room";
 import { GAME } from "@/lib/game/config";
-import { parsePin } from "@/lib/game/room";
+import { freeTeam, parsePin } from "@/lib/game/room";
+import type { Team } from "@/lib/game/types";
+import { enterRoom } from "@/lib/enterRoom";
 import { clearIdentity, useStoredIdentity, type Identity } from "@/lib/identity";
 import { fetchRoomSnapshot } from "@/lib/supabase/subscribeRoom";
 import { useRoom } from "@/lib/useRoom";
 import { Lobby } from "./Lobby";
-import { ProfileForm } from "./ProfileForm";
 import { TEAM_META } from "./teams";
-import { Button, Shell } from "./ui";
+import { Button, ErrorText, Shell } from "./ui";
 
 function Notice({ title, children }: { title: string; children?: React.ReactNode }) {
   return (
@@ -26,6 +27,44 @@ function Notice({ title, children }: { title: string; children?: React.ReactNode
         <Link href="/" className="flex min-h-12 items-center rounded-2xl border-b-4 border-indigo-900 bg-indigo-600 px-6 text-lg font-extrabold">
           Home
         </Link>
+      </div>
+    </Shell>
+  );
+}
+
+// Opened from a shared link or QR: one tap takes the free team seat.
+function JoinCard({ pin, team, onBack }: { pin: string; team: Team; onBack: () => void }) {
+  const meta = TEAM_META[team];
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function join() {
+    setBusy(true);
+    setError(null);
+    const res = await enterRoom(pin);
+    // On success the stored identity changes and the room screen re-renders into the lobby.
+    if (!res.ok) setError(res.message);
+    setBusy(false);
+  }
+
+  return (
+    <Shell>
+      <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
+        <span className="text-sm font-bold text-indigo-200">Room {pin}</span>
+        <h1 className="text-3xl font-black text-amber-400">Join the game</h1>
+        <div className={`flex w-full flex-col items-center gap-1 rounded-2xl border-2 p-4 ${meta.panel}`}>
+          <span aria-hidden className="text-5xl">{meta.icon}</span>
+          <span className={`text-2xl font-black ${meta.title}`}>{meta.name}</span>
+          <span className="text-sm text-indigo-100">This phone will play for {meta.name}.</span>
+        </div>
+        <p className="text-sm font-bold text-teal-300">One phone per team. Gather your team around it!</p>
+        <ErrorText>{error}</ErrorText>
+        <Button onClick={join} disabled={busy} className="w-full text-xl">
+          {busy ? "One moment…" : `Join as ${meta.name}`}
+        </Button>
+        <Button variant="ghost" onClick={onBack} className="min-h-11 text-base">
+          ← Back
+        </Button>
       </div>
     </Shell>
   );
@@ -102,12 +141,9 @@ function Room({ pin }: { pin: string }) {
   if (!me || !identity) {
     const { room, players } = snapshot;
     if (room.status !== "lobby") return <Notice title="Game already started">Ask your teacher to start a new room.</Notice>;
-    if (players.length >= GAME.maxPlayers) return <Notice title="Room full">This room already has {GAME.maxPlayers} players.</Notice>;
-    return (
-      <Shell>
-        <ProfileForm mode="join" pin={pin} onBack={() => router.push("/")} onDone={() => {}} />
-      </Shell>
-    );
+    const team = freeTeam(players);
+    if (team === null) return <Notice title="Room full">Both team phones are already in room {pin}.</Notice>;
+    return <JoinCard pin={pin} team={team} onBack={() => router.push("/")} />;
   }
 
   if (snapshot.room.phase === "lobby") {
@@ -133,7 +169,7 @@ function Room({ pin }: { pin: string }) {
       <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
         <h1 className="text-3xl font-black text-amber-400">The game has started!</h1>
         <p className={`text-xl font-bold ${team.title}`}>
-          {team.icon} You are in {team.name}
+          {team.icon} This phone plays for {team.name}
         </p>
         <p className="text-indigo-200">The play screens come in the next build step.</p>
         <Button variant="secondary" onClick={() => router.push("/")}>

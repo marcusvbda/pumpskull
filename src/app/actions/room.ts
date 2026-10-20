@@ -2,23 +2,23 @@
 
 // Lobby server actions (spec sections 2, 3 and 9). Every write to the room goes through here with the
 // service-role client; the browser only reads. Anyone can POST to these, so each action validates its
-// input and checks the player's token (and host rights) itself.
+// input and checks the phone's token (and host rights) itself. A room holds one phone per team; each
+// phone is one row in players.
 
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { GAME } from "@/lib/game/config";
-import { checkNickname } from "@/lib/game/nickname";
 import {
   DEFAULT_SETTINGS,
-  NICKNAME_ERROR,
+  canStart,
   fail,
+  freeTeam,
   nextHost,
-  parseAvatar,
   parsePin,
   parseSettings,
   randomPin,
   type ActionResult,
 } from "@/lib/game/room";
-import { assignTeam, canStart, rebalanceTeams, type TeamMember } from "@/lib/game/teams";
+import type { Team } from "@/lib/game/types";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import type { PlayerRow, RoomRow, RoomSettings } from "@/lib/supabase/types";
 
@@ -75,14 +75,11 @@ async function getPlayers(db: Db, pin: string): Promise<PlayerRow[]> {
   return must(await db.from("players").select("*").eq("room_pin", pin).order("joined_at")) as PlayerRow[];
 }
 
-const asMembers = (players: PlayerRow[]): (TeamMember & PlayerRow)[] =>
-  players.map((p) => ({ ...p, joinedAt: p.joined_at }));
-
 async function getRoom(db: Db, pin: string): Promise<RoomRow | null> {
   return must(await db.from("rooms").select("*").eq("pin", pin).maybeSingle()) as RoomRow | null;
 }
 
-// Token ok + the player really belongs to this room.
+// Token ok + the phone really belongs to this room.
 async function authenticate(db: Db, creds: Credentials): Promise<PlayerRow | null> {
   if (!(await tokenMatches(db, creds.playerId, creds.token))) return null;
   const player = must(
@@ -91,15 +88,10 @@ async function authenticate(db: Db, creds: Credentials): Promise<PlayerRow | nul
   return player;
 }
 
-// Creates the player row and its private token row. Returns null when the nickname is taken.
-async function addPlayer(
-  db: Db,
-  pin: string,
-  nickname: string,
-  avatar: number,
-  team: 1 | 2,
-): Promise<{ player: PlayerRow; token: string } | null> {
-  const inserted = await db.from("players").insert({ room_pin: pin, nickname, avatar, team }).select().single();
+// Creates the phone's player row and its private token row. Returns null when that team already has a
+// phone (the players_room_team_uq index), which also covers two phones joining at the same moment.
+async function addPhone(db: Db, pin: string, team: Team): Promise<{ player: PlayerRow; token: string } | null> {
+  const inserted = await db.from("players").insert({ room_pin: pin, team }).select().single();
   if (isUniqueViolation(inserted.error)) return null;
   const player = must(inserted) as PlayerRow;
   const token = randomBytes(24).toString("base64url");
@@ -113,14 +105,8 @@ async function addPlayer(
 
 // ---------- actions ----------
 
-export async function createRoom(input: { nickname: string; avatar: number }) {
-  return guard<{ pin: string; playerId: string; token: string }>(async () => {
-    const raw = (input ?? {}) as Record<string, unknown>;
-    const nick = checkNickname(typeof raw.nickname === "string" ? raw.nickname : "");
-    if (!nick.ok) return fail(NICKNAME_ERROR[nick.problem]);
-    const avatar = parseAvatar(raw.avatar);
-    if (avatar === null) return fail("invalid_avatar");
-
+export async function createRoom() {
+  return guard<{ pin: string; playerId: string; token: string; team: Team }>(async () => {
     const db = supabaseAdmin();
 
     // Rooms live 24 h (spec section 9). Sweeping here keeps old PINs free even without a scheduled job.
@@ -137,11 +123,11 @@ export async function createRoom(input: { nickname: string; avatar: number }) {
     if (pin === null) return fail("no_pin");
 
     try {
-      const team = assignTeam([], Math.random)!; // empty room: always a team
-      const added = await addPlayer(db, pin, nick.nickname, avatar, team);
-      if (!added) throw new Error("host nickname clash in an empty room");
+      const team = freeTeam([])!; // empty room: Team Marigold
+      const added = await addPhone(db, pin, team);
+      if (!added) throw new Error("team clash in an empty room");
       must(await db.from("rooms").update({ host_id: added.player.id }).eq("pin", pin));
-      return { ok: true, pin, playerId: added.player.id, token: added.token };
+      return { ok: true, pin, playerId: added.player.id, token: added.token, team };
     } catch (error) {
       await db.from("rooms").delete().eq("pin", pin); // do not leave a room without a host behind
       throw error;
@@ -149,8 +135,8 @@ export async function createRoom(input: { nickname: string; avatar: number }) {
   });
 }
 
-export async function joinRoom(input: { pin: string; nickname: string; avatar: number }) {
-  return guard<{ pin: string; playerId: string; token: string }>(async () => {
+export async function joinRoom(input: { pin: string }) {
+  return guard<{ pin: string; playerId: string; token: string; team: Team }>(async () => {
     const raw = (input ?? {}) as Record<string, unknown>;
     const pin = parsePin(raw.pin);
     if (!pin) return fail("invalid_pin");
@@ -160,28 +146,12 @@ export async function joinRoom(input: { pin: string; nickname: string; avatar: n
     if (!room) return fail("unknown_pin");
     if (room.status !== "lobby") return fail("game_started");
 
-    const nick = checkNickname(typeof raw.nickname === "string" ? raw.nickname : "");
-    if (!nick.ok) return fail(NICKNAME_ERROR[nick.problem]);
-    const avatar = parseAvatar(raw.avatar);
-    if (avatar === null) return fail("invalid_avatar");
-
-    const players = await getPlayers(db, pin);
-    const team = assignTeam(asMembers(players), Math.random);
+    const team = freeTeam(await getPlayers(db, pin));
     if (team === null) return fail("room_full");
-    // Friendly check; the unique index on (room_pin, lower(nickname)) is what really guarantees it.
-    if (players.some((p) => p.nickname.toLowerCase() === nick.nickname.toLowerCase())) return fail("nickname_taken");
-
-    const added = await addPlayer(db, pin, nick.nickname, avatar, team);
-    if (!added) return fail("nickname_taken");
-
-    // Two phones can pass the checks above at the same moment. Re-count and back out if we went over.
-    const after = await getPlayers(db, pin);
-    const mine = after.filter((p) => p.team === team);
-    if (after.length > GAME.maxPlayers || mine.length > GAME.maxPerTeam) {
-      await db.from("players").delete().eq("id", added.player.id);
-      return fail("room_full");
-    }
-    return { ok: true, pin, playerId: added.player.id, token: added.token };
+    // Two phones can pass the check above at the same moment; the unique index lets only one of them in.
+    const added = await addPhone(db, pin, team);
+    if (!added) return fail("room_full");
+    return { ok: true, pin, playerId: added.player.id, token: added.token, team };
   });
 }
 
@@ -207,7 +177,7 @@ export async function updateSettings(input: Credentials & { settings: Partial<Ro
 }
 
 export async function startGame(input: Credentials) {
-  return guard<{ moved: number }>(async () => {
+  return guard<object>(async () => {
     const creds = parseCredentials(input);
     if (!creds) return fail("invalid_request");
 
@@ -219,15 +189,9 @@ export async function startGame(input: Credentials) {
     if (room.host_id !== player.id) return fail("not_host");
     if (room.status !== "lobby") return fail("game_started");
 
-    const players = asMembers(await getPlayers(db, creds.pin));
-    if (!canStart(players)) return fail("need_players");
+    if (!canStart(await getPlayers(db, creds.pin))) return fail("need_phones");
 
-    const { moves } = rebalanceTeams(players);
-    for (const move of moves) {
-      must(await db.from("players").update({ team: move.to }).eq("id", move.playerId));
-    }
-
-    // Conditional on status = lobby, so a double tap on Start cannot start (or rebalance) twice.
+    // Conditional on status = lobby, so a double tap on Start cannot start twice.
     const started = must(
       await db
         .from("rooms")
@@ -237,7 +201,7 @@ export async function startGame(input: Credentials) {
         .select("pin"),
     ) as { pin: string }[];
     if (started.length === 0) return fail("game_started");
-    return { ok: true, moved: moves.length };
+    return { ok: true };
   });
 }
 
@@ -250,10 +214,9 @@ export async function leaveRoom(input: Credentials) {
     const player = await authenticate(db, creds);
     if (!player) return fail("not_in_room");
 
-    const players = asMembers(await getPlayers(db, creds.pin));
-    const heir = nextHost(players, player.id);
+    const heir = nextHost(await getPlayers(db, creds.pin), player.id);
     if (heir === null) {
-      await db.from("rooms").delete().eq("pin", creds.pin); // last one out: players and tokens cascade
+      await db.from("rooms").delete().eq("pin", creds.pin); // last one out: phones and tokens cascade
       return { ok: true, roomClosed: true };
     }
 

@@ -10,7 +10,10 @@ describe("config invariants", () => {
     expect(DIFFICULTY.medium.items).toBeLessThan(DIFFICULTY.hard.items);
     expect(DIFFICULTY.easy.rZero).toBeGreaterThan(DIFFICULTY.hard.rZero);
   });
-  it("keeps room size consistent", () => {
-    expect(GAME.maxPerTeam * 2).toBe(GAME.maxPlayers);
+  it("has one phone per team", () => {
+    expect(GAME.phonesPerRoom).toBe(2);
+  });
+  it("gives the fast bonus only inside the Culture Check time", () => {
+    expect(GAME.cultureFastSeconds).toBeLessThan(GAME.cultureSeconds);
   });
 });

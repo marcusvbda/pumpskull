@@ -1,57 +1,39 @@
 "use client";
 
-// Screen 1: create a room or enter a PIN.
+// Screen 1: create a room (this phone becomes Team Marigold) or enter a PIN (the other team's phone).
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { GAME } from "@/lib/game/config";
+import { enterRoom } from "@/lib/enterRoom";
 import { clearIdentity, useStoredIdentity } from "@/lib/identity";
-import { fetchRoomSnapshot } from "@/lib/supabase/subscribeRoom";
-import { ProfileForm } from "./ProfileForm";
 import { Button, ErrorText, Logo, Mascot, Shell } from "./ui";
-
-type Step = { name: "home" } | { name: "create" } | { name: "join"; pin: string };
 
 export function EntryScreen() {
   const router = useRouter();
   const stored = useStoredIdentity();
-  const [step, setStep] = useState<Step>({ name: "home" });
   const [pin, setPin] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [checking, setChecking] = useState(false);
+  const [busy, setBusy] = useState<"create" | "join" | null>(null);
+  const [createError, setCreateError] = useState<string | null>(null);
+  const [joinError, setJoinError] = useState<string | null>(null);
 
-  const goToRoom = (roomPin: string) => router.push(`/room/${roomPin}`);
-
-  async function enterPin(event: React.FormEvent) {
-    event.preventDefault();
-    if (pin.length !== 4 || checking) return;
-    setChecking(true);
-    setError(null);
-    try {
-      const snapshot = await fetchRoomSnapshot(pin);
-      if (!snapshot) setError("We can't find that room. Check the PIN.");
-      else if (snapshot.room.status !== "lobby") setError("This game has already started.");
-      else if (snapshot.players.length >= GAME.maxPlayers) setError(`This room is full (${GAME.maxPlayers} players).`);
-      else setStep({ name: "join", pin });
-    } catch {
-      setError("Can't reach the game. Check your connection and try again.");
-    } finally {
-      setChecking(false);
+  async function go(kind: "create" | "join") {
+    if (busy) return;
+    setBusy(kind);
+    setCreateError(null);
+    setJoinError(null);
+    const res = await enterRoom(kind === "join" ? pin : undefined);
+    if (res.ok) {
+      router.push(`/room/${res.identity.pin}`);
+      return; // keep the buttons locked while the room page loads
     }
+    (kind === "join" ? setJoinError : setCreateError)(res.message);
+    setBusy(null);
   }
 
-  if (step.name !== "home") {
-    return (
-      <Shell>
-        <ProfileForm
-          mode={step.name}
-          pin={step.name === "join" ? step.pin : undefined}
-          onBack={() => setStep({ name: "home" })}
-          onDone={(identity) => goToRoom(identity.pin)}
-        />
-      </Shell>
-    );
+  function enterPin(event: React.FormEvent) {
+    event.preventDefault();
+    if (pin.length === 4) void go("join");
   }
 
   return (
@@ -60,6 +42,7 @@ export function EntryScreen() {
         <Logo />
         <Mascot difficulty="easy" size={96} />
         <p className="text-indigo-100">Day of the Dead vs Halloween. Describe, build, and learn English together.</p>
+        <p className="text-sm font-bold text-teal-300">One phone per team. Gather your team around it!</p>
       </div>
 
       {stored && (
@@ -76,13 +59,16 @@ export function EntryScreen() {
         </div>
       )}
 
-      <Button onClick={() => setStep({ name: "create" })} className="w-full text-xl">
-        Create room
-      </Button>
+      <div className="flex flex-col gap-2">
+        <Button onClick={() => go("create")} disabled={busy !== null} className="w-full text-xl">
+          {busy === "create" ? "One moment…" : "Create room"}
+        </Button>
+        <ErrorText>{createError}</ErrorText>
+      </div>
 
       <div className="flex items-center gap-3 text-indigo-300" aria-hidden>
         <span className="h-px flex-1 bg-indigo-700" />
-        or join a friend
+        or join the other team
         <span className="h-px flex-1 bg-indigo-700" />
       </div>
 
@@ -96,7 +82,7 @@ export function EntryScreen() {
             value={pin}
             onChange={(e) => {
               setPin(e.target.value.replace(/\D/g, "").slice(0, 4));
-              setError(null);
+              setJoinError(null);
             }}
             inputMode="numeric"
             pattern="[0-9]*"
@@ -105,11 +91,11 @@ export function EntryScreen() {
             enterKeyHint="go"
             className="min-h-12 min-w-0 flex-1 rounded-2xl border-2 border-indigo-400 bg-indigo-950 px-4 text-center text-2xl font-black tracking-[0.4em] text-white outline-none placeholder:text-indigo-700 focus:border-amber-400"
           />
-          <Button type="submit" variant="secondary" disabled={pin.length !== 4 || checking} className="px-6">
-            {checking ? "…" : "Join"}
+          <Button type="submit" variant="secondary" disabled={pin.length !== 4 || busy !== null} className="px-6">
+            {busy === "join" ? "…" : "Join"}
           </Button>
         </div>
-        <ErrorText>{error}</ErrorText>
+        <ErrorText>{joinError}</ErrorText>
       </form>
     </Shell>
   );

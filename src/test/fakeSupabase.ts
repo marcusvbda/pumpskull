@@ -1,7 +1,7 @@
 // Tiny in-memory stand-in for the supabase-js query builder, just enough for the lobby server actions:
 // select / insert / update / delete, eq / lt filters, order, single / maybeSingle.
 // It mimics the parts of supabase/migrations/0001_init.sql that the rules depend on: primary keys, the
-// case-insensitive nickname index, defaults, ON DELETE CASCADE / SET NULL. It does not check CHECK constraints.
+// one-phone-per-team index, defaults, ON DELETE CASCADE / SET NULL. It does not check CHECK constraints.
 
 export type Row = Record<string, unknown>;
 interface DbError {
@@ -39,9 +39,8 @@ export function createFakeDb() {
     if (table === "rooms" && others.some((r) => r.pin === row.pin)) return { message: "duplicate pin", code: "23505" };
     if (table === "players") {
       if (!tables.rooms.some((r) => r.pin === row.room_pin)) return { message: "no such room", code: "23503" };
-      const nick = String(row.nickname).toLowerCase();
-      if (others.some((r) => r.room_pin === row.room_pin && String(r.nickname).toLowerCase() === nick)) {
-        return { message: "duplicate nickname", code: "23505" };
+      if (others.some((r) => r.room_pin === row.room_pin && r.team === row.team)) {
+        return { message: "duplicate team", code: "23505" };
       }
     }
     if (table === "player_tokens") {
