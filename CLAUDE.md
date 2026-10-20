@@ -18,11 +18,11 @@ Next.js (App Router) + TypeScript + Tailwind + Supabase (Postgres + Realtime) + 
 - Never ship the target layout to builders or the correct answer to anyone before the right phase (see spec section 9).
 - All writes go through Next.js server actions using the Supabase service-role key. The browser only reads public tables with the anon key.
 - The service-role key is only read in server code. Never use a `NEXT_PUBLIC_` prefix on it.
-- Placement scoring, layout generation, team balancing and pairing are pure functions in `src/lib/game/` with Vitest tests next to them. Tunable numbers live in `src/lib/game/config.ts`.
+- Placement scoring, layout generation, role assignment and Culture Check scoring are pure functions in `src/lib/game/` with Vitest tests next to them. Tunable numbers live in `src/lib/game/config.ts`.
 - Sync goes through `subscribeRoom(pin, callback)` with a polling fallback. Do not sync drag movement.
 - Portrait mobile first. Use Pointer Events with `touch-action: none` for drag. Test on real iOS Safari and Android Chrome.
 - No full-screen flashing, effects at most 2 Hz, honour `prefers-reduced-motion`.
-- No analytics, no trackers, store only nickname and avatar. Players are likely minors.
+- No analytics, no trackers, no personal data: a room stores only the team of each phone and its token. Players are likely minors.
 - Images come from `public/` using the names in `docs/ASSETS.md`. If a file is missing, render a placeholder, never crash.
 - `data/questions.json` is server-only. Never put it in `public/`.
 

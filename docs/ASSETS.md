@@ -20,7 +20,6 @@ Everything here is supplied by Vinicius. The game runs with placeholders until e
 | `public/brand/` | `mascot-medium.png` | PNG transparent, 1024x1024, sour face | 30 Oct |
 | `public/brand/` | `mascot-hard.png` | PNG transparent, 1024x1024, on fire | 30 Oct |
 | `public/brand/` | `favicon.png` | PNG, 512x512, simplified mascot face, readable at 32 px | 30 Oct |
-| `public/avatars/` | `01.png` ... `50.png` | PNG transparent, 512x512 square crop, bust only (head and shoulders), no full bodies, no duplicates, no text. 50 files, two digits | 30 Oct |
 | `public/scenes/altar/` | `altar-1.png`, `altar-2.png`, `altar-3.png` | **EMPTY** front-view Day of the Dead altar, no items, no people. 2048x1280 (16:10, same ratio for every scene file). Clear steps, shelves and floor. Each altar must have a different structure | **23 Oct** |
 | `public/scenes/house/` | `house-1.png`, `house-2.png`, `house-3.png` | **EMPTY** front of a Halloween house, no decorations, no people. 2048x1280 (16:10). Clear porch/floor, door, window, wall. Each house must look different | **23 Oct** |
 | `public/items/altar/` | `marigold-vase.png`, `candle.png`, `photo.png`, `bread.png`, `sugar-skull.png`, `water.png`, `incense.png`, `fruit.png` | PNG transparent, 1024 px on the longest side, one item per file, tightly cropped, flat bottom for items that stand on a surface | **23 Oct** |
