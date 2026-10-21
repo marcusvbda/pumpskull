@@ -81,7 +81,7 @@ d = sqrt(dx^2 + (dy * h/w)^2)
 
 - +1 for a correct answer, +0.5 extra if answered within 8 seconds. A wrong or missing answer scores 0.
 - The team score is the sum of its points. Both teams answer the same number of questions.
-- Questions come from a bank of 300, drawn at random without repeating in the same room.
+- Questions come from a bank of 300 (100 per level), drawn at random without repeating in the same room. The question level follows the difficulty chosen for the game: Chocolate asks easy questions, Sour Gummy medium and Chili Tamarind hard. If a room somehow uses all 100 of its level, that level starts over.
 
 **Winner.** The team with the higher Culture Check total after the last play. Tie-break: lower total response time across all answers. If still tied, show a draw.
 
@@ -98,14 +98,15 @@ Hard removes all text help and adds more items, so the describing team must use 
 | `r_full` (full score radius) | 0.08 | 0.06 | 0.04 |
 | `r_zero` (zero score radius) | 0.35 | 0.28 | 0.20 |
 | Mascot | smiling | sour face | on fire |
+| Culture Check questions | easy (100 in the bank) | medium (100) | hard (100) |
 
-Same on every level: count badges (such as "2") on repeated items remain visible, culture questions are mixed difficulty, and the time per play is chosen by the host.
+Same on every level: count badges (such as "2") on repeated items remain visible, the time per play is chosen by the host.
 
 ## 6. Scenes, slots and the layout generator
 
 Targets are generated at random from empty backgrounds, so the same background can be played many times with different layouts. The builder never sees slots.
 
-**Backgrounds.** At least 3 empty altar backgrounds and 3 empty house-front backgrounds, front view, no items on them, with clear surfaces (steps, shelves, floor, wall, door, window).
+**Backgrounds.** 10 empty altar backgrounds and 10 empty house-front backgrounds (`altar-1` to `altar-10`, `house-1` to `house-10`), front view, no items on them, with clear surfaces (steps, shelves, floor, wall, door, window).
 
 **Slots.** Each background has a JSON file with 12 to 16 slots: `id`, normalised position `x`, `y` (0 to 1), `type` (`step`, `shelf`, `floor`, `wall`, `door`, `window`) and `scale` (the size the item should have in that slot).
 
@@ -184,11 +185,14 @@ Public tables (browser may read with the anon key, never write): `rooms`, `playe
 - Only the host can change settings or advance the phase, and only on a valid transition.
 - Placement scores and Culture Check points are computed on the server from the stored target and the submitted data, never trusted from the client.
 - The building phone's placement is saved on Finish, at time-out, and as an autosave every 5 seconds.
-- The correct answer of a Culture Check question is written to `question_reveal` only when the phase moves to feedback.
+- The correct answer of a Culture Check question is written to `question_reveal` only when the phase moves to feedback. That row also holds how each team answered (`answers`: option, time, points), see `supabase/migrations/0004_culture_feedback.sql`.
+- After every play the room goes `reveal` (host taps Culture Check) -> `culture` (ends when both teams answered or after 20 s) -> `culture_feedback` (10 s, then moves by itself) -> `scoreboard` (host taps Next). A team that does not answer scores 0 and counts as 20 s for the tie-break.
+- Answer time is measured by the server from `phase_started_at`; an answer in flight is still accepted for 3 s after the 20 s.
+- Play again (host, final screen) returns the same two phones to the lobby; questions already asked stay marked so the next game gets new ones.
 - Only the describing phone receives the target layout; the building phone never gets the seed or targets before the reveal.
 - A room holds at most 2 phones, one per team; a third join fails.
 
-**Questions.** Stored as `data/questions.json` at the repository root, read only on the server, never inside `public/` and never bundled for the browser, so players cannot read the answers. 300 items: `id`, `topic` (dod, halloween, compare), `level`, `question`, `options` (4), `correct` (0 to 3), `fact`.
+**Questions.** Written for adults: not obvious, not impossible. Stored as `data/questions.json` at the repository root, read only on the server, never inside `public/` and never bundled for the browser, so players cannot read the answers. 300 items: `id`, `topic` (dod, halloween, compare), `level`, `question`, `options` (4), `correct` (0 to 3), `fact`.
 
 ## 10. Build order, tests and acceptance
 

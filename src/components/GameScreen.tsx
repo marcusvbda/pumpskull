@@ -4,20 +4,24 @@
 // (target or tray) and asks the server to move on when a timer runs out. Both phones ask; the server checks
 // its own clock and moves the room only once.
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { advanceTimer, getPlayView, type PlayView } from "@/app/actions/play";
-import { DIFFICULTY, PLAY } from "@/lib/game/config";
-import { countdownEndsAt, playClosesAt, playEndsAt, totalPlays } from "@/lib/game/flow";
+import { DIFFICULTY, GAME, PLAY } from "@/lib/game/config";
+import { countdownEndsAt, cultureClosesAt, cultureEndsAt, feedbackEndsAt, playClosesAt, playDurationMs, playEndsAt, totalPlays } from "@/lib/game/flow";
 import { rolesForPlay } from "@/lib/game/roles";
 import type { Identity } from "@/lib/identity";
 import type { PlayerRow, RoomSnapshot } from "@/lib/supabase/types";
 import { useServerNow } from "@/lib/useServerNow";
 import { Builder } from "./Builder";
 import { Countdown } from "./Countdown";
+import { Culture } from "./Culture";
+import { CultureFeedback } from "./CultureFeedback";
 import { Describer } from "./Describer";
-import { Reveal, SpiritMeter } from "./Reveal";
+import { Final } from "./Final";
+import { Reveal } from "./Reveal";
+import { Scoreboard } from "./Scoreboard";
 import { Shell } from "./ui";
+import { UrgencyScope } from "./UrgencyScope";
 
 interface Props {
   snapshot: RoomSnapshot;
@@ -73,6 +77,8 @@ export function GameScreen({ snapshot, me, identity, offsetMs, refresh }: Props)
   const roles = rolesForPlay(play);
   const playRow = snapshot.plays.find((p) => p.idx === play);
   const result = snapshot.playResults.find((r) => r.play_idx === play);
+  const question = snapshot.questionPublic.find((q) => q.play_idx === play);
+  const reveal = snapshot.questionReveal.find((q) => q.play_idx === play);
   const inPlay = room.phase === "countdown" || room.phase === "playing";
   const view = usePlayView(identity, play, inPlay);
 
@@ -80,7 +86,10 @@ export function GameScreen({ snapshot, me, identity, offsetMs, refresh }: Props)
   let dueAt: number | null = null;
   if (room.phase === "countdown") dueAt = countdownEndsAt(room.phase_started_at);
   else if (room.phase === "playing" && room.play_started_at) dueAt = playClosesAt(room.play_started_at, room.settings);
-  else if (room.phase === "reveal" && !result) dueAt = Date.parse(room.phase_started_at) + PLAY.resultsRetrySeconds * 1000;
+  else if (room.phase === "culture") dueAt = cultureClosesAt(room.phase_started_at);
+  else if (room.phase === "culture_feedback") {
+    dueAt = reveal ? feedbackEndsAt(room.phase_started_at) : Date.parse(room.phase_started_at) + PLAY.resultsRetrySeconds * 1000;
+  } else if (room.phase === "reveal" && !result) dueAt = Date.parse(room.phase_started_at) + PLAY.resultsRetrySeconds * 1000;
 
   const due = dueAt !== null && now >= dueAt;
   const lastAsk = useRef<{ key: string; at: number } | null>(null);
@@ -105,10 +114,14 @@ export function GameScreen({ snapshot, me, identity, offsetMs, refresh }: Props)
     if (!view || !playRow || !room.play_started_at) return <Loading text="Getting the scene ready…" />;
     const leftMs = playEndsAt(room.play_started_at, room.settings) - now;
     const common = { scene: playRow.scene, backgroundId: playRow.background_id, difficulty: room.settings.difficulty, team: me.team, leftMs, play, plays };
-    return view.role === "describer" ? (
-      <Describer {...common} targets={view.targets} />
-    ) : (
-      <Builder {...common} key={play} identity={identity} tray={view.tray} initialPlaced={view.placed} />
+    return (
+      <UrgencyScope leftMs={leftMs} totalMs={playDurationMs(room.settings)} kind="play">
+        {view.role === "describer" ? (
+          <Describer {...common} targets={view.targets} />
+        ) : (
+          <Builder {...common} key={play} identity={identity} tray={view.tray} initialPlaced={view.placed} />
+        )}
+      </UrgencyScope>
     );
   }
 
@@ -131,19 +144,48 @@ export function GameScreen({ snapshot, me, identity, offsetMs, refresh }: Props)
     );
   }
 
-  if (room.phase === "finished") {
-    // Culture Check, scoreboard and the final screen come in build step 5.
+  if (room.phase === "culture") {
     return (
-      <Shell>
-        <div className="flex flex-1 flex-col justify-center gap-6 text-center">
-          <h1 className="text-4xl font-black text-amber-400">Game over!</h1>
-          <p className="text-indigo-100">Great teamwork. The winner is decided by the Culture Check, coming in the next build step.</p>
-          <SpiritMeter value={Number(room.spirit_meter)} max={spiritMax} />
-          <Link href="/" className="flex min-h-12 items-center justify-center rounded-2xl border-b-4 border-amber-600 bg-amber-400 px-6 text-lg font-extrabold text-indigo-950">
-            Home
-          </Link>
-        </div>
-      </Shell>
+      <UrgencyScope leftMs={cultureEndsAt(room.phase_started_at) - now} totalMs={GAME.cultureSeconds * 1000} kind="culture">
+        <Culture key={play} identity={identity} team={me.team} play={play} plays={plays} question={question} startedAt={Date.parse(room.phase_started_at)} now={now} />
+      </UrgencyScope>
+    );
+  }
+
+  if (room.phase === "culture_feedback") {
+    return <CultureFeedback team={me.team} question={question} reveal={reveal} phaseStartedAt={room.phase_started_at} now={now} />;
+  }
+
+  // Team totals are cumulative, so the rows of the latest play hold the totals so far.
+  const scores = snapshot.teamScores.filter((s) => s.play_idx === (room.phase === "finished" ? plays - 1 : play));
+
+  if (room.phase === "scoreboard") {
+    return (
+      <Scoreboard
+        identity={identity}
+        isHost={room.host_id === me.id}
+        team={me.team}
+        play={play}
+        plays={plays}
+        scores={scores}
+        spiritMeter={Number(room.spirit_meter)}
+        spiritMax={spiritMax}
+        refresh={refresh}
+      />
+    );
+  }
+
+  if (room.phase === "finished") {
+    return (
+      <Final
+        identity={identity}
+        isHost={room.host_id === me.id}
+        team={me.team}
+        scores={scores}
+        spiritMeter={Number(room.spirit_meter)}
+        spiritMax={spiritMax}
+        refresh={refresh}
+      />
     );
   }
 

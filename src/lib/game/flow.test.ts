@@ -2,11 +2,14 @@ import { describe, expect, it } from "vitest";
 import { PLAY } from "./config";
 import {
   COUNTDOWN_MS,
-  afterReveal,
+  afterScoreboard,
   buildTray,
   countdownEndsAt,
   parsePlacement,
   playClosesAt,
+  cultureClosesAt,
+  cultureEndsAt,
+  feedbackEndsAt,
   playEndsAt,
   totalPlays,
 } from "./flow";
@@ -25,16 +28,22 @@ describe("timing", () => {
     expect(playClosesAt(t0, { time_minutes: 2 })).toBe(t0 + 120_000 + PLAY.finishGraceSeconds * 1000);
   });
 
+  it("Culture Check runs 20 s, accepts a late answer for the grace time, then shows feedback for 10 s", () => {
+    expect(cultureEndsAt(t0)).toBe(t0 + 20_000);
+    expect(cultureClosesAt(t0)).toBe(t0 + 20_000 + PLAY.finishGraceSeconds * 1000);
+    expect(feedbackEndsAt(t0)).toBe(t0 + 10_000);
+  });
+
   it("has two plays per round", () => {
     expect(totalPlays({ rounds: 2 })).toBe(4);
     expect(totalPlays({ rounds: 4 })).toBe(8);
   });
 
-  it("goes to the next play after a reveal, and finishes after the last one", () => {
-    expect(afterReveal(0, { rounds: 2 })).toEqual({ phase: "countdown", play: 1 });
-    expect(afterReveal(2, { rounds: 2 })).toEqual({ phase: "countdown", play: 3 });
-    expect(afterReveal(3, { rounds: 2 })).toEqual({ phase: "finished" });
-    expect(afterReveal(7, { rounds: 4 })).toEqual({ phase: "finished" });
+  it("goes to the next play after a scoreboard, and finishes after the last one", () => {
+    expect(afterScoreboard(0, { rounds: 2 })).toEqual({ phase: "countdown", play: 1 });
+    expect(afterScoreboard(2, { rounds: 2 })).toEqual({ phase: "countdown", play: 3 });
+    expect(afterScoreboard(3, { rounds: 2 })).toEqual({ phase: "finished" });
+    expect(afterScoreboard(7, { rounds: 4 })).toEqual({ phase: "finished" });
   });
 });
 

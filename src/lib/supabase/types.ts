@@ -65,11 +65,20 @@ export interface QuestionPublicRow {
   options: string[];
 }
 
+// How one team answered. option null = no answer in time.
+export interface CultureAnswer {
+  team: Team;
+  option: number | null;
+  ms: number;
+  points: number;
+}
+
 export interface QuestionRevealRow {
   room_pin: string;
   play_idx: number;
   correct: number;
   fact: string;
+  answers: CultureAnswer[];
 }
 
 export interface TeamScoreRow {

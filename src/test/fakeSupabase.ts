@@ -18,6 +18,7 @@ type Filter = (row: Row) => boolean;
 export function createFakeDb() {
   const tables: Record<string, Row[]> = {
     rooms: [], players: [], player_tokens: [], plays: [], play_targets: [], placements: [], play_results: [],
+    question_public: [], question_reveal: [], team_scores: [], answers: [], questions_used: [],
   };
   // Primary keys of the tables keyed by room (supabase/migrations/0001_init.sql).
   const KEYS: Record<string, string[]> = {
@@ -25,8 +26,14 @@ export function createFakeDb() {
     play_targets: ["room_pin", "play_idx"],
     placements: ["room_pin", "play_idx", "builder_id"],
     play_results: ["room_pin", "play_idx"],
+    question_public: ["room_pin", "play_idx"],
+    question_reveal: ["room_pin", "play_idx"],
+    team_scores: ["room_pin", "play_idx", "team"],
+    answers: ["room_pin", "play_idx", "player_id"],
+    questions_used: ["room_pin", "question_id"],
   };
-  let clock = Date.parse("2026-10-20T10:00:00Z");
+  // Starts at the real time: createRoom sweeps rooms older than 24 h, so a fixed date would turn the rows into "old" ones.
+  let clock = Date.now();
   const tick = () => new Date((clock += 1000)).toISOString(); // every insert is 1 s after the previous one
   let nextId = 1;
   const uuid = () => `00000000-0000-4000-8000-${String(nextId++).padStart(12, "0")}`;
@@ -73,6 +80,7 @@ export function createFakeDb() {
     if (table === "players") {
       tables.player_tokens = tables.player_tokens.filter((t) => t.player_id !== row.id);
       tables.placements = tables.placements.filter((p) => p.builder_id !== row.id);
+      tables.answers = tables.answers.filter((a) => a.player_id !== row.id);
       for (const r of tables.rooms) if (r.host_id === row.id) r.host_id = null;
     }
   }

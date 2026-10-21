@@ -5,14 +5,24 @@
 // Timer transitions can be asked for by either phone; the server checks its own clock and moves the room
 // with a conditional update, so two phones asking at once still move it only once.
 
-import { afterReveal, countdownEndsAt, EARLY_MS, parsePlacement, playClosesAt, type TrayEntry } from "@/lib/game/flow";
+import {
+  afterScoreboard,
+  countdownEndsAt,
+  cultureClosesAt,
+  EARLY_MS,
+  feedbackEndsAt,
+  parsePlacement,
+  playClosesAt,
+  type TrayEntry,
+} from "@/lib/game/flow";
 import { fail } from "@/lib/game/room";
 import { rolesForPlay } from "@/lib/game/roles";
 import type { PlacedItem } from "@/lib/game/scoring";
 import { supabaseAdmin } from "@/lib/supabase/server";
-import type { Phase, PlayerRow, RoomRow } from "@/lib/supabase/types";
+import type { Phase } from "@/lib/supabase/types";
+import { closeQuestion, writeCultureResults } from "./cultureData";
 import { endPlay, getPlacement, getTarget, savePlacementRow, trayFor, writeResults } from "./playData";
-import { authenticate, getRoom, guard, must, parseCredentials, type Credentials, type Db } from "./shared";
+import { guard, loadContext, must, parseCredentials, type Credentials } from "./shared";
 
 export type PlayView =
   | { play: number; role: "describer"; targets: { itemId: string; x: number; y: number; scale: number }[] }
@@ -22,21 +32,13 @@ function parsePlayIdx(value: unknown): number | null {
   return typeof value === "number" && Number.isInteger(value) && value >= 0 && value < 100 ? value : null;
 }
 
-// Token, room and phone in one go. Null when any of them is wrong.
-async function load(db: Db, creds: Credentials): Promise<{ room: RoomRow; me: PlayerRow } | null> {
-  const me = await authenticate(db, creds);
-  if (!me) return null;
-  const room = await getRoom(db, creds.pin);
-  return room ? { room, me } : null;
-}
-
 // What this phone needs to play the current play: the target (describing phone) or the tray (building phone).
 export async function getPlayView(input: Credentials) {
   return guard<{ view: PlayView }>(async () => {
     const creds = parseCredentials(input);
     if (!creds) return fail("invalid_request");
     const db = supabaseAdmin();
-    const ctx = await load(db, creds);
+    const ctx = await loadContext(db, creds);
     if (!ctx) return fail("not_in_room");
     const { room, me } = ctx;
     if (room.phase !== "countdown" && room.phase !== "playing") return fail("play_over");
@@ -64,7 +66,7 @@ export async function savePlacement(input: Credentials & { play: number; items: 
     const finish = raw.finish === true;
 
     const db = supabaseAdmin();
-    const ctx = await load(db, creds);
+    const ctx = await loadContext(db, creds);
     if (!ctx) return fail("not_in_room");
     const { room, me } = ctx;
     if (room.phase !== "playing" || room.current_play !== play || !room.play_started_at) return fail("play_over");
@@ -92,7 +94,7 @@ export async function advanceTimer(input: Credentials & { phase: Phase; play: nu
     if (play === null) return fail("invalid_request");
 
     const db = supabaseAdmin();
-    const ctx = await load(db, creds);
+    const ctx = await loadContext(db, creds);
     if (!ctx) return fail("not_in_room");
     const { room } = ctx;
     // The phone saw an older state: nothing to do, its next snapshot will catch up.
@@ -127,11 +129,33 @@ export async function advanceTimer(input: Credentials & { phase: Phase; play: nu
       return { ok: true, changed: false };
     }
 
+    // The 20 seconds are over (the phones may also close it earlier, when both teams have answered).
+    if (room.phase === "culture") {
+      if (now < cultureClosesAt(room.phase_started_at) - EARLY_MS) return { ok: true, changed: false };
+      return { ok: true, changed: await closeQuestion(db, room) };
+    }
+
+    // Feedback without its rows (a crash in between) is finished here; after the feedback time the scoreboard comes.
+    if (room.phase === "culture_feedback") {
+      await writeCultureResults(db, room.pin, play);
+      if (now < feedbackEndsAt(room.phase_started_at) - EARLY_MS) return { ok: true, changed: false };
+      const moved = must(
+        await db
+          .from("rooms")
+          .update({ phase: "scoreboard", phase_started_at: new Date().toISOString() })
+          .eq("pin", room.pin)
+          .eq("phase", "culture_feedback")
+          .eq("current_play", play)
+          .select("pin"),
+      ) as unknown[];
+      return { ok: true, changed: moved.length > 0 };
+    }
+
     return { ok: true, changed: false };
   });
 }
 
-// Host only: from the reveal to the next play, or to the end of the game after the last one.
+// Host only: from the scoreboard to the next play, or to the end of the game after the last one.
 export async function nextPlay(input: Credentials & { play: number }) {
   return guard<{ finished: boolean }>(async () => {
     const creds = parseCredentials(input);
@@ -140,21 +164,20 @@ export async function nextPlay(input: Credentials & { play: number }) {
     if (play === null) return fail("invalid_request");
 
     const db = supabaseAdmin();
-    const ctx = await load(db, creds);
+    const ctx = await loadContext(db, creds);
     if (!ctx) return fail("not_in_room");
     const { room, me } = ctx;
     if (room.host_id !== me.id) return fail("not_host");
-    if (room.phase !== "reveal" || room.current_play !== play) return fail("play_over");
+    if (room.phase !== "scoreboard" || room.current_play !== play) return fail("play_over");
 
-    await writeResults(db, room, play); // the next screen must never miss this play's score
-    const next = afterReveal(play, room.settings);
+    const next = afterScoreboard(play, room.settings);
     const now = new Date().toISOString();
     const patch =
       next.phase === "countdown"
         ? { phase: "countdown", current_play: next.play, phase_started_at: now, play_started_at: null }
         : { phase: "finished", status: "finished", phase_started_at: now };
     const moved = must(
-      await db.from("rooms").update(patch).eq("pin", room.pin).eq("phase", "reveal").eq("current_play", play).select("pin"),
+      await db.from("rooms").update(patch).eq("pin", room.pin).eq("phase", "scoreboard").eq("current_play", play).select("pin"),
     ) as unknown[];
     if (moved.length === 0) return fail("play_over"); // double tap: the first one already moved on
     return { ok: true, finished: next.phase === "finished" };

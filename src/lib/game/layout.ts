@@ -103,6 +103,7 @@ export interface PlannedPlay {
 }
 
 // Background per play: least used first, never the same background twice in a row for a scene when another exists.
+// Slot files still marked "placeholder" (no real image yet) are skipped as soon as the scene has a real one.
 export function planBackgrounds(totalPlays: number, seed: string, backgrounds: readonly Background[]): PlannedPlay[] {
   const rng = createRng(`${seed}#backgrounds`);
   const uses = new Map<string, number>(backgrounds.map((b) => [b.id, 0]));
@@ -111,7 +112,9 @@ export function planBackgrounds(totalPlays: number, seed: string, backgrounds: r
 
   for (let playIdx = 0; playIdx < totalPlays; playIdx++) {
     const scene = sceneForPlay(playIdx);
-    const all = backgrounds.filter((b) => b.scene === scene);
+    const inScene = backgrounds.filter((b) => b.scene === scene);
+    const ready = inScene.filter((b) => !b.placeholder);
+    const all = ready.length > 0 ? ready : inScene;
     if (all.length === 0) throw new LayoutError(`No backgrounds for scene ${scene}`);
     const notLast = all.length > 1 ? all.filter((b) => b.id !== last.get(scene)) : all;
     const fewest = Math.min(...notLast.map((b) => uses.get(b.id) ?? 0));

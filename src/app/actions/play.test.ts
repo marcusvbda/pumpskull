@@ -5,6 +5,7 @@ const state = vi.hoisted(() => ({ db: undefined as unknown as FakeDb }));
 vi.mock("@/lib/supabase/server", () => ({ supabaseAdmin: () => state.db }));
 
 import { DIFFICULTY, PLAY } from "@/lib/game/config";
+import { startCulture, submitAnswer } from "./culture";
 import { advanceTimer, getPlayView, nextPlay, savePlacement, type PlayView } from "./play";
 import { createRoom, joinRoom, startGame, updateSettings } from "./room";
 
@@ -49,6 +50,15 @@ async function toPlaying(who: Who, play = 0) {
   const started = Date.parse(room(who.pin).phase_started_at as string);
   at(started - T0 + 5000);
   expect(await advanceTimer({ ...who, phase: "countdown", play })).toMatchObject({ ok: true, changed: true });
+}
+
+// reveal -> Culture Check (both teams answer) -> feedback -> scoreboard
+async function throughCulture(marigold: Who, pumpkin: Who, play: number) {
+  expect(await startCulture({ ...marigold, play })).toMatchObject({ ok: true });
+  expect(await submitAnswer({ ...marigold, play, option: 0 })).toMatchObject({ ok: true });
+  expect(await submitAnswer({ ...pumpkin, play, option: 1 })).toMatchObject({ ok: true });
+  at(now - T0 + 11_000);
+  expect(await advanceTimer({ ...marigold, phase: "culture_feedback", play })).toMatchObject({ ok: true, changed: true });
 }
 
 async function view(who: Who): Promise<PlayView> {
@@ -111,6 +121,7 @@ describe("getPlayView", () => {
     const { marigold, pumpkin, pin } = await startedGame();
     await toPlaying(marigold);
     await savePlacement({ ...pumpkin, play: 0, items: [], finish: true });
+    await throughCulture(marigold, pumpkin, 0);
     expect(await nextPlay({ ...marigold, play: 0 })).toMatchObject({ ok: true, finished: false });
     expect(room(pin)).toMatchObject({ phase: "countdown", current_play: 1 });
     expect((await view(pumpkin)).role).toBe("describer");
@@ -242,19 +253,22 @@ describe("savePlacement", () => {
 });
 
 describe("nextPlay", () => {
-  it("is host only, and only from the reveal", async () => {
+  it("is host only, and only from the scoreboard", async () => {
     const { marigold, pumpkin, pin } = await startedGame();
     expect(await nextPlay({ ...marigold, play: 0 })).toMatchObject({ error: "play_over" });
     await toPlaying(marigold);
     await savePlacement({ ...pumpkin, play: 0, items: [], finish: true });
+    expect(await nextPlay({ ...marigold, play: 0 })).toMatchObject({ error: "play_over" }); // still the reveal
+    await throughCulture(marigold, pumpkin, 0);
     expect(await nextPlay({ ...pumpkin, play: 0 })).toMatchObject({ error: "not_host" });
-    expect(room(pin).phase).toBe("reveal");
+    expect(room(pin).phase).toBe("scoreboard");
   });
 
   it("cannot skip two plays with a double tap", async () => {
     const { marigold, pumpkin, pin } = await startedGame();
     await toPlaying(marigold);
     await savePlacement({ ...pumpkin, play: 0, items: [], finish: true });
+    await throughCulture(marigold, pumpkin, 0);
     expect(await nextPlay({ ...marigold, play: 0 })).toMatchObject({ ok: true });
     expect(await nextPlay({ ...marigold, play: 0 })).toMatchObject({ ok: false, error: "play_over" });
     expect(room(pin).current_play).toBe(1);
@@ -267,6 +281,7 @@ describe("nextPlay", () => {
       await toPlaying(marigold, play);
       const items = targetsOf(pin, play).map((t) => ({ itemId: t.item_id, x: t.x, y: t.y }));
       expect(await savePlacement({ ...builder, play, items, finish: true })).toMatchObject({ ok: true, ended: true });
+      await throughCulture(marigold, pumpkin, play);
       expect(await nextPlay({ ...marigold, play })).toMatchObject({ ok: true, finished: play === 3 });
     }
     expect(room(pin)).toMatchObject({ phase: "finished", status: "finished" });

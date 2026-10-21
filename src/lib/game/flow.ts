@@ -40,9 +40,23 @@ export function playClosesAt(playStartedAt: string | number, settings: Pick<Time
   return playEndsAt(playStartedAt, settings) + FINISH_GRACE_MS;
 }
 
-export type AfterReveal = { phase: "countdown"; play: number } | { phase: "finished" };
+// Culture Check: the ring runs cultureSeconds; an answer already on its way is still accepted for the grace time.
+export function cultureEndsAt(phaseStartedAt: string | number): number {
+  return ms(phaseStartedAt) + GAME.cultureSeconds * 1000;
+}
 
-export function afterReveal(currentPlay: number, settings: Pick<TimedSettings, "rounds">): AfterReveal {
+export function cultureClosesAt(phaseStartedAt: string | number): number {
+  return cultureEndsAt(phaseStartedAt) + FINISH_GRACE_MS;
+}
+
+export function feedbackEndsAt(phaseStartedAt: string | number): number {
+  return ms(phaseStartedAt) + GAME.cultureFeedbackSeconds * 1000;
+}
+
+export type AfterScoreboard = { phase: "countdown"; play: number } | { phase: "finished" };
+
+// Every play ends reveal -> Culture Check -> feedback -> scoreboard; this is what comes after the scoreboard.
+export function afterScoreboard(currentPlay: number, settings: Pick<TimedSettings, "rounds">): AfterScoreboard {
   return currentPlay + 1 < totalPlays(settings) ? { phase: "countdown", play: currentPlay + 1 } : { phase: "finished" };
 }
 

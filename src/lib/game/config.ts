@@ -29,6 +29,7 @@ export const GAME = {
   roleBannerSeconds: 2,
   cultureSeconds: 20,
   cultureFastSeconds: 8,
+  cultureFeedbackSeconds: 10, // feedback screen, then the scoreboard comes by itself
   correctPoints: 1,
   fastBonus: 0.5,
   builderAutosaveSeconds: 5,
@@ -55,6 +56,8 @@ export const URGENCY = [
   { minLeft: 0, phase: 3, musicRate: 1.25 },
 ] as const;
 export const URGENCY_LAST_SECONDS = { seconds: 5, musicRate: 1.3 } as const;
+export const URGENCY_HURRY_MIN_SECONDS = 15; // the "last 10%" phase never starts later than this many seconds before the end
+export const MUSIC_MAX_RATE = 1.2; // playbackRate limit when there is no separate faster track (spec section 8)
 export const MAX_EFFECT_HZ = 2; // never flash faster than this
 
 // Every scene file is 2048x1280 (docs/ASSETS.md). Height divided by width, used by the distance formula.

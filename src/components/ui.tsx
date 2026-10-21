@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes } from "react";
+import { playSfx } from "@/lib/audio";
 import { DIFFICULTY, type Difficulty } from "@/lib/game/config";
 import { GameImage } from "./GameImage";
 
@@ -12,12 +13,17 @@ const VARIANTS = {
 export function Button({
   variant = "primary",
   className = "",
+  onClick,
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: keyof typeof VARIANTS }) {
   return (
     <button
       type="button"
       {...props}
+      onClick={(event) => {
+        playSfx("click");
+        onClick?.(event);
+      }}
       className={`min-h-12 rounded-2xl border-b-4 px-5 py-2 text-lg font-extrabold transition-transform enabled:active:translate-y-0.5 enabled:active:border-b-2 disabled:cursor-not-allowed disabled:opacity-50 ${VARIANTS[variant]} ${className}`}
     />
   );

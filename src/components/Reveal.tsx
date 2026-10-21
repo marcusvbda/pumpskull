@@ -1,10 +1,10 @@
 "use client";
 
 // Screen 9: the target next to the build, a numbered badge per item (colour plus icon, never colour alone),
-// the play score and the shared Spirit Meter. Next is for the host.
+// the play score and the shared Spirit Meter. The host moves on to the Culture Check.
 
 import { useState } from "react";
-import { nextPlay } from "@/app/actions/play";
+import { startCulture } from "@/app/actions/culture";
 import { findItem } from "@/data/items";
 import { PLAY } from "@/lib/game/config";
 import { revealColour, type RevealColour } from "@/lib/game/scoring";
@@ -67,13 +67,12 @@ interface Props {
 export function Reveal({ identity, isHost, play, plays, scene, backgroundId, describerTeam, result, spiritMeter, spiritMax, refresh }: Props) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const last = play + 1 >= plays;
 
   async function next() {
     setBusy(true);
     setError(null);
     try {
-      const res = await nextPlay({ ...identity, play });
+      const res = await startCulture({ ...identity, play });
       if (!res.ok && res.error !== "play_over") setError(res.message);
       await refresh();
     } catch {
@@ -156,7 +155,7 @@ export function Reveal({ identity, isHost, play, plays, scene, backgroundId, des
         <ErrorText>{error}</ErrorText>
         {isHost ? (
           <Button onClick={next} disabled={busy} className="w-full text-xl">
-            {last ? "Finish game" : "Next play"}
+            Culture Check
           </Button>
         ) : (
           <p className="rounded-2xl bg-indigo-900/70 p-3 text-center font-bold text-indigo-100">Waiting for the host…</p>

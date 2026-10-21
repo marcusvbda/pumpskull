@@ -1,105 +1,97 @@
 {
   "id": "house-3",
   "scene": "house",
-  "placeholder": true,
   "slots": [
     {
       "id": "s01",
-      "x": 0.08,
-      "y": 0.22,
-      "type": "wall",
-      "scale": 0.1
+      "x": 0.5,
+      "y": 0.55,
+      "type": "door",
+      "scale": 0.085
     },
     {
       "id": "s02",
-      "x": 0.3,
-      "y": 0.22,
-      "type": "wall",
-      "scale": 0.1
+      "x": 0.5,
+      "y": 0.7,
+      "type": "door",
+      "scale": 0.085
     },
     {
       "id": "s03",
-      "x": 0.92,
-      "y": 0.22,
-      "type": "wall",
-      "scale": 0.1
+      "x": 0.328,
+      "y": 0.52,
+      "type": "window",
+      "scale": 0.08
     },
     {
       "id": "s04",
-      "x": 0.55,
-      "y": 0.25,
+      "x": 0.673,
+      "y": 0.52,
       "type": "window",
       "scale": 0.08
     },
     {
       "id": "s05",
-      "x": 0.75,
-      "y": 0.25,
-      "type": "window",
-      "scale": 0.08
+      "x": 0.27,
+      "y": 0.74,
+      "type": "wall",
+      "scale": 0.09
     },
     {
       "id": "s06",
-      "x": 0.2,
-      "y": 0.5,
-      "type": "window",
+      "x": 0.39,
+      "y": 0.74,
+      "type": "wall",
       "scale": 0.09
     },
     {
       "id": "s07",
-      "x": 0.8,
-      "y": 0.5,
-      "type": "window",
+      "x": 0.63,
+      "y": 0.74,
+      "type": "wall",
       "scale": 0.09
     },
     {
       "id": "s08",
-      "x": 0.5,
-      "y": 0.45,
-      "type": "door",
-      "scale": 0.1
+      "x": 0.24,
+      "y": 0.92,
+      "type": "floor",
+      "scale": 0.11
     },
     {
       "id": "s09",
-      "x": 0.5,
-      "y": 0.65,
-      "type": "door",
-      "scale": 0.1
+      "x": 0.344,
+      "y": 0.92,
+      "type": "floor",
+      "scale": 0.11
     },
     {
       "id": "s10",
-      "x": 0.1,
-      "y": 0.93,
+      "x": 0.448,
+      "y": 0.92,
       "type": "floor",
-      "scale": 0.13
+      "scale": 0.11
     },
     {
       "id": "s11",
-      "x": 0.28,
-      "y": 0.93,
+      "x": 0.552,
+      "y": 0.92,
       "type": "floor",
-      "scale": 0.13
+      "scale": 0.11
     },
     {
       "id": "s12",
-      "x": 0.46,
-      "y": 0.93,
+      "x": 0.656,
+      "y": 0.92,
       "type": "floor",
-      "scale": 0.13
+      "scale": 0.11
     },
     {
       "id": "s13",
-      "x": 0.64,
-      "y": 0.93,
+      "x": 0.76,
+      "y": 0.92,
       "type": "floor",
-      "scale": 0.13
-    },
-    {
-      "id": "s14",
-      "x": 0.82,
-      "y": 0.93,
-      "type": "floor",
-      "scale": 0.13
+      "scale": 0.11
     }
   ]
 }

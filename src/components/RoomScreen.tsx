@@ -6,6 +6,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { setMusicMode, type MusicMode } from "@/lib/audio";
 import { heartbeat } from "@/app/actions/room";
 import { GAME } from "@/lib/game/config";
 import { freeTeam, parsePin } from "@/lib/game/room";
@@ -84,6 +85,14 @@ function Room({ pin }: { pin: string }) {
   const identity: Identity | null = stored && stored.pin === pin ? stored : null;
   const me = identity && snapshot ? snapshot.players.find((p) => p.id === identity.playerId) : undefined;
   const removed = Boolean(identity && snapshot && !me);
+
+  // Music: calm in the lobby and at the end, the game track during the game. Silent until the first tap.
+  const phase = snapshot?.room.phase;
+  const music: MusicMode = !me ? "off" : phase === "lobby" || phase === "finished" ? "lobby" : "game";
+  useEffect(() => {
+    setMusicMode(music);
+    return () => setMusicMode("off");
+  }, [music]);
 
   // Heartbeat while in the room: every 30 s, and right when the phone wakes up.
   const playerId = me?.id;

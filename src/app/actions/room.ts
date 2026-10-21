@@ -11,6 +11,7 @@ import { DEFAULT_SETTINGS, canStart, fail, freeTeam, nextHost, parsePin, parseSe
 import type { Team } from "@/lib/game/types";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import type { PlayerRow, RoomSettings } from "@/lib/supabase/types";
+import { resetGame } from "./cultureData";
 import { createPlays, deletePlays } from "./playData";
 import {
   authenticate,
@@ -149,6 +150,42 @@ export async function startGame(input: Credentials) {
       await db.from("rooms").update({ status: "lobby", phase: "lobby", phase_started_at: new Date().toISOString() }).eq("pin", creds.pin);
       throw error;
     }
+    return { ok: true };
+  });
+}
+
+// Host only, after the last play: the same two phones go back to the lobby for another game. Scores, plays
+// and the Spirit Meter start from zero; the questions already asked stay marked, so they do not come back.
+export async function playAgain(input: Credentials) {
+  return guard<object>(async () => {
+    const creds = parseCredentials(input);
+    if (!creds) return fail("invalid_request");
+
+    const db = supabaseAdmin();
+    const player = await authenticate(db, creds);
+    if (!player) return fail("not_in_room");
+    const room = await getRoom(db, creds.pin);
+    if (!room) return fail("unknown_pin");
+    if (room.host_id !== player.id) return fail("not_host");
+    if (room.phase !== "finished") return fail("not_allowed");
+
+    await resetGame(db, creds.pin);
+    const moved = must(
+      await db
+        .from("rooms")
+        .update({
+          status: "lobby",
+          phase: "lobby",
+          current_play: 0,
+          spirit_meter: 0,
+          play_started_at: null,
+          phase_started_at: new Date().toISOString(),
+        })
+        .eq("pin", creds.pin)
+        .eq("phase", "finished")
+        .select("pin"),
+    ) as unknown[];
+    if (moved.length === 0) return fail("not_allowed"); // double tap: already back in the lobby
     return { ok: true };
   });
 }

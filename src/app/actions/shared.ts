@@ -69,3 +69,11 @@ export async function authenticate(db: Db, creds: Credentials): Promise<PlayerRo
   ) as PlayerRow | null;
   return player;
 }
+
+// Token, room and phone in one go. Null when any of them is wrong.
+export async function loadContext(db: Db, creds: Credentials): Promise<{ room: RoomRow; me: PlayerRow } | null> {
+  const me = await authenticate(db, creds);
+  if (!me) return null;
+  const room = await getRoom(db, creds.pin);
+  return room ? { room, me } : null;
+}

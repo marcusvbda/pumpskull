@@ -8,6 +8,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { savePlacement } from "@/app/actions/play";
 import { findItem } from "@/data/items";
+import { playSfx } from "@/lib/audio";
 import { DIFFICULTY, GAME, PLAY, type Difficulty } from "@/lib/game/config";
 import type { TrayEntry } from "@/lib/game/flow";
 import type { PlacedItem } from "@/lib/game/scoring";
@@ -179,6 +180,7 @@ export function Builder({ identity, play, scene, backgroundId, tray, initialPlac
         return;
       }
       const key = d.key ?? nextKey.current++;
+      if (inside) playSfx("drop");
       setPlaced((list) => {
         const rest = list.filter((p) => p.key !== key);
         return inside ? [...rest, { key, itemId: d.itemId, x, y }] : rest; // off the scene: back to the tray

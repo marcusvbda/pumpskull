@@ -99,13 +99,28 @@ describe("planBackgrounds", () => {
 
   it("uses every background before reusing one", () => {
     const plan = planBackgrounds(4, "s", BACKGROUNDS); // 2 altar plays, 2 house plays
-    const plan8 = planBackgrounds(8, "s", BACKGROUNDS); // 4 of each scene, 3 backgrounds each
+    const plan8 = planBackgrounds(8, "s", BACKGROUNDS); // 4 of each scene, 10 backgrounds each
     expect(new Set(plan.map((p) => p.backgroundId)).size).toBe(4);
-    expect(new Set(plan8.filter((p) => p.scene === "altar").map((p) => p.backgroundId)).size).toBe(3);
+    expect(new Set(plan8.filter((p) => p.scene === "altar").map((p) => p.backgroundId)).size).toBe(4);
   });
 
   it("is deterministic for a seed", () => {
     expect(planBackgrounds(8, "same", BACKGROUNDS)).toEqual(planBackgrounds(8, "same", BACKGROUNDS));
+  });
+
+  it("skips slot files still marked as placeholder once the scene has a real one", () => {
+    const mixed = BACKGROUNDS.map((b) => ({ ...b, placeholder: !["altar-2", "altar-5", "house-9"].includes(b.id) }));
+    for (let n = 0; n < 20; n++) {
+      for (const p of planBackgrounds(8, `m${n}`, mixed)) {
+        expect(["altar-2", "altar-5", "house-9"]).toContain(p.backgroundId);
+      }
+    }
+  });
+
+  it("uses the placeholder files when no background of the scene is ready yet", () => {
+    const none = BACKGROUNDS.map((b) => ({ ...b, placeholder: true }));
+    const ids = new Set(planBackgrounds(8, "x", none).map((p) => p.backgroundId));
+    expect(ids.size).toBe(8);
   });
 
   it("works with a single background per scene", () => {
