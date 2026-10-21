@@ -14,6 +14,7 @@ import { SpiritMeter } from "./Reveal";
 import { TeamTotals } from "./Scoreboard";
 import { TEAM_META } from "./teams";
 import { Button, ErrorText, Shell } from "./ui";
+import { TeamIcon } from "./UiIcon";
 
 interface Props {
   identity: Identity;
@@ -55,7 +56,7 @@ export function Final({ identity, isHost, team, scores, spiritMeter, spiritMax, 
     <Shell>
       <header className={`flex items-center gap-3 rounded-3xl border-4 p-2 text-left ${winner ? TEAM_META[winner].panel : "border-teal-300/70 bg-teal-300/10"}`}>
         <span aria-hidden className="text-4xl leading-none">
-          {winner ? TEAM_META[winner].icon : "🤝"}
+          {winner ? <TeamIcon team={winner} className="h-14 w-14" /> : "🤝"}
         </span>
         <div className="min-w-0">
         <h1 className="text-xl font-black text-amber-400">{winner ? `${TEAM_META[winner].name} wins!` : "It's a draw!"}</h1>
@@ -96,13 +97,13 @@ export function Final({ identity, isHost, team, scores, spiritMeter, spiritMax, 
           <div className="grid grid-cols-2 gap-1.5 text-sm leading-snug [@media(max-height:620px)]:text-xs">
             <p className={`rounded-xl border p-1.5 ${TEAM_META[1].panel}`}>
               <span className={`block text-xs font-black ${TEAM_META[1].title}`}>
-                <span aria-hidden>{TEAM_META[1].icon}</span> Day of the Dead
+                <TeamIcon team={1} /> Day of the Dead
               </span>
               {card.dod}
             </p>
             <p className={`rounded-xl border p-1.5 ${TEAM_META[2].panel}`}>
               <span className={`block text-xs font-black ${TEAM_META[2].title}`}>
-                <span aria-hidden>{TEAM_META[2].icon}</span> Halloween
+                <TeamIcon team={2} /> Halloween
               </span>
               {card.halloween}
             </p>

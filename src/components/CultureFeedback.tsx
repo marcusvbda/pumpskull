@@ -11,6 +11,7 @@ import type { Team } from "@/lib/game/types";
 import type { CultureAnswer, QuestionPublicRow, QuestionRevealRow } from "@/lib/supabase/types";
 import { TEAM_META } from "./teams";
 import { Shell } from "./ui";
+import { TeamIcon } from "./UiIcon";
 
 const SHAPES = ["▲", "◆", "●", "■"];
 
@@ -21,7 +22,7 @@ function TeamResult({ answer, mine, correct }: { answer: CultureAnswer; mine: bo
   return (
     <li className={`flex flex-col gap-0.5 rounded-2xl border-2 p-2 ${meta.panel} ${mine ? "ring-2 ring-white" : ""}`}>
       <span className={`text-sm font-black ${meta.title}`}>
-        <span aria-hidden>{meta.icon}</span> {meta.name}
+        <TeamIcon team={answer.team} /> {meta.name}
         {mine ? " (you)" : ""}
       </span>
       <span className={`text-lg font-black ${right ? "text-green-300" : "text-red-300"}`}>

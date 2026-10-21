@@ -4,13 +4,13 @@
 
 import { useState } from "react";
 import { updateSettings } from "@/app/actions/room";
-import { DIFFICULTY, GAME, type Difficulty } from "@/lib/game/config";
+import { DIFFICULTY, GAME } from "@/lib/game/config";
 import { DIFFICULTIES } from "@/lib/game/room";
 import type { Identity } from "@/lib/identity";
 import type { RoomRow, RoomSettings } from "@/lib/supabase/types";
 import { ErrorText, Mascot } from "./ui";
+import { CandyIcon } from "./UiIcon";
 
-const CANDY: Record<Difficulty, string> = { easy: "🍫", medium: "🍬", hard: "🌶️" };
 
 interface Props {
   room: RoomRow;
@@ -83,7 +83,7 @@ export function SettingsPanel({ room, isHost, identity, refresh }: Props) {
         <div className="grid grid-cols-3 gap-2">
           {DIFFICULTIES.map((d) => (
             <Choice key={d} selected={settings.difficulty === d} disabled={locked} onClick={() => change({ difficulty: d })} className="flex flex-col items-center gap-0.5 leading-tight">
-              <span aria-hidden className="text-xl leading-none">{CANDY[d]}</span>
+              <CandyIcon level={d} className="h-9 w-9" />
               <span className="text-xs">{DIFFICULTY[d].label}</span>
             </Choice>
           ))}

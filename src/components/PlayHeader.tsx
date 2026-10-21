@@ -1,6 +1,7 @@
 import type { Team } from "@/lib/game/types";
 import { TEAM_META } from "./teams";
 import { useCurrentUrgency } from "./UrgencyScope";
+import { TeamIcon } from "./UiIcon";
 
 export function formatClock(ms: number): string {
   const total = Math.max(0, Math.ceil(ms / 1000));
@@ -20,7 +21,7 @@ export function PlayHeader({ team, role, leftMs, play, plays }: { team: Team; ro
     <header className="flex items-center justify-between gap-2">
       <div className="flex min-w-0 flex-col">
         <span className={`truncate text-sm font-black ${meta.title}`}>
-          <span aria-hidden>{meta.icon}</span> {meta.name}
+          <TeamIcon team={team} /> {meta.name}
         </span>
         <span className="text-xs font-bold text-indigo-200">
           Play {play + 1} of {plays} · {role === "describer" ? "You describe" : "You build"}

@@ -19,6 +19,7 @@ import { GameScreen } from "./GameScreen";
 import { Lobby } from "./Lobby";
 import { TEAM_META } from "./teams";
 import { Button, ErrorText, Shell } from "./ui";
+import { TeamIcon } from "./UiIcon";
 
 function Notice({ title, children }: { title: string; children?: React.ReactNode }) {
   return (
@@ -55,7 +56,7 @@ function JoinCard({ pin, team, onBack }: { pin: string; team: Team; onBack: () =
         <span className="text-sm font-bold text-indigo-200">Room {pin}</span>
         <h1 className="text-3xl font-black text-amber-400">Join the game</h1>
         <div className={`flex w-full flex-col items-center gap-1 rounded-2xl border-2 p-4 ${meta.panel}`}>
-          <span aria-hidden className="text-5xl">{meta.icon}</span>
+          <TeamIcon team={team} className="h-16 w-16" />
           <span className={`text-2xl font-black ${meta.title}`}>{meta.name}</span>
           <span className="text-sm text-indigo-100">This phone will play for {meta.name}.</span>
         </div>

@@ -13,6 +13,7 @@ import type { PlayResultRow } from "@/lib/supabase/types";
 import { SceneItem, SceneView } from "./SceneView";
 import { TEAM_META } from "./teams";
 import { Button, ErrorText, Shell } from "./ui";
+import { TeamIcon } from "./UiIcon";
 
 const BADGE: Record<RevealColour, { className: string; icon: string; word: string }> = {
   green: { className: "bg-green-500 text-indigo-950", icon: "✓", word: "spot on" },
@@ -100,7 +101,7 @@ export function Reveal({ identity, isHost, play, plays, scene, backgroundId, des
         </p>
         <h1 className="text-2xl font-black text-amber-400">How close was it?</h1>
         <p className="text-sm text-indigo-100">
-          {TEAM_META[describerTeam].icon} {TEAM_META[describerTeam].name} described, {TEAM_META[builderTeam].icon} {TEAM_META[builderTeam].name} built.
+          <TeamIcon team={describerTeam} /> {TEAM_META[describerTeam].name} described, <TeamIcon team={builderTeam} /> {TEAM_META[builderTeam].name} built.
         </p>
       </header>
 

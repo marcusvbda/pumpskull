@@ -10,6 +10,7 @@ import type { TeamScoreRow } from "@/lib/supabase/types";
 import { SpiritMeter } from "./Reveal";
 import { TEAM_META } from "./teams";
 import { Button, ErrorText, Shell } from "./ui";
+import { TeamIcon } from "./UiIcon";
 
 export function TeamTotals({ scores, myTeam, compact = false }: { scores: TeamScoreRow[]; myTeam: Team; compact?: boolean }) {
   return (
@@ -21,7 +22,7 @@ export function TeamTotals({ scores, myTeam, compact = false }: { scores: TeamSc
           <li key={team} className={`flex flex-col items-center rounded-2xl border-2 text-center ${compact ? "gap-0 p-1.5" : "gap-1 p-3"} ${meta.panel} ${team === myTeam ? "ring-2 ring-white" : ""}`}>
             <span className={`flex items-center gap-1.5 text-sm font-black ${meta.title}`}>
               <span aria-hidden className={compact ? "text-xl" : "text-4xl"}>
-                {meta.icon}
+                <TeamIcon team={team} className={compact ? "h-6 w-6" : "h-12 w-12"} />
               </span>
               {meta.name}
             </span>

@@ -1,6 +1,16 @@
 # Pumpskull — Asset checklist
 
-**Status (21 Oct 2026): every file below already exists as a basic generated version** (flat vector images, synthesised audio), so the game is fully playable. To use your own art or sound, just replace the file with the same name and extension. For the 20 scene backgrounds also re-mark the slots in `/dev/slots` (npm run dev), because slots follow the drawn surfaces. Not generated, because the code does not read them: `public/ui/*`, `public/brand/favicon.png` (the app icon is `src/app/icon.png`) and `public/items/decoys/skull.png`.
+**Status (21 Oct 2026): every file below already exists as a basic generated version** (flat vector images, synthesised audio), so the game is fully playable. To use your own art or sound, just replace the file with the same name and extension. For the 20 scene backgrounds also re-mark the slots in `/dev/slots` (npm run dev), because slots follow the drawn surfaces. Not generated: `public/items/decoys/skull.png` (the code does not read it).
+
+**Generated art and audio (21 Oct 2026):** everything below is drawn or synthesised by scripts in `scripts/`, so it can be tuned and rebuilt. Replace any file with your own and keep the name.
+
+| What | Command | Notes |
+| --- | --- | --- |
+| 20 scene backgrounds | `node scripts/scenes/generate.mjs` | Built from `src/data/slots/*.json`, so the slots always match. Per-scene colours live in `ALTAR_STYLES` / `HOUSE_STYLES`. Re-mark slots in `/dev/slots` only if you swap in your own art. |
+| 20 item sprites | `node scripts/scenes/generate-items.mjs` | Standing items rest on y = 1008, wall items are centred, as in `src/data/items.ts`. |
+| UI icons, app icon, favicon | `node scripts/scenes/generate-ui.mjs` | Candies and team badges are used by the lobby, settings and score screens (`UiIcon`); the emoji show if a file is missing. |
+| Music and sound effects | `node scripts/audio/generate.mjs` | Needs `ffmpeg`. `music-hurry` is the game track at 1.2x tempo, same key. Loops are seamless. |
+| Contact sheet / item preview | `scripts/scenes/sheet.mjs`, `scripts/scenes/preview.mjs` | Review helpers, not part of the game. |
 
 Everything here is supplied by Vinicius. The game runs with placeholders until each file exists, so files can arrive in any order, but the **backgrounds and item sprites block the most work** (slot marking, real layouts).
 

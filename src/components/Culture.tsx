@@ -12,6 +12,7 @@ import type { Identity } from "@/lib/identity";
 import type { QuestionPublicRow } from "@/lib/supabase/types";
 import { TEAM_META } from "./teams";
 import { ErrorText, Shell } from "./ui";
+import { TeamIcon } from "./UiIcon";
 
 // Colour is never the only signal: every answer also has its own shape.
 const ANSWERS = [
@@ -103,7 +104,7 @@ export function Culture({ identity, team, play, plays, question, startedAt, now 
       <header className="flex items-center justify-between gap-2">
         <div className="flex min-w-0 flex-col">
           <span className={`truncate text-sm font-black ${meta.title}`}>
-            <span aria-hidden>{meta.icon}</span> {meta.name}
+            <TeamIcon team={team} /> {meta.name}
           </span>
           <span className="text-xs font-bold text-indigo-200">
             Culture Check · Play {play + 1} of {plays}

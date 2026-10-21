@@ -12,6 +12,7 @@ import type { PlayerRow, RoomSnapshot } from "@/lib/supabase/types";
 import { SettingsPanel } from "./SettingsPanel";
 import { TEAM_META } from "./teams";
 import { Button, ErrorText, Shell } from "./ui";
+import { TeamIcon } from "./UiIcon";
 
 interface Props {
   snapshot: RoomSnapshot;
@@ -31,7 +32,7 @@ function TeamCard({ team, phone, hostId, myId }: { team: Team; phone: PlayerRow 
       className={`flex min-w-0 flex-col items-center gap-1 rounded-2xl border-2 p-3 text-center ${meta.panel} ${phone ? "" : "border-dashed opacity-80"}`}
     >
       <span aria-hidden className="text-3xl leading-none">
-        {meta.icon}
+        <TeamIcon team={team} className="h-12 w-12" />
       </span>
       <h2 className={`text-base font-black ${meta.title}`}>{meta.name}</h2>
       <span className={`rounded-full px-2 py-0.5 text-sm font-extrabold ${phone ? meta.badge : "bg-indigo-950/70 text-indigo-200"}`}>

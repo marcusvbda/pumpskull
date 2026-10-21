@@ -79,7 +79,7 @@ body {
   max-width: 42rem;
   height: auto;
   transform: translateX(-50%);
-  opacity: 0.9;
+  opacity: 0.5;
   user-select: none;
   mask-image: linear-gradient(to top, #000 80%, transparent);
   -webkit-mask-image: linear-gradient(to top, #000 80%, transparent);

@@ -4,6 +4,7 @@ import { GAME } from "@/lib/game/config";
 import type { Team } from "@/lib/game/types";
 import { TEAM_META } from "./teams";
 import { Shell } from "./ui";
+import { TeamIcon } from "./UiIcon";
 
 export function Countdown({ leftMs, myTeam, describing, play, plays }: { leftMs: number; myTeam: Team; describing: boolean; play: number; plays: number }) {
   const bannerMs = GAME.roleBannerSeconds * 1000;
@@ -28,7 +29,7 @@ export function Countdown({ leftMs, myTeam, describing, play, plays }: { leftMs:
             </span>
             <span className="text-4xl font-black text-white">{describing ? "Your team describes" : "Your team builds"}</span>
             <span className={`text-lg font-bold ${meta.title}`}>
-              <span aria-hidden>{meta.icon}</span> {meta.name}
+              <TeamIcon team={myTeam} /> {meta.name}
             </span>
             <span className="text-base text-indigo-100">
               {describing ? "Only your team sees the picture. Describe it in English!" : "Listen to the other team and rebuild the scene."}
