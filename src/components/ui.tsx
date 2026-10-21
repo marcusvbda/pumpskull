@@ -29,27 +29,34 @@ export function Button({
   );
 }
 
-const FLAGS = ["bg-pink-500", "bg-teal-400", "bg-amber-400", "bg-purple-500", "bg-orange-500", "bg-sky-400"];
-
-// Papel picado banner (decoration only).
-export function PapelPicado() {
+// Hanging garland at the top of every screen (decoration only; renders nothing if the file is missing).
+// One garland across the top, shown whole at its own proportions (never tiled or cropped). Hidden on very short screens.
+export function Garland() {
   return (
-    <div aria-hidden className="flex w-full">
-      {Array.from({ length: 12 }, (_, i) => (
-        <div
-          key={i}
-          className={`h-7 flex-1 ${FLAGS[i % FLAGS.length]} [clip-path:polygon(0_0,100%_0,100%_100%,75%_75%,50%_100%,25%_75%,0_100%)]`}
-        />
-      ))}
-    </div>
+    // eslint-disable-next-line @next/next/no-img-element -- decoration, a missing file simply shows nothing
+    <img
+      src="/brand/banner.png"
+      alt=""
+      aria-hidden
+      draggable={false}
+      className="pointer-events-none mx-auto block h-auto w-full max-w-2xl shrink-0 select-none [@media(max-height:620px)]:hidden"
+    />
   );
 }
 
-export function Shell({ children }: { children: React.ReactNode }) {
+// `center`: short screens sit in the middle of the whole screen. The bottom padding equals the garland height, so the
+// middle of the content is the middle of the viewport. Dense screens leave it off and use every pixel.
+export function Shell({ children, center = false }: { children: React.ReactNode; center?: boolean }) {
   return (
-    <div className="flex min-h-dvh flex-col">
-      <PapelPicado />
-      <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-4 px-4 pt-4 pb-6">{children}</main>
+    <div className="flex h-dvh flex-col overflow-hidden">
+      <Garland />
+      <main
+        className={`mx-auto flex min-h-0 w-full max-w-md flex-1 flex-col gap-2 px-4 pt-1 pb-2 ${
+          center ? "justify-center pb-[calc(min(100vw,42rem)_*_640_/_2130)] [@media(max-height:620px)]:pb-2" : ""
+        }`}
+      >
+        {children}
+      </main>
     </div>
   );
 }
@@ -61,7 +68,7 @@ export function Logo({ size = "lg" }: { size?: "sm" | "lg" }) {
       src="/brand/logo.png"
       label="PUMPSKULL"
       variant="scene"
-      className={big ? "mx-auto h-28 w-full max-w-72" : "h-10 w-40"}
+      className={big ? "mx-auto aspect-[1950/800] w-full max-w-80" : "aspect-[1950/800] h-12"}
       style={{ fontSize: big ? 32 : 18, fontWeight: 900, letterSpacing: "0.1em", color: "#fbbf24" }}
     />
   );

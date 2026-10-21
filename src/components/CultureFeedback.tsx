@@ -19,7 +19,7 @@ function TeamResult({ answer, mine, correct }: { answer: CultureAnswer; mine: bo
   const right = answer.option === correct;
   const verdict = answer.option === null ? { icon: "…", text: "No answer" } : right ? { icon: "✓", text: "Correct!" } : { icon: "✗", text: "Not quite" };
   return (
-    <li className={`flex flex-col gap-1 rounded-2xl border-2 p-3 ${meta.panel} ${mine ? "ring-2 ring-white" : ""}`}>
+    <li className={`flex flex-col gap-0.5 rounded-2xl border-2 p-2 ${meta.panel} ${mine ? "ring-2 ring-white" : ""}`}>
       <span className={`text-sm font-black ${meta.title}`}>
         <span aria-hidden>{meta.icon}</span> {meta.name}
         {mine ? " (you)" : ""}
@@ -55,8 +55,8 @@ export function CultureFeedback({ team, question, reveal, phaseStartedAt, now }:
 
   if (!question || !reveal) {
     return (
-      <Shell>
-        <p className="pt-16 text-center text-xl font-bold text-indigo-200">Checking the answers…</p>
+      <Shell center>
+        <p className="text-center text-xl font-bold text-indigo-200">Checking the answers…</p>
       </Shell>
     );
   }
@@ -65,9 +65,9 @@ export function CultureFeedback({ team, question, reveal, phaseStartedAt, now }:
 
   return (
     <Shell>
-      <h1 className="text-center text-3xl font-black text-amber-400">The answer</h1>
-      <p className="rounded-2xl bg-indigo-900/70 p-3 text-center text-lg font-black">{question.question}</p>
-      <p className="flex items-center gap-3 rounded-2xl border-b-4 border-green-800 bg-green-500 px-4 py-3 text-lg font-extrabold text-indigo-950">
+      <h1 className="text-center text-2xl font-black text-amber-400">The answer</h1>
+      <p className="rounded-2xl bg-indigo-900/70 p-2 text-center text-base font-black">{question.question}</p>
+      <p className="flex items-center gap-3 rounded-2xl border-b-4 border-green-800 bg-green-500 px-4 py-2 text-lg font-extrabold text-indigo-950">
         <span aria-hidden className="text-2xl">
           {SHAPES[reveal.correct]}
         </span>
@@ -75,18 +75,18 @@ export function CultureFeedback({ team, question, reveal, phaseStartedAt, now }:
         <span aria-hidden>✓</span>
       </p>
 
-      <ul className="grid grid-cols-2 gap-2.5">
+      <ul className="grid grid-cols-2 gap-2">
         {order.map((a) => (
           <TeamResult key={a.team} answer={a} mine={a.team === team} correct={reveal.correct} />
         ))}
       </ul>
 
-      <section className="rounded-2xl bg-indigo-900/70 p-3">
+      <section className="min-h-0 rounded-2xl bg-indigo-900/70 p-2">
         <h2 className="text-sm font-black text-teal-300">Did you know?</h2>
-        <p className="text-base text-indigo-50">{reveal.fact}</p>
+        <p className="text-sm text-indigo-50">{reveal.fact}</p>
       </section>
 
-      <p className="mt-auto text-center text-sm font-bold text-indigo-200">Scoreboard in {leftSeconds} s…</p>
+      <p className="text-center text-sm font-bold text-indigo-200">Scoreboard in {leftSeconds} s…</p>
     </Shell>
   );
 }

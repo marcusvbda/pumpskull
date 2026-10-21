@@ -33,8 +33,8 @@ interface Props {
 
 function Loading({ text }: { text: string }) {
   return (
-    <Shell>
-      <p className="pt-16 text-center text-xl font-bold text-indigo-200">{text}</p>
+    <Shell center>
+      <p className="text-center text-xl font-bold text-indigo-200">{text}</p>
     </Shell>
   );
 }

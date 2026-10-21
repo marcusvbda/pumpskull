@@ -207,8 +207,6 @@ export function Builder({ identity, play, scene, backgroundId, tray, initialPlac
     <Shell>
       <PlayHeader team={team} role="builder" leftMs={leftMs} play={play} plays={plays} />
 
-      <p className="text-center text-sm font-bold text-indigo-200">Listen to the other team and drag the items into the scene.</p>
-
       <SceneView scene={scene} backgroundId={backgroundId} sceneRef={sceneRef} className="touch-none border-4 border-teal-400">
         {placed.map((p) => (
           <SceneItem
@@ -224,7 +222,7 @@ export function Builder({ identity, play, scene, backgroundId, tray, initialPlac
         ))}
       </SceneView>
 
-      <section aria-label="Items" className="grid gap-2" style={{ gridTemplateColumns: `repeat(${level.trayColumns}, minmax(0, 1fr))` }}>
+      <section aria-label="Items" className="grid min-h-0 flex-1 auto-rows-fr gap-1.5" style={{ gridTemplateColumns: `repeat(${level.trayColumns}, minmax(0, 1fr))` }}>
         {tray.map((entry) => {
           const item = findItem(scene, entry.itemId);
           const left = entry.count - (used.get(entry.itemId) ?? 0);
@@ -236,10 +234,10 @@ export function Builder({ identity, play, scene, backgroundId, tray, initialPlac
               disabled={left <= 0 || timeUp}
               onPointerDown={(e) => startFromTray(e, entry.itemId)}
               aria-label={`${name}, ${left} left`}
-              className="relative flex touch-none flex-col items-center gap-1 rounded-2xl border-2 border-indigo-600 bg-indigo-900/70 p-1.5 select-none [-webkit-touch-callout:none] disabled:opacity-35"
+              className="relative flex min-h-0 touch-none flex-col items-center justify-center gap-0.5 overflow-hidden rounded-xl border-2 border-indigo-600 bg-indigo-900/70 p-1 select-none [-webkit-touch-callout:none] disabled:opacity-35"
             >
-              <GameImage src={item?.sprite ?? ""} label={name} className="aspect-square w-full max-w-16" />
-              {level.showNames && <span className="text-xs leading-tight font-bold">{name}</span>}
+              <GameImage src={item?.sprite ?? ""} label={name} className="min-h-0 w-full flex-1" />
+              {level.showNames && <span className="text-[10px] leading-none font-bold">{name}</span>}
               {entry.count > 1 && (
                 <span className="absolute top-0.5 right-0.5 min-w-6 rounded-full bg-amber-400 px-1 text-sm font-black text-indigo-950">{left}</span>
               )}
@@ -248,12 +246,12 @@ export function Builder({ identity, play, scene, backgroundId, tray, initialPlac
         })}
       </section>
 
-      <div className="mt-auto flex flex-col gap-2">
+      <div className="flex flex-col gap-1">
         <ErrorText>{error}</ErrorText>
         {timeUp ? (
           <p className="rounded-2xl bg-indigo-900/70 p-3 text-center font-bold">Time&apos;s up! Counting the points…</p>
         ) : (
-          <Button onClick={finish} disabled={sending} className="w-full text-xl">
+          <Button onClick={finish} disabled={sending} className="w-full py-1 text-xl">
             {sending ? "Sending…" : confirmFinish ? "Tap again to finish" : "Finish"}
           </Button>
         )}

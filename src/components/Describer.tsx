@@ -43,44 +43,46 @@ export function Describer({ scene, backgroundId, targets, difficulty, team, left
     <Shell>
       <PlayHeader team={team} role="describer" leftMs={leftMs} play={play} plays={plays} />
 
-      <div className="flex flex-col gap-2">
-        <span className="self-start rounded-full bg-pink-500 px-3 py-1 text-sm font-black text-white">
-          <span aria-hidden>👁️</span> Only your team can see this
-        </span>
+      <div className="flex flex-col gap-1.5">
+        <div className="flex items-center justify-between gap-2">
+          <span className="rounded-full bg-pink-500 px-3 py-1 text-xs font-black text-white">
+            <span aria-hidden>👁️</span> Only your team can see this
+          </span>
+          <Button variant="secondary" onClick={() => setZoom(true)} className="min-h-9 shrink-0 px-3 py-0 text-sm">
+            <span aria-hidden>🔍</span> Big
+          </Button>
+        </div>
         <button type="button" onClick={() => setZoom(true)} aria-label="Show the picture bigger" className="block w-full rounded-xl border-4 border-amber-400">
           {picture}
         </button>
-        <Button variant="secondary" onClick={() => setZoom(true)} className="min-h-11 text-base">
-          <span aria-hidden>🔍</span> Big picture (turn the phone)
-        </Button>
       </div>
 
       {easy ? (
-        <>
-          <section className="flex flex-col gap-2">
-            <h2 className="font-bold">Items in the picture</h2>
-            <ul className="flex flex-wrap gap-2">
+        <div className="flex min-h-0 flex-1 flex-col justify-evenly gap-1.5">
+          <section className="flex flex-col gap-1">
+            <h2 className="text-sm font-bold">Items in the picture</h2>
+            <ul className="flex flex-wrap gap-1.5">
               {[...counts].map(([itemId, count]) => (
-                <li key={itemId} className="rounded-full bg-indigo-800 px-3 py-1 text-sm font-bold">
+                <li key={itemId} className="rounded-full bg-indigo-800 px-2.5 py-0.5 text-xs font-bold">
                   {findItem(scene, itemId)?.name ?? itemId}
                   {count > 1 && <span className="ml-1 rounded-full bg-amber-400 px-1.5 text-indigo-950">×{count}</span>}
                 </li>
               ))}
             </ul>
           </section>
-          <section className="flex flex-col gap-2">
-            <h2 className="font-bold">Try saying</h2>
-            <ul className="flex flex-wrap gap-2">
+          <section className="flex flex-col gap-1">
+            <h2 className="text-sm font-bold">Try saying</h2>
+            <ul className="flex flex-wrap gap-1.5">
               {PHRASES.map((p) => (
-                <li key={p} className="rounded-full border-2 border-teal-400 px-3 py-1 text-sm font-bold text-teal-200">
+                <li key={p} className="rounded-full border-2 border-teal-400 px-2.5 py-0 text-xs font-bold text-teal-200">
                   “{p}”
                 </li>
               ))}
             </ul>
           </section>
-        </>
+        </div>
       ) : (
-        <p className="rounded-2xl bg-indigo-900/70 p-3 text-center font-bold text-indigo-100">
+        <p className="rounded-2xl bg-indigo-900/70 p-2 text-center text-sm font-bold text-indigo-100">
           Describe it in English. The other team can&apos;t see this.
         </p>
       )}

@@ -12,8 +12,8 @@ export default function RoomPage(props: PageProps<"/room/[pin]">) {
   return (
     <Suspense
       fallback={
-        <Shell>
-          <p className="pt-16 text-center text-lg font-bold text-indigo-200">Loading…</p>
+        <Shell center>
+          <p className="text-center text-lg font-bold text-indigo-200">Loading…</p>
         </Shell>
       }
     >

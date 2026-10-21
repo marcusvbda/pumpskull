@@ -12,8 +12,8 @@ export function Countdown({ leftMs, myTeam, describing, play, plays }: { leftMs:
   const meta = TEAM_META[myTeam];
 
   return (
-    <Shell>
-      <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
+    <Shell center>
+      <div className="flex flex-col items-center gap-4 text-center">
         <p className="text-lg font-bold text-indigo-200">
           Play {play + 1} of {plays}
         </p>

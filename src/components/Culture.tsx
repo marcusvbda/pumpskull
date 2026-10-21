@@ -27,7 +27,7 @@ export function Ring({ leftMs, totalMs, urgent }: { leftMs: number; totalMs: num
   const fraction = Math.min(1, Math.max(0, leftMs / totalMs));
   const seconds = Math.max(0, Math.ceil(leftMs / 1000));
   return (
-    <div role="timer" aria-label={`${seconds} seconds left`} className="relative h-16 w-16 shrink-0">
+    <div role="timer" aria-label={`${seconds} seconds left`} className="relative h-14 w-14 shrink-0">
       <svg viewBox="0 0 64 64" className="h-full w-full -rotate-90">
         <circle cx="32" cy="32" r={r} fill="none" strokeWidth="7" className="stroke-indigo-950" />
         <circle
@@ -65,8 +65,8 @@ export function Culture({ identity, team, play, plays, question, startedAt, now 
 
   if (!question) {
     return (
-      <Shell>
-        <p className="pt-16 text-center text-xl font-bold text-indigo-200">Getting the question…</p>
+      <Shell center>
+        <p className="text-center text-xl font-bold text-indigo-200">Getting the question…</p>
       </Shell>
     );
   }
@@ -113,16 +113,16 @@ export function Culture({ identity, team, play, plays, question, startedAt, now 
       </header>
 
       {fast && !done && !over ? (
-        <p className="self-center rounded-full bg-amber-400 px-3 py-1 text-sm font-black text-indigo-950">
+        <p className="self-center rounded-full bg-amber-400 px-3 py-0.5 text-sm font-black text-indigo-950">
           <span aria-hidden>⚡</span> +0.5 if you answer fast
         </p>
       ) : (
-        <span className="h-7" aria-hidden />
+        <span className="h-6" aria-hidden />
       )}
 
-      <h1 className="rounded-2xl bg-indigo-900/70 p-4 text-center text-xl leading-snug font-black">{question.question}</h1>
+      <h1 className="rounded-2xl bg-indigo-900/70 p-3 text-center text-lg leading-snug font-black">{question.question}</h1>
 
-      <div className="grid grid-cols-1 gap-2.5">
+      <div className="grid min-h-0 flex-1 grid-cols-1 auto-rows-fr gap-2">
         {question.options.map((text, i) => {
           const a = ANSWERS[i];
           const mine = chosen === i;
@@ -133,7 +133,7 @@ export function Culture({ identity, team, play, plays, question, startedAt, now 
               disabled={done || over}
               onClick={() => answer(i)}
               aria-label={`${a.name}: ${text}`}
-              className={`flex min-h-16 items-center gap-3 rounded-2xl border-b-4 px-4 py-2 text-left text-lg font-extrabold transition-transform enabled:active:translate-y-0.5 enabled:active:border-b-2 disabled:cursor-not-allowed ${a.className} ${
+              className={`flex min-h-12 items-center gap-3 rounded-2xl border-b-4 px-4 py-1 text-left text-base leading-tight font-extrabold transition-transform enabled:active:translate-y-0.5 enabled:active:border-b-2 disabled:cursor-not-allowed ${a.className} ${
                 done && !mine ? "opacity-40" : ""
               } ${mine ? "ring-4 ring-white" : ""}`}
             >
@@ -148,7 +148,7 @@ export function Culture({ identity, team, play, plays, question, startedAt, now 
       </div>
 
       <ErrorText>{error}</ErrorText>
-      <p className="mt-auto rounded-2xl bg-indigo-900/70 p-3 text-center font-bold text-indigo-100">
+      <p className="rounded-2xl bg-indigo-900/70 p-2 text-center text-sm font-bold text-indigo-100">
         {done
           ? "Answer locked in. Waiting for the other team…"
           : over

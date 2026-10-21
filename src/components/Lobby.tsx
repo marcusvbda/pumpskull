@@ -11,7 +11,7 @@ import type { SyncMode } from "@/lib/supabase/subscribeRoom";
 import type { PlayerRow, RoomSnapshot } from "@/lib/supabase/types";
 import { SettingsPanel } from "./SettingsPanel";
 import { TEAM_META } from "./teams";
-import { Button, ErrorText, Logo, Shell } from "./ui";
+import { Button, ErrorText, Shell } from "./ui";
 
 interface Props {
   snapshot: RoomSnapshot;
@@ -30,7 +30,7 @@ function TeamCard({ team, phone, hostId, myId }: { team: Team; phone: PlayerRow 
       aria-label={meta.name}
       className={`flex min-w-0 flex-col items-center gap-1 rounded-2xl border-2 p-3 text-center ${meta.panel} ${phone ? "" : "border-dashed opacity-80"}`}
     >
-      <span aria-hidden className="text-4xl">
+      <span aria-hidden className="text-3xl leading-none">
         {meta.icon}
       </span>
       <h2 className={`text-base font-black ${meta.title}`}>{meta.name}</h2>
@@ -98,20 +98,16 @@ export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Pro
 
   return (
     <Shell>
-      <div className="flex items-center justify-between">
-        <Logo size="sm" />
-        {syncMode === "polling" && <span className="rounded-full bg-amber-500/20 px-2 py-1 text-xs font-bold text-amber-300">Backup sync</span>}
-      </div>
-
-      <section className="flex flex-col items-center gap-1 rounded-2xl border-2 border-indigo-400 bg-indigo-900/70 p-3 text-center">
-        <span className="text-sm font-bold text-indigo-200">Room PIN</span>
-        <span className="text-6xl font-black tracking-[0.2em] text-amber-400" aria-label={`Room PIN ${room.pin.split("").join(" ")}`}>
-          {room.pin}
-        </span>
-        <Button variant="secondary" onClick={share} className="mt-1 min-h-11 text-base">
-          {shared ?? "Share link"}
+      <section className="flex items-center justify-between gap-3 rounded-2xl border-2 border-indigo-400 bg-indigo-900/70 px-3 py-2">
+        <div className="flex min-w-0 flex-col">
+          <span className="text-xs font-bold text-indigo-200">Room PIN{syncMode === "polling" ? " · backup sync" : ""}</span>
+          <span className="text-4xl leading-none font-black tracking-[0.12em] text-amber-400" aria-label={`Room PIN ${room.pin.split("").join(" ")}`}>
+            {room.pin}
+          </span>
+        </div>
+        <Button variant="secondary" onClick={share} className="min-h-11 shrink-0 text-base">
+          {shared ?? "Share"}
         </Button>
-        <span className="max-w-full select-all truncate text-xs text-indigo-300">{link}</span>
       </section>
 
       <div role="tablist" className="grid grid-cols-2 gap-2">
@@ -131,29 +127,31 @@ export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Pro
         ))}
       </div>
 
-      {tab === "teams" ? (
-        <>
-          <div className="grid grid-cols-2 items-stretch gap-2">
-            {([1, 2] as const).map((team) => (
-              <TeamCard key={team} team={team} phone={players.find((p) => p.team === team)} hostId={room.host_id} myId={me.id} />
-            ))}
-          </div>
-          <p className="rounded-2xl bg-indigo-900/70 p-3 text-center text-sm font-bold text-teal-300">
-            One phone per team. Gather your team around your phone!
-          </p>
-        </>
-      ) : (
-        <SettingsPanel room={room} isHost={isHost} identity={identity} refresh={refresh} />
-      )}
+      <div className="flex min-h-0 flex-1 flex-col gap-2">
+        {tab === "teams" ? (
+          <>
+            <div className="grid grid-cols-2 items-stretch gap-2">
+              {([1, 2] as const).map((team) => (
+                <TeamCard key={team} team={team} phone={players.find((p) => p.team === team)} hostId={room.host_id} myId={me.id} />
+              ))}
+            </div>
+            <p className="rounded-2xl bg-indigo-900/70 p-2 text-center text-sm font-bold text-teal-300">
+              One phone per team. Gather your team around your phone!
+            </p>
+          </>
+        ) : (
+          <SettingsPanel room={room} isHost={isHost} identity={identity} refresh={refresh} />
+        )}
+      </div>
 
-      <div className="mt-auto flex flex-col gap-2 pt-2">
+      <div className="flex flex-col gap-1">
         <ErrorText>{error}</ErrorText>
         {isHost ? (
           <>
             <Button onClick={start} disabled={!ready || busy} className="w-full text-xl">
               Start game
             </Button>
-            {!ready && <p className="text-center text-sm text-indigo-200">The other team joins with PIN {room.pin} on their phone.</p>}
+            {!ready && <p className="text-center text-xs text-indigo-200">The other team joins with PIN {room.pin} on their phone.</p>}
           </>
         ) : (
           <p className="rounded-2xl bg-indigo-900/70 p-3 text-center font-bold text-indigo-100">Waiting for the host to start…</p>
@@ -162,15 +160,15 @@ export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Pro
         {confirmLeave ? (
           <div className="flex items-center justify-center gap-2">
             <span className="text-sm font-bold">Leave this room?</span>
-            <Button variant="secondary" onClick={leave} disabled={busy} className="min-h-11 text-base">
+            <Button variant="secondary" onClick={leave} disabled={busy} className="min-h-10 py-1 text-base">
               Yes, leave
             </Button>
-            <Button variant="ghost" onClick={() => setConfirmLeave(false)} className="min-h-11 text-base">
+            <Button variant="ghost" onClick={() => setConfirmLeave(false)} className="min-h-10 py-1 text-base">
               Stay
             </Button>
           </div>
         ) : (
-          <Button variant="ghost" onClick={() => setConfirmLeave(true)} className="min-h-11 text-base">
+          <Button variant="ghost" onClick={() => setConfirmLeave(true)} className="min-h-10 py-0 text-base">
             Leave room
           </Button>
         )}

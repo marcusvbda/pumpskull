@@ -32,7 +32,7 @@ function Choice({ selected, disabled, onClick, children, className = "" }: {
       aria-pressed={selected}
       disabled={disabled}
       onClick={onClick}
-      className={`min-h-12 rounded-2xl border-2 px-2 py-2 text-base font-extrabold ${
+      className={`min-h-11 rounded-2xl border-2 px-2 py-1 text-base font-extrabold ${
         selected ? "border-amber-400 bg-amber-400 text-indigo-950" : "border-indigo-600 bg-indigo-900/70 text-white"
       } ${disabled && !selected ? "opacity-60" : ""} ${className}`}
     >
@@ -63,12 +63,12 @@ export function SettingsPanel({ room, isHost, identity, refresh }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex min-h-0 flex-1 flex-col justify-evenly gap-2">
       {!isHost && <p className="rounded-xl bg-indigo-900/70 p-2 text-center text-sm font-bold text-indigo-100">Only the host phone can change the settings.</p>}
       <ErrorText>{error}</ErrorText>
 
-      <fieldset className="flex flex-col gap-2">
-        <legend className="mb-1 font-bold">Time per play</legend>
+      <fieldset className="flex flex-col gap-1">
+        <legend className="mb-0.5 text-sm font-bold">Time per play</legend>
         <div className="grid grid-cols-4 gap-2">
           {GAME.timeOptionsMinutes.map((m) => (
             <Choice key={m} selected={settings.time_minutes === m} disabled={locked} onClick={() => change({ time_minutes: m })}>
@@ -78,27 +78,27 @@ export function SettingsPanel({ room, isHost, identity, refresh }: Props) {
         </div>
       </fieldset>
 
-      <fieldset className="flex flex-col gap-2">
-        <legend className="mb-1 font-bold">Difficulty</legend>
+      <fieldset className="flex flex-col gap-1">
+        <legend className="mb-0.5 text-sm font-bold">Difficulty</legend>
         <div className="grid grid-cols-3 gap-2">
           {DIFFICULTIES.map((d) => (
             <Choice key={d} selected={settings.difficulty === d} disabled={locked} onClick={() => change({ difficulty: d })} className="flex flex-col items-center gap-0.5 leading-tight">
-              <span aria-hidden className="text-2xl">{CANDY[d]}</span>
-              <span className="text-sm">{DIFFICULTY[d].label}</span>
+              <span aria-hidden className="text-xl leading-none">{CANDY[d]}</span>
+              <span className="text-xs">{DIFFICULTY[d].label}</span>
             </Choice>
           ))}
         </div>
-        <div className="flex items-center gap-3 rounded-2xl bg-indigo-900/70 p-3">
-          <Mascot difficulty={settings.difficulty} size={80} />
-          <p className="text-sm text-indigo-100">
+        <div className="flex items-center gap-2 rounded-2xl bg-indigo-900/70 p-2 [@media(max-height:620px)]:hidden">
+          <Mascot difficulty={settings.difficulty} size={52} />
+          <p className="text-xs text-indigo-100">
             <b>{level.label}</b>: {level.items} items, {level.decoys} {level.decoys === 1 ? "decoy" : "decoys"},{" "}
             {level.showNames ? "item names and “Try saying” hints shown." : "no text help. Describe it in real English!"}
           </p>
         </div>
       </fieldset>
 
-      <fieldset className="flex flex-col gap-2">
-        <legend className="mb-1 font-bold">Rounds</legend>
+      <fieldset className="flex flex-col gap-1">
+        <legend className="mb-0.5 text-sm font-bold">Rounds (2 plays each)</legend>
         <div className="grid grid-cols-2 gap-2">
           {GAME.roundOptions.map((r) => (
             <Choice key={r} selected={settings.rounds === r} disabled={locked} onClick={() => change({ rounds: r })}>
@@ -106,7 +106,6 @@ export function SettingsPanel({ room, isHost, identity, refresh }: Props) {
             </Choice>
           ))}
         </div>
-        <p className="text-sm text-indigo-200">Each round has 2 plays, so {settings.rounds * 2} plays in total.</p>
       </fieldset>
     </div>
   );

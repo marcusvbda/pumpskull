@@ -5,7 +5,6 @@
 
 import { useState } from "react";
 import { startCulture } from "@/app/actions/culture";
-import { findItem } from "@/data/items";
 import { PLAY } from "@/lib/game/config";
 import { revealColour, type RevealColour } from "@/lib/game/scoring";
 import type { Scene, Team } from "@/lib/game/types";
@@ -84,8 +83,8 @@ export function Reveal({ identity, isHost, play, plays, scene, backgroundId, des
 
   if (!result) {
     return (
-      <Shell>
-        <p className="pt-16 text-center text-xl font-bold text-indigo-200">Counting the points…</p>
+      <Shell center>
+        <p className="text-center text-xl font-bold text-indigo-200">Counting the points…</p>
       </Shell>
     );
   }
@@ -99,59 +98,52 @@ export function Reveal({ identity, isHost, play, plays, scene, backgroundId, des
         <p className="text-sm font-bold text-indigo-200">
           Play {play + 1} of {plays}
         </p>
-        <h1 className="text-3xl font-black text-amber-400">How close was it?</h1>
+        <h1 className="text-2xl font-black text-amber-400">How close was it?</h1>
         <p className="text-sm text-indigo-100">
           {TEAM_META[describerTeam].icon} {TEAM_META[describerTeam].name} described, {TEAM_META[builderTeam].icon} {TEAM_META[builderTeam].name} built.
         </p>
       </header>
 
-      <section className="flex flex-col gap-1">
-        <h2 className="text-sm font-bold">Target</h2>
-        <SceneView scene={scene} backgroundId={backgroundId}>
-          {items.map((it, i) => (
-            <SceneItem key={i} scene={scene} itemId={it.item_id} x={it.target.x} y={it.target.y} scale={it.scale}>
-              <Badge n={i + 1} score={it.score} />
-            </SceneItem>
-          ))}
-        </SceneView>
-      </section>
-
-      <section className="flex flex-col gap-1">
-        <h2 className="text-sm font-bold">The build</h2>
-        <SceneView scene={scene} backgroundId={backgroundId}>
-          {items.map((it, i) =>
-            it.placed ? (
-              <SceneItem key={i} scene={scene} itemId={it.item_id} x={it.placed.x} y={it.placed.y} scale={PLAY.builderItemScale}>
+      <div className="grid grid-cols-2 gap-2">
+        <section className="flex flex-col gap-0.5">
+          <h2 className="text-xs font-bold">Target</h2>
+          <SceneView scene={scene} backgroundId={backgroundId}>
+            {items.map((it, i) => (
+              <SceneItem key={i} scene={scene} itemId={it.item_id} x={it.target.x} y={it.target.y} scale={it.scale}>
                 <Badge n={i + 1} score={it.score} />
               </SceneItem>
-            ) : null,
-          )}
-        </SceneView>
-      </section>
+            ))}
+          </SceneView>
+        </section>
+        <section className="flex flex-col gap-0.5">
+          <h2 className="text-xs font-bold">The build</h2>
+          <SceneView scene={scene} backgroundId={backgroundId}>
+            {items.map((it, i) =>
+              it.placed ? (
+                <SceneItem key={i} scene={scene} itemId={it.item_id} x={it.placed.x} y={it.placed.y} scale={PLAY.builderItemScale}>
+                  <Badge n={i + 1} score={it.score} />
+                </SceneItem>
+              ) : null,
+            )}
+          </SceneView>
+        </section>
+      </div>
 
-      <ul className="grid grid-cols-2 gap-1.5 text-sm">
-        {items.map((it, i) => {
-          const b = BADGE[revealColour(it.score)];
-          return (
-            <li key={i} className="flex items-center gap-1.5 rounded-xl bg-indigo-900/70 px-2 py-1">
-              <span className={`flex h-6 min-w-6 items-center justify-center rounded-full px-1 text-xs font-black ${b.className}`}>
-                {i + 1}
-                <span aria-hidden>{b.icon}</span>
-              </span>
-              <span className="min-w-0 flex-1 truncate font-bold">{findItem(scene, it.item_id)?.name ?? it.item_id}</span>
-              <span className="text-xs text-indigo-200">{it.placed ? b.word : "not placed"}</span>
-            </li>
-          );
-        })}
+      <ul className="flex flex-wrap justify-center gap-1.5 text-xs font-bold">
+        {(["green", "yellow", "red"] as RevealColour[]).map((c) => (
+          <li key={c} className={`rounded-full px-2.5 py-0.5 ${BADGE[c].className}`}>
+            <span aria-hidden>{BADGE[c].icon}</span> {items.filter((it) => revealColour(it.score) === c).length} {BADGE[c].word}
+          </li>
+        ))}
       </ul>
 
-      <p className="rounded-2xl bg-indigo-900/70 p-3 text-center text-lg font-black">
+      <p className="rounded-2xl bg-indigo-900/70 p-2 text-center text-lg font-black">
         Play score: {total.toFixed(1)} / {items.length}
       </p>
 
       <SpiritMeter value={spiritMeter} max={spiritMax} />
 
-      <div className="mt-auto flex flex-col gap-2">
+      <div className="mt-auto flex flex-col gap-1">
         <ErrorText>{error}</ErrorText>
         {isHost ? (
           <Button onClick={next} disabled={busy} className="w-full text-xl">

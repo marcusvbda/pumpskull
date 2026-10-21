@@ -11,20 +11,22 @@ import { SpiritMeter } from "./Reveal";
 import { TEAM_META } from "./teams";
 import { Button, ErrorText, Shell } from "./ui";
 
-export function TeamTotals({ scores, myTeam }: { scores: TeamScoreRow[]; myTeam: Team }) {
+export function TeamTotals({ scores, myTeam, compact = false }: { scores: TeamScoreRow[]; myTeam: Team; compact?: boolean }) {
   return (
     <ul className="grid grid-cols-2 gap-2.5">
       {([1, 2] as Team[]).map((team) => {
         const meta = TEAM_META[team];
         const row = scores.find((s) => s.team === team);
         return (
-          <li key={team} className={`flex flex-col items-center gap-1 rounded-2xl border-2 p-4 text-center ${meta.panel} ${team === myTeam ? "ring-2 ring-white" : ""}`}>
-            <span aria-hidden className="text-4xl">
-              {meta.icon}
+          <li key={team} className={`flex flex-col items-center rounded-2xl border-2 text-center ${compact ? "gap-0 p-1.5" : "gap-1 p-3"} ${meta.panel} ${team === myTeam ? "ring-2 ring-white" : ""}`}>
+            <span className={`flex items-center gap-1.5 text-sm font-black ${meta.title}`}>
+              <span aria-hidden className={compact ? "text-xl" : "text-4xl"}>
+                {meta.icon}
+              </span>
+              {meta.name}
             </span>
-            <span className={`text-sm font-black ${meta.title}`}>{meta.name}</span>
-            <span className="text-4xl font-black tabular-nums">{Number(row?.points ?? 0)}</span>
-            <span className="text-xs font-bold text-indigo-200">points</span>
+            <span className={`${compact ? "text-3xl" : "text-4xl"} font-black tabular-nums`}>{Number(row?.points ?? 0)}</span>
+            {!compact && <span className="text-xs font-bold text-indigo-200">points</span>}
           </li>
         );
       })}
@@ -65,12 +67,12 @@ export function Scoreboard({ identity, isHost, team, play, plays, scores, spirit
   }
 
   return (
-    <Shell>
+    <Shell center>
       <header className="text-center">
         <p className="text-sm font-bold text-indigo-200">
           After play {play + 1} of {plays}
         </p>
-        <h1 className="text-3xl font-black text-amber-400">Scoreboard</h1>
+        <h1 className="text-2xl font-black text-amber-400">Scoreboard</h1>
         <p className="text-sm text-indigo-100">{a === b ? "All tied up!" : `${TEAM_META[a > b ? 1 : 2].name} is ahead.`}</p>
       </header>
 
@@ -78,7 +80,7 @@ export function Scoreboard({ identity, isHost, team, play, plays, scores, spirit
       <p className="text-center text-xs text-indigo-200">The winner is decided by the Culture Check points.</p>
       <SpiritMeter value={spiritMeter} max={spiritMax} />
 
-      <div className="mt-auto flex flex-col gap-2">
+      <div className="flex flex-col gap-1">
         <ErrorText>{error}</ErrorText>
         {isHost ? (
           <Button onClick={next} disabled={busy} className="w-full text-xl">

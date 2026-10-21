@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { enterRoom } from "@/lib/enterRoom";
 import { clearIdentity, useStoredIdentity } from "@/lib/identity";
-import { Button, ErrorText, Logo, Mascot, Shell } from "./ui";
+import { Button, ErrorText, Logo, Shell } from "./ui";
 
 export function EntryScreen() {
   const router = useRouter();
@@ -37,10 +37,9 @@ export function EntryScreen() {
   }
 
   return (
-    <Shell>
+    <Shell center>
       <div className="flex flex-col items-center gap-3 pt-4 text-center">
         <Logo />
-        <Mascot difficulty="easy" size={96} />
         <p className="text-indigo-100">Day of the Dead vs Halloween. Describe, build, and learn English together.</p>
         <p className="text-sm font-bold text-teal-300">One phone per team. Gather your team around it!</p>
       </div>

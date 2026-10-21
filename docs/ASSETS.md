@@ -22,6 +22,8 @@ Everything here is supplied by Vinicius. The game runs with placeholders until e
 | `public/brand/` | `mascot-medium.png` | PNG transparent, 1024x1024, sour face | 30 Oct |
 | `public/brand/` | `mascot-hard.png` | PNG transparent, 1024x1024, on fire | 30 Oct |
 | `public/brand/` | `favicon.png` | PNG, 512x512, simplified mascot face, readable at 32 px | 30 Oct |
+| `public/brand/` | `banner.png` | PNG transparent, about 2130x640, hanging Halloween garland shown once across the top of every screen (never tiled or cropped). Source: Pngtree, check the licence and credit if required | done |
+| `public/brand/` | `skyline.png` | PNG transparent, about 806x310, hillside town drawn at the bottom of the animated background at very low opacity (`.ambient-skyline` in `globals.css`) | done |
 | `public/scenes/altar/` | `altar-1.png` to `altar-10.png` | **EMPTY** front-view Day of the Dead altar, no items, no people. 2048x1280 (16:10, same ratio for every scene file). Clear steps, shelves and floor. Each altar must have a different structure | **23 Oct** |
 | `public/scenes/house/` | `house-1.png` to `house-10.png` | **EMPTY** front of a Halloween house, no decorations, no people. 2048x1280 (16:10). Clear porch/floor, door, window, wall. Each house must look different | **23 Oct** |
 | `public/items/altar/` | `marigold-vase.png`, `candle.png`, `photo.png`, `bread.png`, `sugar-skull.png`, `water.png`, `incense.png`, `fruit.png` | PNG transparent, 1024 px on the longest side, one item per file, tightly cropped, flat bottom for items that stand on a surface | **23 Oct** |

@@ -26,6 +26,8 @@ interface Props {
 }
 
 export function Final({ identity, isHost, team, scores, spiritMeter, spiritMax, refresh }: Props) {
+  const [cardIndex, setCardIndex] = useState(0);
+  const card = COMPARE_CARDS[cardIndex];
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const tally = (t: Team) => {
@@ -51,12 +53,13 @@ export function Final({ identity, isHost, team, scores, spiritMeter, spiritMax, 
 
   return (
     <Shell>
-      <header className={`flex flex-col items-center gap-1 rounded-3xl border-4 p-5 text-center ${winner ? TEAM_META[winner].panel : "border-teal-300/70 bg-teal-300/10"}`}>
-        <span aria-hidden className="text-6xl">
+      <header className={`flex items-center gap-3 rounded-3xl border-4 p-2 text-left ${winner ? TEAM_META[winner].panel : "border-teal-300/70 bg-teal-300/10"}`}>
+        <span aria-hidden className="text-4xl leading-none">
           {winner ? TEAM_META[winner].icon : "🤝"}
         </span>
-        <h1 className="text-3xl font-black text-amber-400">{winner ? `${TEAM_META[winner].name} wins!` : "It's a draw!"}</h1>
-        <p className="text-sm text-indigo-100">
+        <div className="min-w-0">
+        <h1 className="text-xl font-black text-amber-400">{winner ? `${TEAM_META[winner].name} wins!` : "It's a draw!"}</h1>
+        <p className="text-xs text-indigo-100">
           {winner === null
             ? "Same points and same speed. Great game, both teams!"
             : tied
@@ -65,37 +68,49 @@ export function Final({ identity, isHost, team, scores, spiritMeter, spiritMax, 
                 ? "Your team knows its culture. Well done!"
                 : "Good game! Next time it could be you."}
         </p>
+        </div>
       </header>
 
-      <TeamTotals scores={scores} myTeam={team} />
+      <TeamTotals scores={scores} myTeam={team} compact />
       <SpiritMeter value={spiritMeter} max={spiritMax} />
 
-      <section className="flex flex-col gap-2">
-        <h2 className="text-xl font-black text-amber-400">Day of the Dead vs Halloween</h2>
-        {COMPARE_CARDS.map((card) => (
-          <article key={card.title} className="rounded-2xl bg-indigo-900/70 p-3">
-            <h3 className="mb-1 font-black">
-              <span aria-hidden>{card.icon}</span> {card.title}
-            </h3>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <p className={`rounded-xl border p-2 ${TEAM_META[1].panel}`}>
-                <span className={`block text-xs font-black ${TEAM_META[1].title}`}>
-                  <span aria-hidden>{TEAM_META[1].icon}</span> Day of the Dead
-                </span>
-                {card.dod}
-              </p>
-              <p className={`rounded-xl border p-2 ${TEAM_META[2].panel}`}>
-                <span className={`block text-xs font-black ${TEAM_META[2].title}`}>
-                  <span aria-hidden>{TEAM_META[2].icon}</span> Halloween
-                </span>
-                {card.halloween}
-              </p>
-            </div>
-          </article>
-        ))}
+      <section className="flex min-h-0 flex-col gap-1">
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="min-w-0 truncate text-base font-black text-amber-400">Day of the Dead vs Halloween</h2>
+          <div className="flex shrink-0 items-center gap-1.5">
+            <button type="button" aria-label="Previous card" disabled={cardIndex === 0} onClick={() => setCardIndex(cardIndex - 1)} className="h-9 w-9 rounded-full bg-indigo-700 font-black disabled:opacity-35">
+              ‹
+            </button>
+            <span className="text-xs font-bold tabular-nums">
+              {cardIndex + 1}/{COMPARE_CARDS.length}
+            </span>
+            <button type="button" aria-label="Next card" disabled={cardIndex === COMPARE_CARDS.length - 1} onClick={() => setCardIndex(cardIndex + 1)} className="h-9 w-9 rounded-full bg-indigo-700 font-black disabled:opacity-35">
+              ›
+            </button>
+          </div>
+        </div>
+        <article className="flex min-h-0 flex-col gap-1 rounded-2xl bg-indigo-900/70 p-2">
+          <h3 className="font-black">
+            <span aria-hidden>{card.icon}</span> {card.title}
+          </h3>
+          <div className="grid grid-cols-2 gap-1.5 text-sm leading-snug [@media(max-height:620px)]:text-xs">
+            <p className={`rounded-xl border p-1.5 ${TEAM_META[1].panel}`}>
+              <span className={`block text-xs font-black ${TEAM_META[1].title}`}>
+                <span aria-hidden>{TEAM_META[1].icon}</span> Day of the Dead
+              </span>
+              {card.dod}
+            </p>
+            <p className={`rounded-xl border p-1.5 ${TEAM_META[2].panel}`}>
+              <span className={`block text-xs font-black ${TEAM_META[2].title}`}>
+                <span aria-hidden>{TEAM_META[2].icon}</span> Halloween
+              </span>
+              {card.halloween}
+            </p>
+          </div>
+        </article>
       </section>
 
-      <div className="mt-auto flex flex-col gap-2">
+      <div className="flex flex-col gap-1">
         <ErrorText>{error}</ErrorText>
         {isHost ? (
           <Button onClick={again} disabled={busy} className="w-full text-xl">
@@ -104,7 +119,7 @@ export function Final({ identity, isHost, team, scores, spiritMeter, spiritMax, 
         ) : (
           <p className="rounded-2xl bg-indigo-900/70 p-3 text-center font-bold text-indigo-100">The host can start a new game.</p>
         )}
-        <Link href="/" className="flex min-h-12 items-center justify-center rounded-2xl border-b-4 border-indigo-900 bg-indigo-600 px-6 text-lg font-extrabold">
+        <Link href="/" className="flex min-h-10 items-center justify-center rounded-2xl border-b-4 border-indigo-900 bg-indigo-600 px-6 text-base font-extrabold">
           Home
         </Link>
       </div>

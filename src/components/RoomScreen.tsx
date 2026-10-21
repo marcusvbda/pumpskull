@@ -22,8 +22,8 @@ import { Button, ErrorText, Shell } from "./ui";
 
 function Notice({ title, children }: { title: string; children?: React.ReactNode }) {
   return (
-    <Shell>
-      <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
+    <Shell center>
+      <div className="flex flex-col items-center gap-4 text-center">
         <h1 className="text-3xl font-black text-amber-400">{title}</h1>
         {children}
         <Link href="/" className="flex min-h-12 items-center rounded-2xl border-b-4 border-indigo-900 bg-indigo-600 px-6 text-lg font-extrabold">
@@ -50,8 +50,8 @@ function JoinCard({ pin, team, onBack }: { pin: string; team: Team; onBack: () =
   }
 
   return (
-    <Shell>
-      <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
+    <Shell center>
+      <div className="flex flex-col items-center gap-4 text-center">
         <span className="text-sm font-bold text-indigo-200">Room {pin}</span>
         <h1 className="text-3xl font-black text-amber-400">Join the game</h1>
         <div className={`flex w-full flex-col items-center gap-1 rounded-2xl border-2 p-4 ${meta.panel}`}>
@@ -128,8 +128,8 @@ function Room({ pin }: { pin: string }) {
   if (snapshot === undefined || stored === undefined) {
     if (failed) return <Notice title="No connection">We can&apos;t reach the game right now. Check your internet and reload.</Notice>;
     return (
-      <Shell>
-        <p className="pt-16 text-center text-lg font-bold text-indigo-200">Loading room {pin}…</p>
+      <Shell center>
+        <p className="text-center text-lg font-bold text-indigo-200">Loading room {pin}…</p>
       </Shell>
     );
   }
@@ -142,8 +142,8 @@ function Room({ pin }: { pin: string }) {
 
   if (removed) {
     return (
-      <Shell>
-        <p className="pt-16 text-center text-lg font-bold text-indigo-200">Checking your seat…</p>
+      <Shell center>
+        <p className="text-center text-lg font-bold text-indigo-200">Checking your seat…</p>
       </Shell>
     );
   }

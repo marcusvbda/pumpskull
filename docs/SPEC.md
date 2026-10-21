@@ -127,7 +127,7 @@ Targets are generated at random from empty backgrounds, so the same background c
 
 ## 7. Screens
 
-All screens are portrait, English only, with large touch targets and the visual style of the Gemini mockups (deep indigo night, papel picado banner, marigold petals, chunky buttons with a darker bottom edge). Screens 1, 2, 4, 6A and 7A have Gemini mockups; the others are built from the same style. Mockups live in `docs/mockups/`. Screen numbers are kept from the mockups; screens 3 (nickname and avatar) and 8 (waiting player) were removed with the move to one phone per team.
+All screens are portrait, English only, with large touch targets and the visual style of the Gemini mockups (deep indigo night, hanging garland (`public/brand/banner.png`), marigold petals, chunky buttons with a darker bottom edge). Screens 1, 2, 4, 6A and 7A have Gemini mockups; the others are built from the same style. Mockups live in `docs/mockups/`. Screen numbers are kept from the mockups; screens 3 (nickname and avatar) and 8 (waiting player) were removed with the move to one phone per team.
 
 | # | Screen | Who sees it | Content and states |
 | --- | --- | --- | --- |

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
-/* The game is always the deep indigo night of the mockups, in light and dark mode. */
+/* The game is always a deep purple night, in light and dark mode. The background is a static gradient (no animation). */
 :root {
-  --background: #1e1b4b;
+  --background: #150a30;
   --foreground: #fdf6e3;
 }
 
@@ -14,9 +14,108 @@
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
+  background-image:
+    radial-gradient(ellipse 90% 45% at 50% 24%, rgb(251 146 60 / 0.16), transparent 70%),
+    linear-gradient(180deg, #34187a 0%, #231051 38%, #150a30 75%, #0e0624 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 100dvh;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Animated night backdrop (AmbientBackground). Fixed behind everything, never intercepts touches. Slow, soft, no flashing. */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ambient-glow {
+  position: absolute;
+  width: 120vmax;
+  height: 120vmax;
+  border-radius: 50%;
+  will-change: transform;
+}
+.ambient-glow-purple {
+  top: -60vmax;
+  left: -50vmax;
+  background: radial-gradient(circle, rgb(139 92 246 / 0.38), transparent 60%);
+  animation: ambient-drift-a 38s ease-in-out infinite alternate;
+}
+.ambient-glow-orange {
+  bottom: -75vmax;
+  right: -60vmax;
+  background: radial-gradient(circle, rgb(249 115 22 / 0.26), transparent 60%);
+  animation: ambient-drift-b 44s ease-in-out infinite alternate;
+}
+.ambient-glow-teal {
+  top: 25vh;
+  right: -85vmax;
+  width: 90vmax;
+  height: 90vmax;
+  background: radial-gradient(circle, rgb(45 212 191 / 0.16), transparent 62%);
+  animation: ambient-drift-c 52s ease-in-out infinite alternate;
+}
+@keyframes ambient-drift-a {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(14vmax, 10vmax, 0) scale(1.12); }
+}
+@keyframes ambient-drift-b {
+  from { transform: translate3d(0, 0, 0) scale(1.05); }
+  to { transform: translate3d(-16vmax, -9vmax, 0) scale(0.92); }
+}
+@keyframes ambient-drift-c {
+  from { transform: translate3d(0, 0, 0) scale(0.95); }
+  to { transform: translate3d(-12vmax, 8vmax, 0) scale(1.1); }
+}
+.ambient-skyline {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  max-width: 42rem;
+  height: auto;
+  transform: translateX(-50%);
+  opacity: 0.9;
+  user-select: none;
+  mask-image: linear-gradient(to top, #000 80%, transparent);
+  -webkit-mask-image: linear-gradient(to top, #000 80%, transparent);
+}
+.ambient-star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff7e0;
+  opacity: 0.15;
+  animation: ambient-twinkle var(--dur) ease-in-out var(--delay) infinite alternate;
+}
+@keyframes ambient-twinkle {
+  from { opacity: 0.12; transform: scale(0.8); }
+  to { opacity: 0.8; transform: scale(1.15); }
+}
+.ambient-ember {
+  position: absolute;
+  bottom: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fde68a 0%, #fb923c 55%, transparent 72%);
+  opacity: 0;
+  animation: ambient-rise var(--dur) linear var(--delay) infinite;
+}
+@keyframes ambient-rise {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  12% { opacity: 0.7; }
+  50% { transform: translate3d(14px, -55dvh, 0); }
+  85% { opacity: 0.45; }
+  100% { transform: translate3d(-10px, -112dvh, 0); opacity: 0; }
+}
+.ambient-still .ambient-glow,
+.ambient-still .ambient-star { animation: none; }
+.ambient-still .ambient-ember { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ambient-glow, .ambient-star { animation: none; }
+  .ambient-ember { display: none; }
 }
 
 /* Urgency effects (spec section 8). Soft red screen edges and a small timer shake, never full-screen flashing,
