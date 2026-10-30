@@ -11,12 +11,13 @@ export function AudioControls() {
   const { muted, reduced } = usePrefs();
 
   useEffect(() => {
+    // Touch only counts as a user gesture on pointerup / touchend / click (pointerdown works for a mouse only),
+    // so listen to all of them. Phones stay silent otherwise.
     const unlock = () => unlockAudio();
-    window.addEventListener("pointerdown", unlock);
-    window.addEventListener("keydown", unlock);
+    const events = ["pointerdown", "pointerup", "touchend", "click", "keydown"] as const;
+    for (const e of events) window.addEventListener(e, unlock, { passive: true });
     return () => {
-      window.removeEventListener("pointerdown", unlock);
-      window.removeEventListener("keydown", unlock);
+      for (const e of events) window.removeEventListener(e, unlock);
     };
   }, []);
 

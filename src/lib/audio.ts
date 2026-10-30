@@ -84,7 +84,15 @@ export function unlockAudio() {
       master.gain.value = isMuted() ? 0 : 1;
       for (const file of Object.values(SFX_FILES)) void load(file);
     }
-    if (ctx.state === "suspended") void ctx.resume();
+    // iOS reports "interrupted" after a call or a tab switch, so resume on anything that is not running.
+    if (ctx.state !== "running") {
+      void ctx.resume();
+      // iOS only opens the output after a buffer is played inside the gesture.
+      const silent = ctx.createBufferSource();
+      silent.buffer = ctx.createBuffer(1, 1, 22050);
+      silent.connect(ctx.destination);
+      silent.start();
+    }
     syncMusic();
   } catch {
     // no audio on this device: the game still works
