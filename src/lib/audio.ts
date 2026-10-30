@@ -71,11 +71,44 @@ function load(name: string): Promise<AudioBuffer | null> {
   return pending;
 }
 
+// iOS mutes Web Audio when the ringer switch is on silent, but not an <audio> element. Playing a silent one in a loop
+// moves the whole page to the "playback" audio session, so music and effects are heard. Must start inside a tap.
+let keepAlive: HTMLAudioElement | null = null;
+function unmuteIos() {
+  if (!keepAlive) {
+    const rate = 8000;
+    const samples = rate / 10; // 0.1 s of silence (8-bit PCM, 0x80 = zero)
+    const wav = new DataView(new ArrayBuffer(44 + samples));
+    const text = (at: number, s: string) => [...s].forEach((c, i) => wav.setUint8(at + i, c.charCodeAt(0)));
+    text(0, "RIFF");
+    wav.setUint32(4, 36 + samples, true);
+    text(8, "WAVEfmt ");
+    wav.setUint32(16, 16, true);
+    wav.setUint16(20, 1, true); // PCM
+    wav.setUint16(22, 1, true); // mono
+    wav.setUint32(24, rate, true);
+    wav.setUint32(28, rate, true); // byte rate
+    wav.setUint16(32, 1, true); // block align
+    wav.setUint16(34, 8, true); // bits per sample
+    text(36, "data");
+    wav.setUint32(40, samples, true);
+    for (let i = 0; i < samples; i++) wav.setUint8(44 + i, 0x80);
+    keepAlive = new Audio(URL.createObjectURL(new Blob([wav], { type: "audio/wav" })));
+    keepAlive.loop = true;
+    keepAlive.setAttribute("playsinline", "");
+  }
+  if (keepAlive.paused) void keepAlive.play().catch(() => {});
+}
+
 // Call from a tap or key press. Safe to call again.
 export function unlockAudio() {
   if (typeof window === "undefined") return;
   try {
+    unmuteIos();
     if (!ctx) {
+      // iOS 16.4+: the default "ambient" session is muted by the ringer switch; "playback" is not.
+      const session = (navigator as unknown as { audioSession?: { type: string } }).audioSession;
+      if (session) session.type = "playback";
       const Ctor = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
       if (!Ctor) return;
       ctx = new Ctor();
