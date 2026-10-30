@@ -18,10 +18,10 @@ describe("culturePoints", () => {
     expect(culturePoints(true, 12_000)).toBe(1);
   });
 
-  it("adds +0.5 within the first 8 seconds, including exactly 8", () => {
+  it("adds +0.5 within the first 5 seconds, including exactly 5", () => {
     expect(culturePoints(true, 1_000)).toBe(1.5);
-    expect(culturePoints(true, 8_000)).toBe(1.5);
-    expect(culturePoints(true, 8_001)).toBe(1);
+    expect(culturePoints(true, 5_000)).toBe(1.5);
+    expect(culturePoints(true, 5_001)).toBe(1);
   });
 
   it("gives nothing for a wrong answer, even a fast one", () => {
@@ -34,9 +34,9 @@ describe("answerTimeMs", () => {
   it("is the time since the question appeared", () => {
     expect(answerTimeMs(new Date(start).toISOString(), start + 4_321)).toBe(4_321);
   });
-  it("never goes below 0 or above the 20 s of the question", () => {
+  it("never goes below 0 or above the 15 s of the question", () => {
     expect(answerTimeMs(start, start - 300)).toBe(0);
-    expect(answerTimeMs(start, start + 22_500)).toBe(20_000);
+    expect(answerTimeMs(start, start + 22_500)).toBe(15_000);
   });
 });
 
@@ -53,7 +53,7 @@ describe("decideWinner", () => {
     expect(decideWinner({ points: 3, totalMs: 30_000 }, { points: 3, totalMs: 30_000 })).toBeNull();
   });
   it("counts a missing answer as the whole question time", () => {
-    expect(MISSING_ANSWER_MS).toBe(20_000);
+    expect(MISSING_ANSWER_MS).toBe(15_000);
   });
 });
 

@@ -21,19 +21,19 @@ describe("parsePin / randomPin", () => {
 
 describe("parseSettings", () => {
   it("accepts every allowed value", () => {
-    for (const time_minutes of [2, 3, 4, 5]) expect(parseSettings({ time_minutes })).toEqual({ time_minutes });
+    for (const time_minutes of [0.5, 1, 1.5, 2]) expect(parseSettings({ time_minutes })).toEqual({ time_minutes });
     for (const difficulty of ["easy", "medium", "hard"]) expect(parseSettings({ difficulty })).toEqual({ difficulty });
     for (const rounds of [2, 4]) expect(parseSettings({ rounds })).toEqual({ rounds });
   });
 
   it("refuses anything else", () => {
-    for (const bad of [{ time_minutes: 1 }, { time_minutes: "4" }, { difficulty: "extreme" }, { rounds: 3 }, { rounds: 6 }, {}, null, [], "easy"]) {
+    for (const bad of [{ time_minutes: 3 }, { time_minutes: "1" }, { difficulty: "extreme" }, { rounds: 3 }, { rounds: 6 }, {}, null, [], "easy"]) {
       expect(parseSettings(bad), JSON.stringify(bad)).toBeNull();
     }
   });
 
   it("refuses the whole patch if one field is bad, and drops unknown keys", () => {
-    expect(parseSettings({ time_minutes: 3, rounds: 5 })).toBeNull();
+    expect(parseSettings({ time_minutes: 1, rounds: 5 })).toBeNull();
     expect(parseSettings({ rounds: 4, host_id: "x" })).toEqual({ rounds: 4 });
   });
 });

@@ -45,7 +45,7 @@ A game is a lobby followed by an even number of rounds. Each round has two plays
 3. Start unlocks when both phones are in the room. Only the host edits settings and starts.
 4. If the host phone leaves, the other phone becomes host.
 
-**Settings (host only):** time per play (2, 3, 4 or 5 min, default 4), difficulty (Chocolate, Sour Gummy, Chili Tamarind) and rounds (2 or 4, default 2). See section 5.
+**Settings (host only):** time per play (30 s, 1, 1.5 or 2 min, default 1 min), difficulty (Chocolate, Sour Gummy, Chili Tamarind) and rounds (2 or 4, default 2). See section 5.
 
 **Rounds and plays**
 
@@ -77,9 +77,9 @@ d = sqrt(dx^2 + (dy * h/w)^2)
 
 **Spirit Meter.** The sum of item scores of a play is added to the room's Spirit Meter, shown as one bar for the whole room. It is a celebration meter and has no effect on the winner. The reveal screen colours each item: green at 0.8 or more, yellow from 0.4 to 0.8, red below 0.4.
 
-**Culture Check.** After each play, each team discusses and answers one multiple-choice question with 4 options on its phone, 20 seconds.
+**Culture Check.** After each play, each team discusses and answers one multiple-choice question with 4 options on its phone, 15 seconds.
 
-- +1 for a correct answer, +0.5 extra if answered within 8 seconds. A wrong or missing answer scores 0.
+- +1 for a correct answer, +0.5 extra if answered within 5 seconds. A wrong or missing answer scores 0.
 - The team score is the sum of its points. Both teams answer the same number of questions.
 - Questions come from a bank of 300 (100 per level), drawn at random without repeating in the same room. The question level follows the difficulty chosen for the game: Chocolate asks easy questions, Sour Gummy medium and Chili Tamarind hard. If a room somehow uses all 100 of its level, that level starts over.
 
@@ -140,7 +140,7 @@ All screens are portrait, English only, with large touch targets and the visual 
 | 7A | Builder, Easy | Building phone | Empty scene, tray with named icons, Finish button, timer |
 | 7B | Builder, Medium/Hard | Building phone | Same, icons only with count badges (Hard: 4-column grid), Finish |
 | 9 | Reveal | Both phones | Target vs the build with green/yellow/red badges per item, play score, Spirit Meter bar, Next (host) |
-| 10 | Culture Check question | Both phones | Question, 20 s ring, +0.5 fast badge (first 8 s), 4 colour buttons with shapes. Hint: "Talk with your team, then tap" |
+| 10 | Culture Check question | Both phones | Question, 15 s ring, +0.5 fast badge (first 5 s), 4 colour buttons with shapes. Hint: "Talk with your team, then tap" |
 | 11 | Culture Check feedback | Both phones | Correct or Not quite for each team, points earned, answer time, short fun fact |
 | 12 | Scoreboard | Both phones | Team totals after each play, Spirit Meter total |
 | 13 | Final | Both phones | Winning team banner, final team totals, total Spirit Meter, 5 cards "Day of the Dead vs Halloween", Play again (host) |
@@ -186,8 +186,8 @@ Public tables (browser may read with the anon key, never write): `rooms`, `playe
 - Placement scores and Culture Check points are computed on the server from the stored target and the submitted data, never trusted from the client.
 - The building phone's placement is saved on Finish, at time-out, and as an autosave every 5 seconds.
 - The correct answer of a Culture Check question is written to `question_reveal` only when the phase moves to feedback. That row also holds how each team answered (`answers`: option, time, points), see `supabase/migrations/0004_culture_feedback.sql`.
-- After every play the room goes `reveal` (host taps Culture Check) -> `culture` (ends when both teams answered or after 20 s) -> `culture_feedback` (10 s, then moves by itself) -> `scoreboard` (host taps Next). A team that does not answer scores 0 and counts as 20 s for the tie-break.
-- Answer time is measured by the server from `phase_started_at`; an answer in flight is still accepted for 3 s after the 20 s.
+- After every play the room goes `reveal` (host taps Culture Check) -> `culture` (ends when both teams answered or after 15 s) -> `culture_feedback` (6 s, then moves by itself) -> `scoreboard` (host taps Next). A team that does not answer scores 0 and counts as 15 s for the tie-break.
+- Answer time is measured by the server from `phase_started_at`; an answer in flight is still accepted for 3 s after the 15 s.
 - Play again (host, final screen) returns the same two phones to the lobby; questions already asked stay marked so the next game gets new ones.
 - Only the describing phone receives the target layout; the building phone never gets the seed or targets before the reveal.
 - A room holds at most 2 phones, one per team; a third join fails.
@@ -216,7 +216,7 @@ The game is playable with placeholder shapes before any final image arrives. Fin
 | Placement score | exact placement is 1, beyond `r_zero` is 0, curve is quadratic in between, two identical items matched by minimum total distance, decoys give 0, aspect ratio is respected |
 | Layout generator | same seed gives same layout, item types only in allowed slots, no two slots under the minimum distance, count and decoys match the level |
 | Roles | Marigold describes in x.0 and builds in x.1, roles swap every play, each team describes once per round |
-| Culture Check | +1 correct, +0.5 within 8 s, team score is a sum, tie-break uses total response time, questions never repeat in a room |
+| Culture Check | +1 correct, +0.5 within 5 s, team score is a sum, tie-break uses total response time, questions never repeat in a room |
 | Room rules | first phone is Marigold and host, second is Pumpkin, third phone refused, Start blocked until both phones are in, only the host can start, host handover when the host leaves |
 
 **Acceptance**

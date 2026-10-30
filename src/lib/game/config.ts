@@ -21,15 +21,15 @@ export const DIFFICULTY: Record<Difficulty, DifficultyConfig> = {
 
 export const GAME = {
   phonesPerRoom: 2, // one per team (spec section 3, Lobby)
-  timeOptionsMinutes: [2, 3, 4, 5],
-  defaultTimeMinutes: 4,
+  timeOptionsMinutes: [0.5, 1, 1.5, 2],
+  defaultTimeMinutes: 1,
   roundOptions: [2, 4],
   defaultRounds: 2,
   countdownSeconds: 3,
   roleBannerSeconds: 2,
-  cultureSeconds: 20,
-  cultureFastSeconds: 8,
-  cultureFeedbackSeconds: 10, // feedback screen, then the scoreboard comes by itself
+  cultureSeconds: 15,
+  cultureFastSeconds: 5,
+  cultureFeedbackSeconds: 6, // feedback screen, then the scoreboard comes by itself
   correctPoints: 1,
   fastBonus: 0.5,
   builderAutosaveSeconds: 5,

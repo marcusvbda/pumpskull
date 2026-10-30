@@ -72,7 +72,7 @@ export function SettingsPanel({ room, isHost, identity, refresh }: Props) {
         <div className="grid grid-cols-4 gap-2">
           {GAME.timeOptionsMinutes.map((m) => (
             <Choice key={m} selected={settings.time_minutes === m} disabled={locked} onClick={() => change({ time_minutes: m })}>
-              {m} min
+              {m < 1 ? `${m * 60} s` : `${m} min`}
             </Choice>
           ))}
         </div>

@@ -48,6 +48,30 @@ function TeamCard({ team, phone, hostId, myId }: { team: Team; phone: PlayerRow 
   );
 }
 
+// Clipboard API needs https; the old execCommand route also works on http (testing over the LAN).
+async function copyText(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    // fall through to the textarea trick
+  }
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.setAttribute("readonly", "");
+  area.style.position = "fixed";
+  area.style.opacity = "0";
+  document.body.appendChild(area);
+  area.select();
+  try {
+    return document.execCommand("copy");
+  } catch {
+    return false;
+  } finally {
+    area.remove();
+  }
+}
+
 export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Props) {
   const { room, players } = snapshot;
   const isHost = room.host_id === me.id;
@@ -56,6 +80,7 @@ export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Pro
   const [error, setError] = useState<string | null>(null);
   const [confirmLeave, setConfirmLeave] = useState(false);
   const [shared, setShared] = useState<string | null>(null);
+  const [showLink, setShowLink] = useState(false);
 
   const ready = canStart(players);
   const link = typeof window === "undefined" ? "" : `${window.location.origin}/room/${room.pin}`;
@@ -86,15 +111,19 @@ export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Pro
 
   async function share() {
     try {
-      if (navigator.share) await navigator.share({ url: link, title: "Pumpskull" });
-      else {
-        await navigator.clipboard.writeText(link);
-        setShared("Link copied!");
+      if (navigator.share) {
+        await navigator.share({ url: link, title: "Pumpskull" });
+        return;
       }
-    } catch {
-      setShared("Copy the link below");
+    } catch (err) {
+      if (err instanceof DOMException && err.name === "AbortError") return; // the person closed the share sheet
     }
-    setTimeout(() => setShared(null), 2500);
+    if (await copyText(link)) {
+      setShared("Link copied!");
+      setTimeout(() => setShared(null), 2500);
+    } else {
+      setShowLink(true); // no share, no clipboard (plain http): show the link to copy by hand
+    }
   }
 
   return (
@@ -110,6 +139,16 @@ export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Pro
           {shared ?? "Share"}
         </Button>
       </section>
+
+      {showLink ? (
+        <input
+          readOnly
+          value={link}
+          aria-label="Room link"
+          onFocus={(e) => e.currentTarget.select()}
+          className="min-h-11 w-full rounded-xl border-2 border-indigo-400 bg-indigo-950 px-3 text-base font-bold text-white"
+        />
+      ) : null}
 
       <div role="tablist" className="grid grid-cols-2 gap-2">
         {(["teams", "settings"] as const).map((t) => (

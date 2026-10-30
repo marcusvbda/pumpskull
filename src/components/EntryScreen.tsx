@@ -4,7 +4,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { setMusicMode } from "@/lib/audio";
 import { enterRoom } from "@/lib/enterRoom";
 import { clearIdentity, useStoredIdentity } from "@/lib/identity";
 import { Button, ErrorText, Logo, Shell } from "./ui";
@@ -16,6 +17,11 @@ export function EntryScreen() {
   const [busy, setBusy] = useState<"create" | "join" | null>(null);
   const [createError, setCreateError] = useState<string | null>(null);
   const [joinError, setJoinError] = useState<string | null>(null);
+
+  // Calm music on the home screen too. No cleanup: the room screen takes over without a restart.
+  useEffect(() => {
+    setMusicMode("lobby");
+  }, []);
 
   async function go(kind: "create" | "join") {
     if (busy) return;

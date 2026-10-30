@@ -42,8 +42,10 @@ Everything here is supplied by Vinicius. The game runs with placeholders until e
 | `public/ui/` | `candy-chocolate.png`, `candy-sour-gummy.png`, `candy-chili-tamarind.png` | PNG transparent, 256x256, icons for the three difficulty levels | 30 Oct (can be drawn in code first) |
 | `public/ui/` | `team-marigold.png`, `team-pumpkin.png` | PNG transparent, 256x256, team badges | 30 Oct (can be drawn in code first) |
 | `public/audio/` | `music-lobby.mp3` | MP3 128 kbps, seamless loop, under 2 MB | 2 Nov |
-| `public/audio/` | `music-game.mp3` | MP3 128 kbps, seamless loop, under 2 MB, normal tempo | 2 Nov |
-| `public/audio/` | `music-hurry.mp3` | Same track as `music-game` about 20% faster, same key, seamless loop | 2 Nov |
+| `public/audio/` | `music-game.mp3` | Plays during the play phase. MP3 96 to 128 kbps, seamless loop, about 2 MB, normal tempo | 2 Nov |
+| `public/audio/` | `music-hurry.mp3` | Optional. Same track as `music-game` about 20% faster, same key, seamless loop. Without it `music-game` speeds up to 1.2x | 2 Nov |
+| `public/audio/` | `music-culture.mp3`, `music-scoreboard.mp3` | Loops for the Culture Check question and the scoreboard | 2 Nov |
+| `public/audio/` | `music-countdown.mp3`, `music-reveal.mp3`, `music-culture-feedback.mp3` | Stingers that play once (about 5 s, 17 s and 5 s). The finished screen reuses `music-lobby` | 2 Nov |
 | `public/audio/` | `sfx-correct.mp3`, `sfx-wrong.mp3`, `sfx-drop.mp3`, `sfx-click.mp3` | MP3, under 100 KB each, short | 2 Nov |
 | `public/audio/` | `sfx-tick.mp3`, `sfx-tick-fast.mp3`, `sfx-alarm.mp3` | MP3, under 100 KB each. Tick is a short clock tick; fast tick is higher; alarm is about 1.5 s | 2 Nov |
 | `data/` (repo root, not `public/`) | `questions.json` | UTF-8 JSON array of 300 questions (100 easy, 100 medium, 100 hard), format below. Already written, review before class | 30 Oct |

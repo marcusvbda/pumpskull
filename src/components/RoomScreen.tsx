@@ -14,12 +14,24 @@ import type { Team } from "@/lib/game/types";
 import { enterRoom } from "@/lib/enterRoom";
 import { clearIdentity, useStoredIdentity, type Identity } from "@/lib/identity";
 import { fetchRoomSnapshot } from "@/lib/supabase/subscribeRoom";
+import type { Phase } from "@/lib/supabase/types";
 import { useRoom } from "@/lib/useRoom";
 import { GameScreen } from "./GameScreen";
 import { Lobby } from "./Lobby";
 import { TEAM_META } from "./teams";
 import { Button, ErrorText, Shell } from "./ui";
 import { TeamIcon } from "./UiIcon";
+
+const MUSIC_BY_PHASE: Record<Phase, MusicMode> = {
+  lobby: "lobby",
+  countdown: "countdown",
+  playing: "game",
+  reveal: "reveal",
+  culture: "culture",
+  culture_feedback: "culture_feedback",
+  scoreboard: "scoreboard",
+  finished: "lobby", // no track of its own yet
+};
 
 function Notice({ title, children }: { title: string; children?: React.ReactNode }) {
   return (
@@ -87,9 +99,9 @@ function Room({ pin }: { pin: string }) {
   const me = identity && snapshot ? snapshot.players.find((p) => p.id === identity.playerId) : undefined;
   const removed = Boolean(identity && snapshot && !me);
 
-  // Music: calm in the lobby and at the end, the game track during the game. Silent until the first tap.
+  // Music: one track per phase. Silent until the first tap. "lobby" while loading too, so the home music carries on.
   const phase = snapshot?.room.phase;
-  const music: MusicMode = !me ? "off" : phase === "lobby" || phase === "finished" ? "lobby" : "game";
+  const music: MusicMode = me && phase ? MUSIC_BY_PHASE[phase] : "lobby";
   useEffect(() => {
     setMusicMode(music);
     return () => setMusicMode("off");

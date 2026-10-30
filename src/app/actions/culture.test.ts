@@ -176,7 +176,7 @@ describe("submitAnswer", () => {
 });
 
 describe("time-out and feedback", () => {
-  it("closes the question after 20 seconds, counting a missing answer as 0 points and the whole time", async () => {
+  it("closes the question after 15 seconds, counting a missing answer as 0 points and the whole time", async () => {
     const { marigold, pumpkin, pin } = await startedGame();
     await toCulture(marigold, pumpkin);
     const right = correctOf(questionOf(pin, 0).question_id as number);
@@ -193,7 +193,7 @@ describe("time-out and feedback", () => {
     expect(reveal.correct).toBe(right);
     expect(reveal.answers).toEqual([
       { team: 1, option: right, ms: 0, points: 1.5 },
-      { team: 2, option: null, ms: 20_000, points: 0 },
+      { team: 2, option: null, ms: 15_000, points: 0 },
     ]);
   });
 

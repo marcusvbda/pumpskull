@@ -42,7 +42,7 @@ describe("createRoom", () => {
     expect(who.pin).toMatch(/^\d{4}$/);
     expect(room(who.pin).host_id).toBe(who.playerId);
     expect(room(who.pin).status).toBe("lobby");
-    expect(room(who.pin).settings).toEqual({ time_minutes: 4, difficulty: "easy", rounds: 2 });
+    expect(room(who.pin).settings).toEqual({ time_minutes: 1, difficulty: "easy", rounds: 2 });
     expect(phones(who.pin)).toHaveLength(1);
     expect(teamOf(who)).toBe(1);
   });
@@ -176,10 +176,10 @@ describe("updateSettings", () => {
 
   it("refuses values outside the allowed lists", async () => {
     const host = await newRoom();
-    for (const settings of [{ time_minutes: 1 }, { time_minutes: 6 }, { difficulty: "extreme" }, { rounds: 3 }, {}]) {
+    for (const settings of [{ time_minutes: 3 }, { time_minutes: 6 }, { difficulty: "extreme" }, { rounds: 3 }, {}]) {
       expect(await updateSettings({ ...host, settings } as never), JSON.stringify(settings)).toMatchObject({ error: "invalid_settings" });
     }
-    expect(room(host.pin).settings).toEqual({ time_minutes: 4, difficulty: "easy", rounds: 2 });
+    expect(room(host.pin).settings).toEqual({ time_minutes: 1, difficulty: "easy", rounds: 2 });
   });
 
   it("is locked once the game started", async () => {

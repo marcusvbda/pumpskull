@@ -3,14 +3,15 @@
 // Sound and music with the Web Audio API (spec section 8). Nothing plays before the first tap
 // (browsers block it), and a mute toggle always wins. Sound effects use the files in public/audio/ when
 // they exist and a short synthesised sound when not, so the game is never silent by accident and never
-// breaks on a missing file. Music is only played when its file exists: music-lobby, music-game and
-// music-hurry (the faster copy). With no music-hurry, music-game speeds up with playbackRate instead.
+// breaks on a missing file. Music is only played when its file exists. Each mode has its own track (TRACKS):
+// loops (lobby, game, culture, scoreboard) and short stingers that play once (countdown, reveal, culture feedback).
+// music-hurry is the optional faster copy of music-game. Without it, music-game speeds up with playbackRate instead.
 
 import { MUSIC_MAX_RATE } from "@/lib/game/config";
 import { isMuted, isReduced } from "./prefs";
 
 export type Sfx = "click" | "drop" | "correct" | "wrong" | "tick" | "tickFast" | "beep" | "alarm";
-export type MusicMode = "off" | "lobby" | "game";
+export type MusicMode = "off" | "lobby" | "game" | "countdown" | "reveal" | "culture" | "culture_feedback" | "scoreboard";
 
 const SFX_FILES: Partial<Record<Sfx, string>> = {
   click: "sfx-click",
@@ -21,7 +22,17 @@ const SFX_FILES: Partial<Record<Sfx, string>> = {
   tickFast: "sfx-tick-fast",
   alarm: "sfx-alarm",
 };
+const TRACKS: Record<Exclude<MusicMode, "off">, { file: string; loop: boolean }> = {
+  lobby: { file: "music-lobby", loop: true },
+  game: { file: "music-game", loop: true },
+  countdown: { file: "music-countdown", loop: false },
+  reveal: { file: "music-reveal", loop: false },
+  culture: { file: "music-culture", loop: true },
+  culture_feedback: { file: "music-culture-feedback", loop: false },
+  scoreboard: { file: "music-scoreboard", loop: true },
+};
 const MUSIC_VOLUME = 0.35;
+const STINGER_VOLUME = 0.5;
 const FADE_S = 0.8;
 
 let ctx: AudioContext | null = null;
@@ -137,14 +148,18 @@ export function playSfx(name: Sfx) {
 
 // ---------- music ----------
 
-function voice(buffer: AudioBuffer, volume: number): Voice | null {
+function voice(buffer: AudioBuffer, volume: number, loop = true): Voice | null {
   if (!ctx || !master) return null;
   const source = ctx.createBufferSource();
   const gain = ctx.createGain();
   source.buffer = buffer;
-  source.loop = true;
-  gain.gain.value = 0;
-  gain.gain.setTargetAtTime(volume, ctx.currentTime, FADE_S / 3);
+  source.loop = loop;
+  if (loop) {
+    gain.gain.value = 0;
+    gain.gain.setTargetAtTime(volume, ctx.currentTime, FADE_S / 3);
+  } else {
+    gain.gain.value = volume; // a stinger starts at full volume, no fade-in
+  }
   source.connect(gain).connect(master);
   source.start();
   return { source, gain };
@@ -174,16 +189,18 @@ function syncMusic() {
   if (playing && playing.mode === wanted) return;
   const old = playing;
   playing = null;
-  if (old) {
+  // A stinger rings out when the next track starts; it only fades when the music is switched off.
+  if (old && (TRACKS[old.mode as keyof typeof TRACKS].loop || wanted === "off")) {
     stopVoice(old.game);
     stopVoice(old.hurry);
   }
   if (wanted === "off") return;
   const mode = wanted;
+  const { file, loop } = TRACKS[mode];
   void (async () => {
-    const [main, fast] = await Promise.all([load(mode === "lobby" ? "music-lobby" : "music-game"), mode === "game" ? load("music-hurry") : null]);
+    const [main, fast] = await Promise.all([load(file), mode === "game" ? load("music-hurry") : null]);
     if (wanted !== mode || playing || !main) return; // changed its mind while loading, or no file
-    const game = voice(main, MUSIC_VOLUME);
+    const game = voice(main, loop ? MUSIC_VOLUME : STINGER_VOLUME, loop);
     const hurry = fast ? voice(fast, 0) : null;
     if (!game) return;
     playing = { mode, game, hurry };
