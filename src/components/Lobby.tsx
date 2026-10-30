@@ -51,7 +51,8 @@ function TeamCard({ team, phone, hostId, myId }: { team: Team; phone: PlayerRow 
 // Clipboard API needs https; the old execCommand route also works on http (testing over the LAN).
 async function copyText(text: string): Promise<boolean> {
   try {
-    await navigator.clipboard.writeText(text);
+    // A browser that waits on a permission prompt never answers: give up after a second.
+    await Promise.race([navigator.clipboard.writeText(text), new Promise((_, reject) => setTimeout(reject, 1000))]);
     return true;
   } catch {
     // fall through to the textarea trick
@@ -111,7 +112,8 @@ export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Pro
 
   async function share() {
     try {
-      if (navigator.share) {
+      // The native sheet is only worth it on a phone; on a computer it often shows nothing, so copy the link instead.
+      if (navigator.share && window.matchMedia("(pointer: coarse)").matches) {
         await navigator.share({ url: link, title: "Pumpskull" });
         return;
       }
