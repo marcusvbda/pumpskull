@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { savePlacement } from "@/app/actions/play";
 import { findItem } from "@/data/items";
 import { playSfx } from "@/lib/audio";
-import { DIFFICULTY, GAME, PLAY, type Difficulty } from "@/lib/game/config";
+import { DIFFICULTY, GAME, SCENE_CROP_X, type Difficulty } from "@/lib/game/config";
 import type { TrayEntry } from "@/lib/game/flow";
 import type { PlacedItem } from "@/lib/game/scoring";
 import type { Scene, Team } from "@/lib/game/types";
@@ -124,7 +124,7 @@ export function Builder({ identity, play, scene, backgroundId, tray, initialPlac
 
   // ---------- dragging ----------
 
-  const itemSize = sceneWidth * PLAY.builderItemScale;
+  const itemSize = sceneWidth * level.itemScale;
 
   function startFromTray(event: React.PointerEvent, itemId: string) {
     if (drag || timeUp) return;
@@ -142,10 +142,26 @@ export function Builder({ identity, play, scene, backgroundId, tray, initialPlac
     });
   }
 
-  function startFromScene(event: React.PointerEvent, item: Placed) {
+  // Picks the item whose picture is nearest to the finger, so a transparent corner of a neighbour never gets
+  // in the way. A touch on empty scene does nothing.
+  function startFromScene(event: React.PointerEvent) {
     if (drag || timeUp) return;
-    event.preventDefault();
     const rect = sceneRef.current!.getBoundingClientRect();
+    const px = event.clientX - rect.left;
+    const py = event.clientY - rect.top;
+    const reach = itemSize * 0.6;
+    let item: Placed | null = null;
+    let best = reach;
+    for (const p of placed) {
+      const centreY = findItem(scene, p.itemId)?.anchor === "center" ? p.y * rect.height : p.y * rect.height - itemSize / 2;
+      const distance = Math.hypot(p.x * rect.width - px, centreY - py);
+      if (distance <= best) {
+        best = distance;
+        item = p;
+      }
+    }
+    if (!item) return;
+    event.preventDefault();
     setDrag({
       key: item.key,
       itemId: item.itemId,
@@ -174,7 +190,7 @@ export function Builder({ identity, play, scene, backgroundId, tray, initialPlac
       const x = rect ? (e.clientX + d.offX - rect.left) / rect.width : -1;
       const y = rect ? (e.clientY + d.offY - rect.top) / rect.height : -1;
       // A cancelled pointer (the system took the touch) puts a moved item back where it was.
-      const inside = x >= 0 && x <= 1 && y >= 0 && y <= 1;
+      const inside = x >= SCENE_CROP_X && x <= 1 - SCENE_CROP_X && y >= 0 && y <= 1;
       if (e.type === "pointercancel") {
         setDrag(null);
         return;
@@ -204,10 +220,10 @@ export function Builder({ identity, play, scene, backgroundId, tray, initialPlac
   const dragItem = drag ? findItem(scene, drag.itemId) : undefined;
 
   return (
-    <Shell>
+    <Shell garland={false}>
       <PlayHeader team={team} role="builder" leftMs={leftMs} play={play} plays={plays} />
 
-      <SceneView scene={scene} backgroundId={backgroundId} sceneRef={sceneRef} className="touch-none border-4 border-teal-400">
+      <SceneView scene={scene} backgroundId={backgroundId} sceneRef={sceneRef} onPointerDown={startFromScene} className="-mx-4 w-[calc(100%+2rem)] touch-none border-y-4 border-teal-400">
         {placed.map((p) => (
           <SceneItem
             key={p.key}
@@ -215,14 +231,17 @@ export function Builder({ identity, play, scene, backgroundId, tray, initialPlac
             itemId={p.itemId}
             x={p.x}
             y={p.y}
-            scale={PLAY.builderItemScale}
+            scale={level.itemScale}
             hidden={drag?.key === p.key}
-            onPointerDown={(e) => startFromScene(e, p)}
           />
         ))}
       </SceneView>
 
-      <section aria-label="Items" className="grid min-h-0 flex-1 auto-rows-fr gap-1.5" style={{ gridTemplateColumns: `repeat(${level.trayColumns}, minmax(0, 1fr))` }}>
+      <section
+        aria-label="Items"
+        className="grid min-h-0 flex-1 auto-rows-fr grid-cols-[repeat(var(--cols),minmax(0,1fr))] gap-1.5 [@media(max-height:620px)]:grid-cols-[repeat(calc(var(--cols)+2),minmax(0,1fr))]"
+        style={{ "--cols": level.trayColumns } as React.CSSProperties}
+      >
         {tray.map((entry) => {
           const item = findItem(scene, entry.itemId);
           const left = entry.count - (used.get(entry.itemId) ?? 0);
@@ -237,7 +256,7 @@ export function Builder({ identity, play, scene, backgroundId, tray, initialPlac
               className="relative flex min-h-0 touch-none flex-col items-center justify-center gap-0.5 overflow-hidden rounded-xl border-2 border-indigo-600 bg-indigo-900/70 p-1 select-none [-webkit-touch-callout:none] disabled:opacity-35"
             >
               <GameImage src={item?.sprite ?? ""} label={name} className="min-h-0 w-full flex-1" />
-              {level.showNames && <span className="text-[10px] leading-none font-bold">{name}</span>}
+              {level.showNames && <span className="text-xs leading-none font-bold">{name}</span>}
               {entry.count > 1 && (
                 <span className="absolute top-0.5 right-0.5 min-w-6 rounded-full bg-amber-400 px-1 text-sm font-black text-indigo-950">{left}</span>
               )}

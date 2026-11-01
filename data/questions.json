@@ -70,20 +70,6 @@
     "fact": "Coco won the Oscar for Best Animated Feature."
   },
   {
-    "id": 6,
-    "topic": "dod",
-    "level": "easy",
-    "question": "Which instrument does Miguel play in Coco?",
-    "options": [
-      "Violin",
-      "Guitar",
-      "Trumpet",
-      "Accordion"
-    ],
-    "correct": 1,
-    "fact": "Miguel dreams of becoming a musician like his hero Ernesto de la Cruz."
-  },
-  {
     "id": 7,
     "topic": "dod",
     "level": "easy",
@@ -308,34 +294,6 @@
     "fact": "Calacas are the funny skeletons of folk art."
   },
   {
-    "id": 23,
-    "topic": "dod",
-    "level": "easy",
-    "question": "What is the name of Miguel's dog in Coco?",
-    "options": [
-      "Dante",
-      "Pluto",
-      "Scooby",
-      "Bolt"
-    ],
-    "correct": 0,
-    "fact": "Dante is a Xoloitzcuintli, a hairless Mexican breed."
-  },
-  {
-    "id": 24,
-    "topic": "dod",
-    "level": "easy",
-    "question": "Who is Mamá Coco in the film Coco?",
-    "options": [
-      "Miguel's mother",
-      "Miguel's teacher",
-      "A spirit guide",
-      "Miguel's great-grandmother"
-    ],
-    "correct": 3,
-    "fact": "Her father Héctor is the one who is forgotten."
-  },
-  {
     "id": 25,
     "topic": "dod",
     "level": "easy",
@@ -362,20 +320,6 @@
     ],
     "correct": 1,
     "fact": "A spirit with no photo on an ofrenda cannot cross."
-  },
-  {
-    "id": 27,
-    "topic": "dod",
-    "level": "easy",
-    "question": "What is the main ingredient of a sugar skull?",
-    "options": [
-      "Sugar",
-      "Flour",
-      "Chocolate",
-      "Rice"
-    ],
-    "correct": 0,
-    "fact": "The sugar is pressed into a mould and decorated with icing."
   },
   {
     "id": 28,
@@ -557,7 +501,7 @@
       "Twenty flower"
     ],
     "correct": 3,
-    "fact": "Cempohualxochitl: cem is twenty and xochitl is flower."
+    "fact": "Cempohualxochitl: cempohualli is twenty and xochitl is flower."
   },
   {
     "id": 41,
@@ -700,20 +644,6 @@
     "fact": "It means food of the souls in Maya."
   },
   {
-    "id": 51,
-    "topic": "dod",
-    "level": "medium",
-    "question": "Pátzcuaro is a town in which Mexican state?",
-    "options": [
-      "Michoacán",
-      "Sonora",
-      "Yucatán",
-      "Chihuahua"
-    ],
-    "correct": 0,
-    "fact": "Michoacán is also where monarch butterflies spend the winter."
-  },
-  {
     "id": 52,
     "topic": "dod",
     "level": "medium",
@@ -768,48 +698,6 @@
     ],
     "correct": 0,
     "fact": "Adults may get tequila or their favourite drink."
-  },
-  {
-    "id": 56,
-    "topic": "dod",
-    "level": "medium",
-    "question": "In Coco, who turns out to be Miguel's great-great-grandfather?",
-    "options": [
-      "Ernesto de la Cruz",
-      "Chicharrón",
-      "Papá Julio",
-      "Héctor"
-    ],
-    "correct": 3,
-    "fact": "Héctor wrote the song Remember Me for his daughter."
-  },
-  {
-    "id": 57,
-    "topic": "dod",
-    "level": "medium",
-    "question": "Which song from Coco won the Oscar for Best Original Song?",
-    "options": [
-      "La Llorona",
-      "Un Poco Loco",
-      "Remember Me",
-      "Proud Corazón"
-    ],
-    "correct": 2,
-    "fact": "It was written by Kristen Anderson-Lopez and Robert Lopez."
-  },
-  {
-    "id": 58,
-    "topic": "dod",
-    "level": "medium",
-    "question": "Which sweet made of amaranth seeds and honey is common in Mexico?",
-    "options": [
-      "Marzipan",
-      "Alegría",
-      "Nougat",
-      "Turrón"
-    ],
-    "correct": 1,
-    "fact": "Amaranth was a sacred food of the Aztecs."
   },
   {
     "id": 59,
@@ -910,46 +798,18 @@
     "fact": "Catrín means well-dressed gentleman."
   },
   {
-    "id": 66,
-    "topic": "dod",
-    "level": "medium",
-    "question": "In Coco, which spirit guide is Imelda's winged jaguar-like alebrije?",
-    "options": [
-      "Dante",
-      "Pepita",
-      "Chicharrón",
-      "Alebrije Rex"
-    ],
-    "correct": 1,
-    "fact": "Pepita carries Imelda across the land of the dead."
-  },
-  {
-    "id": 67,
-    "topic": "dod",
-    "level": "medium",
-    "question": "Which famous Mexican painter appears as a character in Coco?",
-    "options": [
-      "Frida Kahlo",
-      "Diego Rivera",
-      "Remedios Varo",
-      "Rufino Tamayo"
-    ],
-    "correct": 0,
-    "fact": "She is shown with her unibrow and a monkey."
-  },
-  {
     "id": 68,
     "topic": "dod",
     "level": "hard",
     "question": "In which year did UNESCO add Day of the Dead to its list of intangible cultural heritage?",
     "options": [
       "1990",
-      "2003",
+      "1998",
       "2015",
       "2008"
     ],
     "correct": 3,
-    "fact": "It was listed as an Indigenous festivity dedicated to the dead."
+    "fact": "It is on UNESCO's Representative List as an Indigenous festivity dedicated to the dead."
   },
   {
     "id": 69,
@@ -1089,7 +949,7 @@
       "Aguardiente"
     ],
     "correct": 1,
-    "fact": "It is eaten with bread babies called guaguas de pan."
+    "fact": "It is served with bread babies called guaguas de pan."
   },
   {
     "id": 79,
@@ -1176,48 +1036,6 @@
     "fact": "Tanta wawa means bread baby in Quechua."
   },
   {
-    "id": 85,
-    "topic": "dod",
-    "level": "hard",
-    "question": "Who directed Coco?",
-    "options": [
-      "Pete Docter",
-      "Brad Bird",
-      "Lee Unkrich",
-      "John Lasseter"
-    ],
-    "correct": 2,
-    "fact": "Adrian Molina was the co-director."
-  },
-  {
-    "id": 86,
-    "topic": "dod",
-    "level": "hard",
-    "question": "Who gave the voice to Miguel in the original Coco?",
-    "options": [
-      "Benjamin Bratt",
-      "Anthony Gonzalez",
-      "Gael García Bernal",
-      "Edward James Olmos"
-    ],
-    "correct": 1,
-    "fact": "He was thirteen when he recorded the role."
-  },
-  {
-    "id": 87,
-    "topic": "dod",
-    "level": "hard",
-    "question": "Who composed the score of Coco?",
-    "options": [
-      "Michael Giacchino",
-      "Hans Zimmer",
-      "Alan Silvestri",
-      "John Williams"
-    ],
-    "correct": 0,
-    "fact": "The songs were written by Kristen Anderson-Lopez and Robert Lopez."
-  },
-  {
     "id": 88,
     "topic": "dod",
     "level": "hard",
@@ -1230,34 +1048,6 @@
     ],
     "correct": 3,
     "fact": "The species is Tagetes erecta."
-  },
-  {
-    "id": 89,
-    "topic": "dod",
-    "level": "hard",
-    "question": "Which Mexican writer wrote about the Mexican view of death in The Labyrinth of Solitude?",
-    "options": [
-      "Carlos Fuentes",
-      "Juan Rulfo",
-      "Octavio Paz",
-      "Mario Vargas Llosa"
-    ],
-    "correct": 2,
-    "fact": "He won the Nobel Prize in Literature in 1990."
-  },
-  {
-    "id": 90,
-    "topic": "dod",
-    "level": "hard",
-    "question": "Which Mexican novel from 1955 is set in a town of whispering ghosts?",
-    "options": [
-      "Como agua para chocolate",
-      "Pedro Páramo",
-      "Aura",
-      "La muerte de Artemio Cruz"
-    ],
-    "correct": 1,
-    "fact": "It was written by Juan Rulfo."
   },
   {
     "id": 91,
@@ -1288,20 +1078,6 @@
     "fact": "It was used to model small skulls and animals."
   },
   {
-    "id": 93,
-    "topic": "dod",
-    "level": "hard",
-    "question": "Marigold extract is used commercially to...",
-    "options": [
-      "Make perfume only",
-      "Cure leather",
-      "Colour egg yolks",
-      "Dye jeans"
-    ],
-    "correct": 2,
-    "fact": "It contains lutein."
-  },
-  {
     "id": 94,
     "topic": "dod",
     "level": "hard",
@@ -1328,20 +1104,6 @@
     ],
     "correct": 0,
     "fact": "It is a large community procession that ends with a fire ceremony."
-  },
-  {
-    "id": 96,
-    "topic": "dod",
-    "level": "hard",
-    "question": "How many Oscars did Coco win?",
-    "options": [
-      "One",
-      "Three",
-      "Four",
-      "Two"
-    ],
-    "correct": 3,
-    "fact": "It won Best Animated Feature and Best Original Song."
   },
   {
     "id": 97,
@@ -1400,20 +1162,6 @@
     "fact": "His name is the root of the word Xoloitzcuintli."
   },
   {
-    "id": 101,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Which name, said three times in the 1988 Tim Burton film, summons its title character?",
-    "options": [
-      "Freddy Krueger",
-      "Jack Skellington",
-      "Beetlejuice",
-      "Pennywise"
-    ],
-    "correct": 2,
-    "fact": "Michael Keaton played the role."
-  },
-  {
     "id": 102,
     "topic": "halloween",
     "level": "easy",
@@ -1426,20 +1174,6 @@
     ],
     "correct": 1,
     "fact": "In practice it is almost always only a threat."
-  },
-  {
-    "id": 103,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Which 1978 film introduced the masked killer Michael Myers?",
-    "options": [
-      "Halloween",
-      "Friday the 13th",
-      "Scream",
-      "Psycho"
-    ],
-    "correct": 0,
-    "fact": "It was directed by John Carpenter."
   },
   {
     "id": 104,
@@ -1456,76 +1190,6 @@
     "fact": "It was a flop in 1993 and became a Halloween classic."
   },
   {
-    "id": 105,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Which Michael Jackson video from 1983 has a famous zombie dance?",
-    "options": [
-      "Bad",
-      "Beat It",
-      "Thriller",
-      "Smooth Criminal"
-    ],
-    "correct": 2,
-    "fact": "It was directed by John Landis."
-  },
-  {
-    "id": 106,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "In Mary Shelley's novel, who is Frankenstein?",
-    "options": [
-      "The creature himself",
-      "The scientist who builds the creature",
-      "A village in the Alps",
-      "The castle where it is built"
-    ],
-    "correct": 1,
-    "fact": "The creature has no name in the book."
-  },
-  {
-    "id": 107,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "In classic folklore, which item keeps vampires away?",
-    "options": [
-      "Garlic",
-      "Onions",
-      "Lemons",
-      "Pepper"
-    ],
-    "correct": 0,
-    "fact": "Garlic is mostly a Hollywood habit, but it comes from Eastern European tales."
-  },
-  {
-    "id": 108,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "What kills a werewolf in classic movies?",
-    "options": [
-      "A wooden stake",
-      "Holy water",
-      "Fire",
-      "A silver bullet"
-    ],
-    "correct": 3,
-    "fact": "Silver is a classic symbol of purity."
-  },
-  {
-    "id": 109,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "What is the classic way to kill a vampire?",
-    "options": [
-      "A silver bullet through the heart",
-      "Drowning in running water",
-      "A wooden stake through the heart",
-      "Wrapping in an iron chain"
-    ],
-    "correct": 2,
-    "fact": "Sunlight is the other classic weapon."
-  },
-  {
     "id": 110,
     "topic": "halloween",
     "level": "easy",
@@ -1538,118 +1202,6 @@
     ],
     "correct": 1,
     "fact": "He waits in the pumpkin patch."
-  },
-  {
-    "id": 111,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Who haunts the village in Washington Irving's Sleepy Hollow?",
-    "options": [
-      "The Headless Horseman",
-      "The Pied Piper",
-      "Rip Van Winkle",
-      "The Phantom"
-    ],
-    "correct": 0,
-    "fact": "The story was published in 1820."
-  },
-  {
-    "id": 112,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Which hairy member of the Addams Family is covered from head to toe?",
-    "options": [
-      "Cousin Eddie",
-      "Cousin Oliver",
-      "Cousin Vinny",
-      "Cousin Itt"
-    ],
-    "correct": 3,
-    "fact": "Cousin Itt speaks in a high-pitched mumble."
-  },
-  {
-    "id": 113,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Which Stephen King novel features the clown Pennywise?",
-    "options": [
-      "Carrie",
-      "Misery",
-      "It",
-      "Cujo"
-    ],
-    "correct": 2,
-    "fact": "The clown lives in the sewers of Derry."
-  },
-  {
-    "id": 114,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Which mask is worn by the killer in Scream?",
-    "options": [
-      "Jason's hockey mask",
-      "Ghostface",
-      "Pinhead",
-      "Leatherface"
-    ],
-    "correct": 1,
-    "fact": "It was inspired by Edvard Munch's painting The Scream."
-  },
-  {
-    "id": 115,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Which sports mask is worn by Jason Voorhees?",
-    "options": [
-      "A hockey mask",
-      "A baseball mask",
-      "A fencing mask",
-      "A football helmet"
-    ],
-    "correct": 0,
-    "fact": "He first appears with it in the third Friday the 13th film."
-  },
-  {
-    "id": 116,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Which film includes the line \"I see dead people\"?",
-    "options": [
-      "The Others",
-      "Poltergeist",
-      "Ghost",
-      "The Sixth Sense"
-    ],
-    "correct": 3,
-    "fact": "Bruce Willis stars in it."
-  },
-  {
-    "id": 117,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "In the 1984 film, who do you call when something strange is in the neighbourhood?",
-    "options": [
-      "Monster Squad",
-      "Spook Patrol",
-      "Ghostbusters",
-      "Scary Team"
-    ],
-    "correct": 2,
-    "fact": "The theme song was a huge hit."
-  },
-  {
-    "id": 118,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Which TV family lives at 1313 Mockingbird Lane?",
-    "options": [
-      "The Addams Family",
-      "The Munsters",
-      "The Simpsons",
-      "The Waltons"
-    ],
-    "correct": 1,
-    "fact": "The Addams Family live at 0001 Cemetery Lane."
   },
   {
     "id": 119,
@@ -1669,7 +1221,7 @@
     "id": 120,
     "topic": "halloween",
     "level": "easy",
-    "question": "Which creature is traditionally a witch's companion?",
+    "question": "Which animal is a classic Halloween symbol, often shown next to a witch?",
     "options": [
       "A goldfish",
       "A horse",
@@ -1694,104 +1246,6 @@
     "fact": "Jack lives in Halloween Town."
   },
   {
-    "id": 122,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Which horror villain wears a glove with blades?",
-    "options": [
-      "Michael Myers",
-      "Freddy Krueger",
-      "Jason Voorhees",
-      "Leatherface"
-    ],
-    "correct": 1,
-    "fact": "He appears in A Nightmare on Elm Street."
-  },
-  {
-    "id": 123,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "What is a group of witches called?",
-    "options": [
-      "A coven",
-      "A flock",
-      "A pack",
-      "A swarm"
-    ],
-    "correct": 0,
-    "fact": "The traditional number is thirteen."
-  },
-  {
-    "id": 124,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "What do we call a noisy ghost that moves objects?",
-    "options": [
-      "A banshee",
-      "A wraith",
-      "A zombie",
-      "A poltergeist"
-    ],
-    "correct": 3,
-    "fact": "The word comes from German: noisy spirit."
-  },
-  {
-    "id": 125,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Who is the Addams Family's very tall butler?",
-    "options": [
-      "Jeeves",
-      "Alfred",
-      "Lurch",
-      "Igor"
-    ],
-    "correct": 2,
-    "fact": "His famous line is \"You rang?\""
-  },
-  {
-    "id": 126,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Who wrote the novel Dracula?",
-    "options": [
-      "Mary Shelley",
-      "Bram Stoker",
-      "Edgar Allan Poe",
-      "Stephen King"
-    ],
-    "correct": 1,
-    "fact": "It was published in 1897."
-  },
-  {
-    "id": 127,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Who wrote Frankenstein?",
-    "options": [
-      "Mary Shelley",
-      "Bram Stoker",
-      "Emily Brontë",
-      "Jane Austen"
-    ],
-    "correct": 0,
-    "fact": "She was only 18 when she began writing it."
-  },
-  {
-    "id": 128,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "In folklore, what is the \"witching hour\"?",
-    "options": [
-      "Dawn",
-      "Noon",
-      "Sunset",
-      "Around midnight"
-    ],
-    "correct": 3,
-    "fact": "Some versions say three in the morning."
-  },
-  {
     "id": 129,
     "topic": "halloween",
     "level": "easy",
@@ -1804,62 +1258,6 @@
     ],
     "correct": 2,
     "fact": "Your hands stay behind your back."
-  },
-  {
-    "id": 130,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "In which film does Jack Nicholson say \"Here's Johnny!\"?",
-    "options": [
-      "Psycho",
-      "The Shining",
-      "The Exorcist",
-      "Poltergeist"
-    ],
-    "correct": 1,
-    "fact": "The film was directed by Stanley Kubrick."
-  },
-  {
-    "id": 131,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Which 1960 Hitchcock film has a famous shower scene?",
-    "options": [
-      "Psycho",
-      "Vertigo",
-      "Rebecca",
-      "The Birds"
-    ],
-    "correct": 0,
-    "fact": "It was shot in black and white."
-  },
-  {
-    "id": 132,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Which 1973 film is about a possessed girl?",
-    "options": [
-      "Carrie",
-      "The Omen",
-      "Rosemary's Baby",
-      "The Exorcist"
-    ],
-    "correct": 3,
-    "fact": "It was one of the first horror films nominated for Best Picture."
-  },
-  {
-    "id": 133,
-    "topic": "halloween",
-    "level": "easy",
-    "question": "Which TV witch twitches her nose to cast spells?",
-    "options": [
-      "Sabrina",
-      "Hermione",
-      "Samantha in Bewitched",
-      "Elphaba"
-    ],
-    "correct": 2,
-    "fact": "The show ran from 1964 to 1972."
   },
   {
     "id": 134,
@@ -1904,108 +1302,10 @@
     "fact": "It was held around the night of October 31 to November 1."
   },
   {
-    "id": 137,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "Who played the monster in Universal's 1931 Frankenstein?",
-    "options": [
-      "Bela Lugosi",
-      "Lon Chaney Jr.",
-      "Boris Karloff",
-      "Vincent Price"
-    ],
-    "correct": 2,
-    "fact": "The flat head and neck bolts became the monster's image."
-  },
-  {
-    "id": 138,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "Who played Dracula in Universal's 1931 film?",
-    "options": [
-      "Boris Karloff",
-      "Bela Lugosi",
-      "Christopher Lee",
-      "Vincent Price"
-    ],
-    "correct": 1,
-    "fact": "He was buried in his Dracula cape."
-  },
-  {
-    "id": 139,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "Which region is Dracula's home in Stoker's novel?",
-    "options": [
-      "Transylvania",
-      "Bavaria",
-      "Silesia",
-      "Galicia"
-    ],
-    "correct": 0,
-    "fact": "The name means beyond the forest."
-  },
-  {
-    "id": 140,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "In which year did the Salem witch trials take place?",
-    "options": [
-      "1592",
-      "1776",
-      "1812",
-      "1692"
-    ],
-    "correct": 3,
-    "fact": "They took place in colonial Massachusetts."
-  },
-  {
-    "id": 141,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "How were convicted witches executed in Salem?",
-    "options": [
-      "By burning",
-      "By drowning",
-      "By hanging",
-      "By beheading"
-    ],
-    "correct": 2,
-    "fact": "The burning of witches in Salem is a myth."
-  },
-  {
-    "id": 142,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "In parts of Britain, what does a black cat crossing your path traditionally bring?",
-    "options": [
-      "Bad luck",
-      "Good luck",
-      "Rain",
-      "A visitor"
-    ],
-    "correct": 1,
-    "fact": "In the US it is often the opposite."
-  },
-  {
-    "id": 143,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "In which year did Michael Jackson's Thriller video premiere?",
-    "options": [
-      "1983",
-      "1979",
-      "1986",
-      "1991"
-    ],
-    "correct": 0,
-    "fact": "It was a 14-minute short film."
-  },
-  {
     "id": 144,
     "topic": "halloween",
     "level": "medium",
-    "question": "Which radio play by Orson Welles caused panic on October 30, 1938?",
+    "question": "Which Orson Welles radio play, aired the night before Halloween in 1938, became famous for scaring listeners?",
     "options": [
       "The Time Machine",
       "The Invisible Man",
@@ -2013,13 +1313,13 @@
       "The War of the Worlds"
     ],
     "correct": 3,
-    "fact": "The broadcast was made to sound like a real news report."
+    "fact": "Welles ended the show by comparing it to jumping out of a bush and saying \"Boo!\" for Halloween."
   },
   {
     "id": 145,
     "topic": "halloween",
     "level": "medium",
-    "question": "Which US state grows the most pumpkins?",
+    "question": "Which US state grows the most Halloween pumpkins?",
     "options": [
       "California",
       "Texas",
@@ -2056,90 +1356,6 @@
     ],
     "correct": 0,
     "fact": "The real Salem is in Massachusetts."
-  },
-  {
-    "id": 148,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "Who directed the 1978 film Halloween?",
-    "options": [
-      "Wes Craven",
-      "Tobe Hooper",
-      "George A. Romero",
-      "John Carpenter"
-    ],
-    "correct": 3,
-    "fact": "He also composed the music."
-  },
-  {
-    "id": 149,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "Which actress plays Laurie Strode in Halloween?",
-    "options": [
-      "Neve Campbell",
-      "Sigourney Weaver",
-      "Jamie Lee Curtis",
-      "Heather Langenkamp"
-    ],
-    "correct": 2,
-    "fact": "It was her first film role."
-  },
-  {
-    "id": 150,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "In which fictional town does Pennywise live?",
-    "options": [
-      "Salem, Massachusetts",
-      "Derry, Maine",
-      "Castle Rock, Maine",
-      "Haddonfield, Illinois"
-    ],
-    "correct": 1,
-    "fact": "Derry is Stephen King's name for a town in Maine."
-  },
-  {
-    "id": 151,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "Who wrote The Legend of Sleepy Hollow?",
-    "options": [
-      "Washington Irving",
-      "Nathaniel Hawthorne",
-      "Edgar Allan Poe",
-      "Mark Twain"
-    ],
-    "correct": 0,
-    "fact": "It appears in The Sketch Book."
-  },
-  {
-    "id": 152,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "Which Edgar Allan Poe poem has the refrain \"Nevermore\"?",
-    "options": [
-      "Annabel Lee",
-      "The Bells",
-      "Lenore",
-      "The Raven"
-    ],
-    "correct": 3,
-    "fact": "It was published in 1845."
-  },
-  {
-    "id": 153,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "Which pharaoh's tomb did Howard Carter discover in 1922?",
-    "options": [
-      "Ramses II",
-      "Khufu",
-      "Tutankhamun",
-      "Akhenaten"
-    ],
-    "correct": 2,
-    "fact": "The \"mummy's curse\" legend followed the find."
   },
   {
     "id": 154,
@@ -2182,146 +1398,6 @@
     ],
     "correct": 3,
     "fact": "Other charms mean money or an unmarried life."
-  },
-  {
-    "id": 157,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "Which Wallachian ruler is often linked to Dracula?",
-    "options": [
-      "Ivan the Terrible",
-      "Attila",
-      "Vlad the Impaler",
-      "Stephen the Great"
-    ],
-    "correct": 2,
-    "fact": "Stoker borrowed the name Dracula from a book on Wallachia."
-  },
-  {
-    "id": 158,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "Who directed Beetlejuice (1988)?",
-    "options": [
-      "John Landis",
-      "Tim Burton",
-      "Sam Raimi",
-      "Joe Dante"
-    ],
-    "correct": 1,
-    "fact": "Michael Keaton plays the ghost."
-  },
-  {
-    "id": 159,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "In which Shakespeare play do three witches chant \"Double, double toil and trouble\"?",
-    "options": [
-      "Macbeth",
-      "Hamlet",
-      "Othello",
-      "The Tempest"
-    ],
-    "correct": 0,
-    "fact": "They stir a cauldron."
-  },
-  {
-    "id": 160,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "In which fictional town does Michael Myers live?",
-    "options": [
-      "Springwood, Ohio",
-      "Crystal Lake, New Jersey",
-      "Derry, Maine",
-      "Haddonfield, Illinois"
-    ],
-    "correct": 3,
-    "fact": "Haddonfield is the setting of most of the series."
-  },
-  {
-    "id": 161,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "Who directed Psycho (1960)?",
-    "options": [
-      "Stanley Kubrick",
-      "William Friedkin",
-      "Alfred Hitchcock",
-      "Brian De Palma"
-    ],
-    "correct": 2,
-    "fact": "Hitchcock bought up copies of the novel to keep the ending secret."
-  },
-  {
-    "id": 162,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "Which novelist wrote Carrie?",
-    "options": [
-      "Anne Rice",
-      "Stephen King",
-      "Dean Koontz",
-      "Shirley Jackson"
-    ],
-    "correct": 1,
-    "fact": "It was his first published novel (1974)."
-  },
-  {
-    "id": 163,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "Who plays Jack Torrance in The Shining?",
-    "options": [
-      "Jack Nicholson",
-      "Anthony Hopkins",
-      "Robert De Niro",
-      "Al Pacino"
-    ],
-    "correct": 0,
-    "fact": "The hotel is called the Overlook."
-  },
-  {
-    "id": 164,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "What is a banshee in Irish folklore?",
-    "options": [
-      "A shape-shifting horse",
-      "A harvest goddess",
-      "A fire dog",
-      "A wailing spirit who warns of a death"
-    ],
-    "correct": 3,
-    "fact": "Her wail is said to announce a death in the family."
-  },
-  {
-    "id": 165,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "What is a will-o'-the-wisp?",
-    "options": [
-      "A sprite in a bottle",
-      "A spirit that moves furniture",
-      "A ghostly light seen over marshes",
-      "A phantom ship"
-    ],
-    "correct": 2,
-    "fact": "Travellers were said to be led astray by it."
-  },
-  {
-    "id": 166,
-    "topic": "halloween",
-    "level": "medium",
-    "question": "Where does the creature called a ghoul come from?",
-    "options": [
-      "Norse sagas",
-      "Arabic folklore",
-      "Greek tragedy",
-      "Aztec myths"
-    ],
-    "correct": 1,
-    "fact": "Ghouls were said to feed on corpses in graveyards."
   },
   {
     "id": 167,
@@ -2422,90 +1498,6 @@
     "fact": "It was created by George Renninger."
   },
   {
-    "id": 174,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "How many people were executed during the Salem witch trials?",
-    "options": [
-      "Fourteen",
-      "Twenty",
-      "Thirty-five",
-      "More than 100"
-    ],
-    "correct": 1,
-    "fact": "Nineteen were hanged and one man was crushed to death."
-  },
-  {
-    "id": 175,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "Where did Mary Shelley come up with Frankenstein in 1816?",
-    "options": [
-      "At a ghost-story contest by Lake Geneva",
-      "In a Scottish castle during a storm",
-      "On a ship sailing to America",
-      "In a London theatre after a show"
-    ],
-    "correct": 0,
-    "fact": "Lord Byron proposed the contest."
-  },
-  {
-    "id": 176,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "The 1816 summer of the Frankenstein contest was cold and dark. Why?",
-    "options": [
-      "A total solar eclipse",
-      "The passing of a bright comet",
-      "A long war in Europe",
-      "The eruption of Mount Tambora"
-    ],
-    "correct": 3,
-    "fact": "1816 is known as the Year Without a Summer."
-  },
-  {
-    "id": 177,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "In which year was Dracula published?",
-    "options": [
-      "1818",
-      "1922",
-      "1897",
-      "1931"
-    ],
-    "correct": 2,
-    "fact": "Bram Stoker was born in Dublin."
-  },
-  {
-    "id": 178,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "Which 1922 silent film is an unofficial adaptation of Dracula?",
-    "options": [
-      "The Cabinet of Dr. Caligari",
-      "Nosferatu",
-      "Metropolis",
-      "Faust"
-    ],
-    "correct": 1,
-    "fact": "F. W. Murnau directed it."
-  },
-  {
-    "id": 179,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "What is the time signature of John Carpenter's Halloween theme?",
-    "options": [
-      "5/4",
-      "4/4",
-      "3/4",
-      "6/8"
-    ],
-    "correct": 0,
-    "fact": "He composed it in a few days."
-  },
-  {
     "id": 180,
     "topic": "halloween",
     "level": "hard",
@@ -2520,24 +1512,10 @@
     "fact": "Its first Halloween celebration in 1920 was meant to keep kids from pranks."
   },
   {
-    "id": 181,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "In what year did New York's Village Halloween Parade begin?",
-    "options": [
-      "1952",
-      "1988",
-      "1974",
-      "1999"
-    ],
-    "correct": 2,
-    "fact": "It began as a small walk for neighbours."
-  },
-  {
     "id": 182,
     "topic": "halloween",
     "level": "hard",
-    "question": "Who sang the 1962 hit Monster Mash?",
+    "question": "Who sang Monster Mash, the Halloween party hit of 1962?",
     "options": [
       "Chubby Checker",
       "Bobby \"Boris\" Pickett",
@@ -2546,20 +1524,6 @@
     ],
     "correct": 1,
     "fact": "He imitated Boris Karloff's voice."
-  },
-  {
-    "id": 183,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "Who directed The Nightmare Before Christmas?",
-    "options": [
-      "Henry Selick",
-      "Tim Burton",
-      "Wes Anderson",
-      "Brad Bird"
-    ],
-    "correct": 0,
-    "fact": "Burton produced it and wrote the story."
   },
   {
     "id": 184,
@@ -2632,48 +1596,6 @@
     "fact": "It is also called Mischief Night elsewhere."
   },
   {
-    "id": 189,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "What does banshee (bean sí) mean in Irish?",
-    "options": [
-      "Mother of ghosts",
-      "Night wailer",
-      "Woman of the fairy mound",
-      "Queen of the dead"
-    ],
-    "correct": 2,
-    "fact": "Sí is the fairy mound."
-  },
-  {
-    "id": 190,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "In which city was Bram Stoker born?",
-    "options": [
-      "London",
-      "Dublin",
-      "Edinburgh",
-      "Belfast"
-    ],
-    "correct": 1,
-    "fact": "He worked as manager of the Lyceum Theatre."
-  },
-  {
-    "id": 191,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "Who wrote The Vampyre (1819), the first vampire story in English?",
-    "options": [
-      "John Polidori",
-      "Lord Byron",
-      "Percy Shelley",
-      "Sheridan Le Fanu"
-    ],
-    "correct": 0,
-    "fact": "He was at the same Lake Geneva gathering as Mary Shelley."
-  },
-  {
     "id": 192,
     "topic": "halloween",
     "level": "hard",
@@ -2688,24 +1610,10 @@
     "fact": "It was a William Shatner mask of Captain Kirk, repainted white."
   },
   {
-    "id": 193,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "Who plays Winifred Sanderson in Hocus Pocus?",
-    "options": [
-      "Sarah Jessica Parker",
-      "Kathy Najimy",
-      "Bette Midler",
-      "Whoopi Goldberg"
-    ],
-    "correct": 2,
-    "fact": "Sarah Jessica Parker plays her sister Sarah."
-  },
-  {
     "id": 194,
     "topic": "halloween",
     "level": "hard",
-    "question": "Where were pumpkins and squashes first domesticated?",
+    "question": "Where were pumpkins, the symbol of Halloween, first domesticated?",
     "options": [
       "Ireland",
       "Mesoamerica",
@@ -2714,76 +1622,6 @@
     ],
     "correct": 1,
     "fact": "They were farmed there thousands of years ago."
-  },
-  {
-    "id": 195,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "Where might the word bonfire come from?",
-    "options": [
-      "\"Bone fire\"",
-      "\"Good fire\"",
-      "\"Bonny fire\"",
-      "\"Base fire\""
-    ],
-    "correct": 0,
-    "fact": "Bones were burned on the old autumn fires."
-  },
-  {
-    "id": 196,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "How many species of bat feed on blood?",
-    "options": [
-      "One",
-      "Seven",
-      "Twelve",
-      "Three"
-    ],
-    "correct": 3,
-    "fact": "They live in Latin America."
-  },
-  {
-    "id": 197,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "Who directed The Exorcist (1973)?",
-    "options": [
-      "Roman Polanski",
-      "Richard Donner",
-      "William Friedkin",
-      "Wes Craven"
-    ],
-    "correct": 2,
-    "fact": "It won two Oscars."
-  },
-  {
-    "id": 198,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "Who directed The Shining (1980)?",
-    "options": [
-      "John Carpenter",
-      "Stanley Kubrick",
-      "Steven Spielberg",
-      "David Cronenberg"
-    ],
-    "correct": 1,
-    "fact": "Stephen King disliked the film."
-  },
-  {
-    "id": 199,
-    "topic": "halloween",
-    "level": "hard",
-    "question": "Who wrote the songs of The Nightmare Before Christmas and sang Jack's singing voice?",
-    "options": [
-      "Danny Elfman",
-      "Alan Menken",
-      "Randy Newman",
-      "Michael Giacchino"
-    ],
-    "correct": 0,
-    "fact": "Chris Sarandon spoke Jack's lines."
   },
   {
     "id": 200,
@@ -2856,20 +1694,6 @@
     "fact": "Sugar skulls are decorated with colourful icing."
   },
   {
-    "id": 205,
-    "topic": "compare",
-    "level": "easy",
-    "question": "Which flower belongs to Day of the Dead?",
-    "options": [
-      "Sunflower",
-      "Lily",
-      "Marigold",
-      "Orchid"
-    ],
-    "correct": 2,
-    "fact": "Marigolds are called the flower of the dead in Mexico."
-  },
-  {
     "id": 206,
     "topic": "compare",
     "level": "easy",
@@ -2910,118 +1734,6 @@
     ],
     "correct": 3,
     "fact": "Halloween is on October 31 and Day of the Dead on November 1 and 2."
-  },
-  {
-    "id": 209,
-    "topic": "compare",
-    "level": "easy",
-    "question": "What does Team Pumpkin represent in this game?",
-    "options": [
-      "Day of the Dead",
-      "Christmas",
-      "Halloween",
-      "Easter"
-    ],
-    "correct": 2,
-    "fact": "The pumpkin is a symbol of Halloween."
-  },
-  {
-    "id": 210,
-    "topic": "compare",
-    "level": "easy",
-    "question": "What does Team Marigold represent in this game?",
-    "options": [
-      "Halloween",
-      "Day of the Dead",
-      "Christmas",
-      "Easter"
-    ],
-    "correct": 1,
-    "fact": "The marigold is a symbol of Day of the Dead."
-  },
-  {
-    "id": 211,
-    "topic": "compare",
-    "level": "easy",
-    "question": "What is the English word for calavera?",
-    "options": [
-      "Skull",
-      "Skirt",
-      "Skate",
-      "Skin"
-    ],
-    "correct": 0,
-    "fact": "A skull is the bone of the head."
-  },
-  {
-    "id": 212,
-    "topic": "compare",
-    "level": "easy",
-    "question": "Which phrase means right beside something?",
-    "options": [
-      "On top of",
-      "Far from",
-      "Under",
-      "Next to"
-    ],
-    "correct": 3,
-    "fact": "Use it to describe a scene: the candle is next to the photo."
-  },
-  {
-    "id": 213,
-    "topic": "compare",
-    "level": "easy",
-    "question": "Which phrase means above something and touching it?",
-    "options": [
-      "Behind",
-      "Next to",
-      "On top of",
-      "Under"
-    ],
-    "correct": 2,
-    "fact": "Use it to describe a scene: the skull is on top of the step."
-  },
-  {
-    "id": 214,
-    "topic": "compare",
-    "level": "easy",
-    "question": "Which phrase means in the space separating two things?",
-    "options": [
-      "Beside",
-      "Between",
-      "Behind",
-      "Above"
-    ],
-    "correct": 1,
-    "fact": "Use it to describe a scene: the pumpkin is between the candles."
-  },
-  {
-    "id": 215,
-    "topic": "compare",
-    "level": "easy",
-    "question": "Which phrase means at the front of something?",
-    "options": [
-      "In front of",
-      "Behind",
-      "Between",
-      "Under"
-    ],
-    "correct": 0,
-    "fact": "Use it to describe a scene: the witch is in front of the door."
-  },
-  {
-    "id": 216,
-    "topic": "compare",
-    "level": "easy",
-    "question": "What is a ghost?",
-    "options": [
-      "A kind of candy",
-      "A type of pumpkin",
-      "A costume shop",
-      "The spirit of a dead person"
-    ],
-    "correct": 3,
-    "fact": "Ghosts appear only in stories and decorations."
   },
   {
     "id": 217,
@@ -3150,104 +1862,6 @@
     "fact": "Both are famous skeleton characters, from different traditions."
   },
   {
-    "id": 226,
-    "topic": "compare",
-    "level": "easy",
-    "question": "What does to carve mean?",
-    "options": [
-      "To paint over a surface",
-      "To cut shapes into something solid",
-      "To bake in an oven",
-      "To cover with cloth"
-    ],
-    "correct": 1,
-    "fact": "You carve a pumpkin to make a jack-o'-lantern."
-  },
-  {
-    "id": 227,
-    "topic": "compare",
-    "level": "easy",
-    "question": "What does haunted mean?",
-    "options": [
-      "Visited by ghosts",
-      "Very old and falling apart",
-      "Very tall and thin",
-      "Locked and abandoned"
-    ],
-    "correct": 0,
-    "fact": "A haunted house is a house with ghosts, real or pretend."
-  },
-  {
-    "id": 228,
-    "topic": "compare",
-    "level": "easy",
-    "question": "What is a cobweb?",
-    "options": [
-      "A vine that grows on pumpkins",
-      "A witch's old broom",
-      "A bat's wing",
-      "A spider's web, often old and dusty"
-    ],
-    "correct": 3,
-    "fact": "Fake cobwebs are a Halloween decoration."
-  },
-  {
-    "id": 229,
-    "topic": "compare",
-    "level": "easy",
-    "question": "What is an altar?",
-    "options": [
-      "A kind of church bell",
-      "A type of heavy door",
-      "A table or platform for offerings or ceremonies",
-      "A meal eaten on holidays"
-    ],
-    "correct": 2,
-    "fact": "Ofrendas are altars."
-  },
-  {
-    "id": 230,
-    "topic": "compare",
-    "level": "easy",
-    "question": "What does to honour someone mean?",
-    "options": [
-      "To forget them",
-      "To show them respect",
-      "To sell them",
-      "To compare them"
-    ],
-    "correct": 1,
-    "fact": "Families honour the dead with flowers, food and stories."
-  },
-  {
-    "id": 231,
-    "topic": "compare",
-    "level": "easy",
-    "question": "What is an ancestor?",
-    "options": [
-      "A family member from long ago",
-      "A teacher from school",
-      "A pet that lived long",
-      "A neighbour from next door"
-    ],
-    "correct": 0,
-    "fact": "Day of the Dead is a way to honour ancestors."
-  },
-  {
-    "id": 232,
-    "topic": "compare",
-    "level": "easy",
-    "question": "What does spooky mean?",
-    "options": [
-      "Very sweet",
-      "Very cold",
-      "Very quiet",
-      "Scary in a fun way"
-    ],
-    "correct": 3,
-    "fact": "Spooky decorations are meant to be fun."
-  },
-  {
     "id": 233,
     "topic": "compare",
     "level": "easy",
@@ -3274,62 +1888,6 @@
     ],
     "correct": 1,
     "fact": "They fall on November 1 and 2."
-  },
-  {
-    "id": 235,
-    "topic": "compare",
-    "level": "medium",
-    "question": "In which country do people welcome their ancestors with floating lanterns during Obon?",
-    "options": [
-      "Japan",
-      "China",
-      "Mexico",
-      "Ireland"
-    ],
-    "correct": 0,
-    "fact": "Lanterns are lit to guide the spirits home."
-  },
-  {
-    "id": 236,
-    "topic": "compare",
-    "level": "medium",
-    "question": "What do Chinese families do on Qingming?",
-    "options": [
-      "Light bonfires in the streets",
-      "Dance in costumes",
-      "Bake skull-shaped bread",
-      "Sweep and tidy ancestors' tombs"
-    ],
-    "correct": 3,
-    "fact": "It is also called Tomb-Sweeping Day."
-  },
-  {
-    "id": 237,
-    "topic": "compare",
-    "level": "medium",
-    "question": "What do Polish families do on November 1?",
-    "options": [
-      "Carve turnips",
-      "Fly kites",
-      "Light candles at graves",
-      "Dress as skeletons"
-    ],
-    "correct": 2,
-    "fact": "Cemeteries glow with candles at night."
-  },
-  {
-    "id": 238,
-    "topic": "compare",
-    "level": "medium",
-    "question": "In Brazil, November 2 is a national holiday called...",
-    "options": [
-      "Dia de Todos os Santos",
-      "Dia de Finados",
-      "Dia das Bruxas",
-      "Dia de Reis"
-    ],
-    "correct": 1,
-    "fact": "Many Brazilians visit cemeteries with flowers."
   },
   {
     "id": 239,
@@ -3372,20 +1930,6 @@
     ],
     "correct": 2,
     "fact": "The marigold is native to Mexico and pumpkins to Mesoamerica."
-  },
-  {
-    "id": 242,
-    "topic": "compare",
-    "level": "medium",
-    "question": "What was the original lantern vegetable in Ireland?",
-    "options": [
-      "The pumpkin",
-      "The turnip",
-      "The beet only",
-      "The cabbage"
-    ],
-    "correct": 1,
-    "fact": "The pumpkin took over in America."
   },
   {
     "id": 243,
@@ -3444,62 +1988,6 @@
     "fact": "They receive a small sugar skull or a coin."
   },
   {
-    "id": 247,
-    "topic": "compare",
-    "level": "medium",
-    "question": "In Korea, which holiday honours ancestors with food offerings in autumn?",
-    "options": [
-      "Chuseok",
-      "Seollal",
-      "Obon",
-      "Qingming"
-    ],
-    "correct": 0,
-    "fact": "Families make an offering table."
-  },
-  {
-    "id": 248,
-    "topic": "compare",
-    "level": "medium",
-    "question": "In which country do people eat ossa dei morti, bone-shaped biscuits, on November 2?",
-    "options": [
-      "Greece",
-      "Sweden",
-      "Portugal",
-      "Italy"
-    ],
-    "correct": 3,
-    "fact": "They are sweet biscuits with almonds."
-  },
-  {
-    "id": 249,
-    "topic": "compare",
-    "level": "medium",
-    "question": "Which Spanish sweet is called saint's bones?",
-    "options": [
-      "Turrón",
-      "Churros",
-      "Huesos de santo",
-      "Polvorones"
-    ],
-    "correct": 2,
-    "fact": "They are marzipan tubes filled with sweet yolk."
-  },
-  {
-    "id": 250,
-    "topic": "compare",
-    "level": "medium",
-    "question": "In the Philippines, what do families often do at cemeteries on November 1?",
-    "options": [
-      "Fly kites over the graves",
-      "Spend the day and night together, with food and music",
-      "Wear masks and walk in silence",
-      "Sail boats on the river"
-    ],
-    "correct": 1,
-    "fact": "The day is called Undas."
-  },
-  {
     "id": 251,
     "topic": "compare",
     "level": "medium",
@@ -3528,34 +2016,6 @@
     "fact": "The colour and scent mark the path."
   },
   {
-    "id": 253,
-    "topic": "compare",
-    "level": "medium",
-    "question": "What does the Latin phrase memento mori mean?",
-    "options": [
-      "Rest in peace",
-      "Happy ending",
-      "Remember that you will die",
-      "Long live the king"
-    ],
-    "correct": 2,
-    "fact": "Skulls in art often carry that message."
-  },
-  {
-    "id": 254,
-    "topic": "compare",
-    "level": "medium",
-    "question": "In ancient Greek myth, who ferried the dead across the river Styx?",
-    "options": [
-      "Hermes",
-      "Charon",
-      "Cerberus",
-      "Hades"
-    ],
-    "correct": 1,
-    "fact": "Greeks placed a coin in the mouth of the dead to pay him."
-  },
-  {
     "id": 255,
     "topic": "compare",
     "level": "medium",
@@ -3568,20 +2028,6 @@
     ],
     "correct": 0,
     "fact": "Guillermo del Toro produced it."
-  },
-  {
-    "id": 256,
-    "topic": "compare",
-    "level": "medium",
-    "question": "In which country is November 1 an official public holiday?",
-    "options": [
-      "United Kingdom",
-      "Netherlands",
-      "Denmark",
-      "Poland"
-    ],
-    "correct": 3,
-    "fact": "It is called All Saints' Day."
   },
   {
     "id": 257,
@@ -3598,90 +2044,6 @@
     "fact": "Halloween in Japan is mostly about costumes."
   },
   {
-    "id": 258,
-    "topic": "compare",
-    "level": "medium",
-    "question": "Which flower is placed on graves in France for La Toussaint?",
-    "options": [
-      "Rose",
-      "Chrysanthemum",
-      "Tulip",
-      "Lily"
-    ],
-    "correct": 1,
-    "fact": "Some French people avoid giving them as gifts for that reason."
-  },
-  {
-    "id": 259,
-    "topic": "compare",
-    "level": "medium",
-    "question": "What is the medieval idea of the danse macabre?",
-    "options": [
-      "Death leading people of all ranks in a dance",
-      "A dance of harvest",
-      "A court dance of the nobles",
-      "A wedding dance"
-    ],
-    "correct": 0,
-    "fact": "It reminded everyone that death comes to all."
-  },
-  {
-    "id": 260,
-    "topic": "compare",
-    "level": "medium",
-    "question": "Which Egyptian text guided the dead through the afterlife?",
-    "options": [
-      "The Book of Kells",
-      "The Rosetta Stone",
-      "The Torah",
-      "The Book of the Dead"
-    ],
-    "correct": 3,
-    "fact": "It is a collection of spells on papyrus."
-  },
-  {
-    "id": 261,
-    "topic": "compare",
-    "level": "medium",
-    "question": "Which tradition from New Orleans mixes a solemn procession with joyful music for the dead?",
-    "options": [
-      "The second line wedding",
-      "The masquerade ball",
-      "The jazz funeral",
-      "The Mardi Gras parade"
-    ],
-    "correct": 2,
-    "fact": "The band plays slow hymns, then lively jazz."
-  },
-  {
-    "id": 262,
-    "topic": "compare",
-    "level": "medium",
-    "question": "Which Egyptian god with a jackal head guided the dead?",
-    "options": [
-      "Horus",
-      "Anubis",
-      "Ra",
-      "Thoth"
-    ],
-    "correct": 1,
-    "fact": "Anubis weighed the heart of the dead against a feather."
-  },
-  {
-    "id": 263,
-    "topic": "compare",
-    "level": "medium",
-    "question": "Which Norse goddess ruled the realm of the dead?",
-    "options": [
-      "Hel",
-      "Freya",
-      "Frigg",
-      "Sif"
-    ],
-    "correct": 0,
-    "fact": "The English word hell comes from her name."
-  },
-  {
     "id": 264,
     "topic": "compare",
     "level": "medium",
@@ -3696,38 +2058,10 @@
     "fact": "It means night of the witches."
   },
   {
-    "id": 265,
-    "topic": "compare",
-    "level": "medium",
-    "question": "What is a wake?",
-    "options": [
-      "A kind of cake served at funerals",
-      "A fee paid to the cemetery",
-      "A gathering to honour a dead person before the funeral",
-      "A statue built in memory of someone"
-    ],
-    "correct": 2,
-    "fact": "Friends and family stay with the body, often through the night."
-  },
-  {
-    "id": 266,
-    "topic": "compare",
-    "level": "medium",
-    "question": "What is an epitaph?",
-    "options": [
-      "A kind of coffin made of stone",
-      "A short text written on a tomb",
-      "A slow march played at funerals",
-      "A robe worn by a priest"
-    ],
-    "correct": 1,
-    "fact": "Calaveras literarias are playful epitaphs."
-  },
-  {
     "id": 267,
     "topic": "compare",
     "level": "hard",
-    "question": "Who established All Souls' Day on November 2 in the year 998?",
+    "question": "Who established All Souls' Day on November 2, a date behind Day of the Dead, in the year 998?",
     "options": [
       "Odilo, abbot of Cluny",
       "Pope Gregory the Great",
@@ -3736,90 +2070,6 @@
     ],
     "correct": 0,
     "fact": "The idea spread from the monastery of Cluny."
-  },
-  {
-    "id": 268,
-    "topic": "compare",
-    "level": "hard",
-    "question": "In Madagascar, what is the Famadihana?",
-    "options": [
-      "A dance held after the harvest",
-      "A festival of flying kites",
-      "A boat race on the river",
-      "A ritual of re-wrapping ancestors' remains in fresh cloth"
-    ],
-    "correct": 3,
-    "fact": "Families dance with the remains."
-  },
-  {
-    "id": 269,
-    "topic": "compare",
-    "level": "hard",
-    "question": "When is Obon traditionally held in most of Japan?",
-    "options": [
-      "Late October",
-      "Early April",
-      "Mid-August",
-      "New Year's Day"
-    ],
-    "correct": 2,
-    "fact": "Some regions hold it in July."
-  },
-  {
-    "id": 270,
-    "topic": "compare",
-    "level": "hard",
-    "question": "When is Qingming held?",
-    "options": [
-      "Early November",
-      "Early April",
-      "Late June",
-      "Mid-September"
-    ],
-    "correct": 1,
-    "fact": "It falls 15 days after the spring equinox."
-  },
-  {
-    "id": 271,
-    "topic": "compare",
-    "level": "hard",
-    "question": "In which lunar month is the Hungry Ghost Festival held?",
-    "options": [
-      "The seventh",
-      "The first",
-      "The fifth",
-      "The twelfth"
-    ],
-    "correct": 0,
-    "fact": "Families burn joss paper and make food offerings."
-  },
-  {
-    "id": 272,
-    "topic": "compare",
-    "level": "hard",
-    "question": "In which country is Pchum Ben, a fifteen-day ancestors festival, celebrated?",
-    "options": [
-      "Vietnam",
-      "Laos",
-      "Nepal",
-      "Cambodia"
-    ],
-    "correct": 3,
-    "fact": "People bring offerings to monks."
-  },
-  {
-    "id": 273,
-    "topic": "compare",
-    "level": "hard",
-    "question": "What rice cake is eaten at Chuseok?",
-    "options": [
-      "Mochi",
-      "Baozi",
-      "Songpyeon",
-      "Tteokbokki"
-    ],
-    "correct": 2,
-    "fact": "It is shaped like a half-moon."
   },
   {
     "id": 274,
@@ -3836,62 +2086,6 @@
     "fact": "Spirits were said to cross over."
   },
   {
-    "id": 275,
-    "topic": "compare",
-    "level": "hard",
-    "question": "Which classic play is traditionally staged in Spain around November 1?",
-    "options": [
-      "Don Juan Tenorio",
-      "Hamlet",
-      "La Celestina",
-      "Fuenteovejuna"
-    ],
-    "correct": 0,
-    "fact": "The play by José Zorrilla ends with the hero's soul being saved."
-  },
-  {
-    "id": 276,
-    "topic": "compare",
-    "level": "hard",
-    "question": "In Portugal, what do children say door to door on November 1?",
-    "options": [
-      "\"Doce ou travessura\"",
-      "\"Boas Festas\"",
-      "\"Feliz Natal\"",
-      "\"Pão por Deus\""
-    ],
-    "correct": 3,
-    "fact": "They receive nuts, dried fruit and sweets."
-  },
-  {
-    "id": 277,
-    "topic": "compare",
-    "level": "hard",
-    "question": "In Sicily, who traditionally brings gifts to children on November 2?",
-    "options": [
-      "La Befana",
-      "Saint Nicholas",
-      "The dead relatives",
-      "The three kings"
-    ],
-    "correct": 2,
-    "fact": "Children find sweets and toys left by their ancestors."
-  },
-  {
-    "id": 278,
-    "topic": "compare",
-    "level": "hard",
-    "question": "What is the Welsh festival equivalent to Samhain?",
-    "options": [
-      "Beltane",
-      "Calan Gaeaf",
-      "Nos Gwyl",
-      "Gwyl Mabsant"
-    ],
-    "correct": 1,
-    "fact": "It marks the first day of winter."
-  },
-  {
     "id": 279,
     "topic": "compare",
     "level": "hard",
@@ -3906,297 +2100,843 @@
     "fact": "Children carry turnip lanterns and sing."
   },
   {
-    "id": 280,
-    "topic": "compare",
-    "level": "hard",
-    "question": "Which Roman festival honoured family ancestors in February?",
+    "id": 301,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "On which date is Halloween celebrated?",
     "options": [
-      "Saturnalia",
-      "Lupercalia",
-      "Lemuria",
-      "Parentalia"
-    ],
-    "correct": 3,
-    "fact": "Families brought gifts to the tombs."
-  },
-  {
-    "id": 281,
-    "topic": "compare",
-    "level": "hard",
-    "question": "In the Philippines, what is the custom of singing door to door for the souls called?",
-    "options": [
-      "Panunuluyan",
-      "Simbang Gabi",
-      "Pangangaluluwa",
-      "Salubong"
-    ],
-    "correct": 2,
-    "fact": "It is a bit like carolling for the dead."
-  },
-  {
-    "id": 282,
-    "topic": "compare",
-    "level": "hard",
-    "question": "Which mischievous Irish spirit is said to spoil blackberries after Samhain?",
-    "options": [
-      "The leprechaun",
-      "The púca",
-      "The selkie",
-      "The banshee"
-    ],
-    "correct": 1,
-    "fact": "It is said to spit on the berries."
-  },
-  {
-    "id": 283,
-    "topic": "compare",
-    "level": "hard",
-    "question": "How many levels does Dante's Inferno have, like Mictlán?",
-    "options": [
-      "Nine",
-      "Seven",
-      "Twelve",
-      "Thirteen"
+      "October 31",
+      "September 30",
+      "November 15",
+      "December 31"
     ],
     "correct": 0,
-    "fact": "Both are journeys through a layered underworld."
+    "fact": "The next day, November 1, is All Saints' Day."
   },
   {
-    "id": 284,
-    "topic": "compare",
-    "level": "hard",
-    "question": "Which 1929 Disney short features dancing skeletons?",
+    "id": 302,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "What do children say at the door on Halloween?",
     "options": [
-      "Mickey's Nightmare",
-      "Haunted House Blues",
-      "The Mad Doctor",
-      "The Skeleton Dance"
-    ],
-    "correct": 3,
-    "fact": "It was one of the first Silly Symphonies."
-  },
-  {
-    "id": 285,
-    "topic": "compare",
-    "level": "hard",
-    "question": "The word vampire reached English in the 1700s from which language?",
-    "options": [
-      "Greek",
-      "Latin",
-      "Serbian",
-      "Gaelic"
-    ],
-    "correct": 2,
-    "fact": "Reports of vampire panics in the Balkans spread across Europe."
-  },
-  {
-    "id": 286,
-    "topic": "compare",
-    "level": "hard",
-    "question": "The word zombie is linked to which religion?",
-    "options": [
-      "Hinduism",
-      "Haitian Vodou",
-      "Shinto",
-      "Wicca"
+      "Happy birthday!",
+      "Trick or treat!",
+      "Good morning!",
+      "See you soon!"
     ],
     "correct": 1,
-    "fact": "A zombie was a person raised by magic."
+    "fact": "The neighbours answer with sweets."
   },
   {
-    "id": 287,
-    "topic": "compare",
-    "level": "hard",
-    "question": "Roughly how many people were executed for witchcraft in Europe between 1450 and 1750?",
+    "id": 303,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "What do trick-or-treaters hope to get?",
     "options": [
-      "40,000 to 60,000",
-      "500",
-      "5,000",
-      "500,000"
-    ],
-    "correct": 0,
-    "fact": "Most historians give an estimate in that range."
-  },
-  {
-    "id": 288,
-    "topic": "compare",
-    "level": "hard",
-    "question": "What are the green rice balls eaten at Qingming called?",
-    "options": [
-      "Zongzi",
-      "Mooncakes",
-      "Baozi",
-      "Qingtuan"
-    ],
-    "correct": 3,
-    "fact": "They are coloured with mugwort."
-  },
-  {
-    "id": 289,
-    "topic": "compare",
-    "level": "hard",
-    "question": "What is the dance performed at Obon called?",
-    "options": [
-      "Kabuki",
-      "Butoh",
-      "Bon Odori",
-      "Noh"
+      "Homework",
+      "Vegetables",
+      "Candy",
+      "Socks"
     ],
     "correct": 2,
-    "fact": "People dance in a circle around a tower."
+    "fact": "Chocolate bars are among the favourites in the US."
   },
   {
-    "id": 290,
-    "topic": "compare",
-    "level": "hard",
-    "question": "What is the Japanese custom of floating lanterns on rivers at the end of Obon called?",
+    "id": 304,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "What do people usually carve to make a jack-o'-lantern?",
     "options": [
-      "Hanabi",
-      "Toro nagashi",
-      "Chochin",
-      "Yagura"
-    ],
-    "correct": 1,
-    "fact": "They send the spirits back to the other world."
-  },
-  {
-    "id": 291,
-    "topic": "compare",
-    "level": "hard",
-    "question": "Who composed the music for Beetlejuice (1988) and The Nightmare Before Christmas?",
-    "options": [
-      "Danny Elfman",
-      "Hans Zimmer",
-      "Alan Menken",
-      "John Williams"
-    ],
-    "correct": 0,
-    "fact": "He worked with Tim Burton for decades."
-  },
-  {
-    "id": 292,
-    "topic": "compare",
-    "level": "hard",
-    "question": "Which French word is used for All Saints' Day?",
-    "options": [
-      "La Pentecôte",
-      "La Chandeleur",
-      "La Noël",
-      "La Toussaint"
+      "A watermelon",
+      "An apple",
+      "A potato",
+      "A pumpkin"
     ],
     "correct": 3,
-    "fact": "November 1 is a public holiday in France."
+    "fact": "A face is cut into it and a light goes inside."
   },
   {
-    "id": 293,
-    "topic": "compare",
-    "level": "hard",
-    "question": "Morelia is the capital of which Mexican state?",
+    "id": 305,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "What makes a jack-o'-lantern glow?",
     "options": [
-      "Jalisco",
-      "Veracruz",
-      "Michoacán",
-      "Sonora"
+      "A candle or small light inside",
+      "Glow-in-the-dark paint",
+      "Sunlight on its skin",
+      "A mirror behind it"
+    ],
+    "correct": 0,
+    "fact": "Today many people use safe LED lights."
+  },
+  {
+    "id": 306,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "What do people wear to Halloween parties?",
+    "options": [
+      "School uniforms",
+      "Costumes",
+      "Swimsuits",
+      "Wedding clothes"
+    ],
+    "correct": 1,
+    "fact": "Early costumes were meant to fool spirits; today they are for fun."
+  },
+  {
+    "id": 307,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "Where did the customs behind Halloween begin?",
+    "options": [
+      "Italy and Greece",
+      "Spain and Portugal",
+      "Ireland and Britain",
+      "Russia and Poland"
     ],
     "correct": 2,
-    "fact": "The Purépecha traditions of the lake region are nearby."
+    "fact": "They come from Celtic autumn festivals."
   },
   {
-    "id": 294,
-    "topic": "compare",
-    "level": "hard",
-    "question": "The word cemetery comes from a Greek word meaning...",
+    "id": 308,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "Which country made trick-or-treating popular around the world?",
     "options": [
-      "Garden of stone",
-      "Sleeping place",
-      "House of silence",
-      "Field of peace"
-    ],
-    "correct": 1,
-    "fact": "It originally meant dormitory."
-  },
-  {
-    "id": 295,
-    "topic": "compare",
-    "level": "hard",
-    "question": "The word skeleton comes from a Greek word meaning...",
-    "options": [
-      "Dried up",
-      "Hollow",
-      "Bone",
-      "Standing"
-    ],
-    "correct": 0,
-    "fact": "It first described a dried body, or mummy."
-  },
-  {
-    "id": 296,
-    "topic": "compare",
-    "level": "hard",
-    "question": "The word ghost is related to which German word?",
-    "options": [
-      "Grab",
-      "Gast",
-      "Gott",
-      "Geist"
+      "France",
+      "Japan",
+      "Australia",
+      "The United States"
     ],
     "correct": 3,
-    "fact": "Geist means spirit."
+    "fact": "Films and TV series spread the custom."
   },
   {
-    "id": 297,
-    "topic": "compare",
-    "level": "hard",
-    "question": "Who collected Japanese ghost stories in Kwaidan (1904)?",
+    "id": 309,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "Halloween is a short form of which name?",
     "options": [
-      "Haruki Murakami",
-      "Yasunari Kawabata",
-      "Lafcadio Hearn",
-      "Kenzaburō Ōe"
+      "All Hallows' Eve",
+      "Hall of Eve",
+      "Hello Evening",
+      "All Hollow Trees"
+    ],
+    "correct": 0,
+    "fact": "It is the evening before All Saints' Day."
+  },
+  {
+    "id": 310,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "What does a Halloween witch traditionally fly on?",
+    "options": [
+      "A carpet",
+      "A broomstick",
+      "A cloud",
+      "A chair"
+    ],
+    "correct": 1,
+    "fact": "The flying witch is a favourite costume and decoration."
+  },
+  {
+    "id": 311,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "Which eight-legged creature is a favourite Halloween decoration?",
+    "options": [
+      "A snail",
+      "A frog",
+      "A spider",
+      "A butterfly"
     ],
     "correct": 2,
-    "fact": "He became a Japanese citizen with the name Koizumi Yakumo."
+    "fact": "Fake webs and plastic spiders cover many houses."
   },
   {
-    "id": 298,
-    "topic": "compare",
-    "level": "hard",
-    "question": "Which French composer wrote the orchestral piece Danse macabre (1874)?",
+    "id": 312,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "What is candy corn?",
     "options": [
-      "Claude Debussy",
-      "Camille Saint-Saëns",
-      "Maurice Ravel",
-      "Hector Berlioz"
-    ],
-    "correct": 1,
-    "fact": "A solo violin imitates Death playing at midnight."
-  },
-  {
-    "id": 299,
-    "topic": "compare",
-    "level": "hard",
-    "question": "Which composer wrote Night on Bald Mountain, used in Disney's Fantasia?",
-    "options": [
-      "Modest Mussorgsky",
-      "Igor Stravinsky",
-      "Pyotr Tchaikovsky",
-      "Sergei Rachmaninoff"
-    ],
-    "correct": 0,
-    "fact": "It depicts a witches' sabbath."
-  },
-  {
-    "id": 300,
-    "topic": "compare",
-    "level": "hard",
-    "question": "Which medieval Latin hymn about the Day of Judgment is used in funeral masses?",
-    "options": [
-      "Ave Maria",
-      "Te Deum",
-      "Magnificat",
-      "Dies irae"
+      "Popcorn covered in chocolate",
+      "A corn soup for parties",
+      "A cake made of corn flour",
+      "A sweet shaped like a corn kernel"
     ],
     "correct": 3,
-    "fact": "It inspired many film scores about death."
+    "fact": "It is one of the best-known Halloween sweets in the US."
+  },
+  {
+    "id": 313,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "What is a Halloween haunted house?",
+    "options": [
+      "A place decorated to scare visitors for fun",
+      "A very old museum of history",
+      "A hotel for the holidays",
+      "A shop that sells pumpkins"
+    ],
+    "correct": 0,
+    "fact": "Many are run by volunteers or theme parks every October."
+  },
+  {
+    "id": 314,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "What kind of hat is part of a classic witch costume?",
+    "options": [
+      "A baseball cap",
+      "A tall pointy hat",
+      "A cowboy hat",
+      "A chef's hat"
+    ],
+    "correct": 1,
+    "fact": "It is usually black with a wide brim."
+  },
+  {
+    "id": 315,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "After carving a pumpkin, what do many people do with the seeds?",
+    "options": [
+      "Throw them at neighbours",
+      "Paint them blue",
+      "Roast and eat them",
+      "Turn them into candles"
+    ],
+    "correct": 2,
+    "fact": "Roasted pumpkin seeds are a classic autumn snack."
+  },
+  {
+    "id": 316,
+    "topic": "halloween",
+    "level": "easy",
+    "question": "Which fake decoration do people often put in front yards on Halloween?",
+    "options": [
+      "Snowmen",
+      "Palm trees",
+      "Christmas stars",
+      "Tombstones"
+    ],
+    "correct": 3,
+    "fact": "Funny names on them are part of the joke."
+  },
+  {
+    "id": 317,
+    "topic": "halloween",
+    "level": "medium",
+    "question": "In Irish legend, who gave the jack-o'-lantern its name?",
+    "options": [
+      "Stingy Jack",
+      "Jack Frost",
+      "Jack the Giant Killer",
+      "Captain Jack"
+    ],
+    "correct": 0,
+    "fact": "He tricked the Devil and was left to wander with a lantern."
+  },
+  {
+    "id": 318,
+    "topic": "halloween",
+    "level": "medium",
+    "question": "According to tradition, why did people wear disguises at Samhain?",
+    "options": [
+      "To win a prize from the king",
+      "To hide from wandering spirits",
+      "To stay warm in the snow",
+      "To scare away wolves"
+    ],
+    "correct": 1,
+    "fact": "Later this became the Halloween costume."
+  },
+  {
+    "id": 319,
+    "topic": "halloween",
+    "level": "medium",
+    "question": "What did the Celts light on Samhain night?",
+    "options": [
+      "Paper lanterns in the sky",
+      "Fireworks",
+      "Large bonfires",
+      "Oil lamps in boats"
+    ],
+    "correct": 2,
+    "fact": "The fires marked the start of the dark half of the year."
+  },
+  {
+    "id": 320,
+    "topic": "halloween",
+    "level": "medium",
+    "question": "All Hallows' Eve is the evening before which day?",
+    "options": [
+      "Christmas Day",
+      "Easter Sunday",
+      "New Year's Day",
+      "All Saints' Day"
+    ],
+    "correct": 3,
+    "fact": "All Saints' Day falls on November 1."
+  },
+  {
+    "id": 321,
+    "topic": "halloween",
+    "level": "medium",
+    "question": "What interrupted trick-or-treating in the US during World War II?",
+    "options": [
+      "Sugar rationing",
+      "A ban on costumes",
+      "A shortage of pumpkins",
+      "A law against going out"
+    ],
+    "correct": 0,
+    "fact": "The custom boomed once sugar came back."
+  },
+  {
+    "id": 322,
+    "topic": "halloween",
+    "level": "medium",
+    "question": "Immigrants from which country helped to bring Halloween to the US in the 1800s?",
+    "options": [
+      "Germany",
+      "Ireland",
+      "Italy",
+      "Sweden"
+    ],
+    "correct": 1,
+    "fact": "Many arrived in the years of the Great Famine."
+  },
+  {
+    "id": 323,
+    "topic": "halloween",
+    "level": "medium",
+    "question": "What is the traditional Irish Halloween fruit bread called?",
+    "options": [
+      "Soda farl",
+      "Shortbread",
+      "Barmbrack",
+      "Bannock"
+    ],
+    "correct": 2,
+    "fact": "Charms are baked into it to tell fortunes."
+  },
+  {
+    "id": 324,
+    "topic": "halloween",
+    "level": "medium",
+    "question": "Which three colours are on a piece of candy corn?",
+    "options": [
+      "Red, green and white",
+      "Black, orange and purple",
+      "Pink, yellow and blue",
+      "Yellow, orange and white"
+    ],
+    "correct": 3,
+    "fact": "The colours follow the look of a corn kernel."
+  },
+  {
+    "id": 325,
+    "topic": "halloween",
+    "level": "medium",
+    "question": "Which city in Northern Ireland is famous for its huge Halloween festival?",
+    "options": [
+      "Derry",
+      "Belfast",
+      "Newry",
+      "Lisburn"
+    ],
+    "correct": 0,
+    "fact": "Thousands of people in costume fill the walled city."
+  },
+  {
+    "id": 326,
+    "topic": "halloween",
+    "level": "medium",
+    "question": "Which Massachusetts city, known for its 1692 witch trials, draws huge Halloween crowds?",
+    "options": [
+      "Boston",
+      "Salem",
+      "Cambridge",
+      "Plymouth"
+    ],
+    "correct": 1,
+    "fact": "Its month-long festival is called Haunted Happenings."
+  },
+  {
+    "id": 327,
+    "topic": "halloween",
+    "level": "medium",
+    "question": "What do children collect in Trick-or-Treat for UNICEF?",
+    "options": [
+      "Old toys for museums",
+      "Pumpkins for farmers",
+      "Money for children in need",
+      "Signatures for a law"
+    ],
+    "correct": 2,
+    "fact": "They carry small orange boxes."
+  },
+  {
+    "id": 328,
+    "topic": "halloween",
+    "level": "medium",
+    "question": "According to tradition, why did people leave food at their doors on Samhain?",
+    "options": [
+      "To feed the king's soldiers",
+      "To pay their rent",
+      "To attract wild deer",
+      "To please wandering spirits"
+    ],
+    "correct": 3,
+    "fact": "This custom may be one root of trick-or-treating."
+  },
+  {
+    "id": 329,
+    "topic": "halloween",
+    "level": "medium",
+    "question": "In The Nightmare Before Christmas, what is Jack Skellington's home called?",
+    "options": [
+      "Halloween Town",
+      "Pumpkin City",
+      "Spooky Hollow",
+      "Skeleton Valley"
+    ],
+    "correct": 0,
+    "fact": "Jack discovers Christmas Town by accident."
+  },
+  {
+    "id": 330,
+    "topic": "halloween",
+    "level": "medium",
+    "question": "Botanically, what is a pumpkin?",
+    "options": [
+      "A root",
+      "A fruit",
+      "A leaf",
+      "A stem"
+    ],
+    "correct": 1,
+    "fact": "It has seeds inside and grows from a flower."
+  },
+  {
+    "id": 331,
+    "topic": "dod",
+    "level": "medium",
+    "question": "How many natural elements are traditionally shown on an ofrenda?",
+    "options": [
+      "Two",
+      "Six",
+      "Four",
+      "Nine"
+    ],
+    "correct": 2,
+    "fact": "They are earth, wind, water and fire."
+  },
+  {
+    "id": 332,
+    "topic": "dod",
+    "level": "medium",
+    "question": "What does salt on an ofrenda stand for?",
+    "options": [
+      "Wealth",
+      "Victory",
+      "Sadness",
+      "Purification"
+    ],
+    "correct": 3,
+    "fact": "It is said to keep the spirit pure during the visit."
+  },
+  {
+    "id": 333,
+    "topic": "dod",
+    "level": "medium",
+    "question": "What are the tapetes made for Day of the Dead in Oaxaca?",
+    "options": [
+      "Pictures on the ground made of coloured sand",
+      "Thick blankets for the graves",
+      "Long paper kites",
+      "Masks made of wood"
+    ],
+    "correct": 0,
+    "fact": "They are often made to honour a person who died."
+  },
+  {
+    "id": 334,
+    "topic": "dod",
+    "level": "medium",
+    "question": "Who is mainly remembered on November 2?",
+    "options": [
+      "Living grandparents",
+      "Adults who died",
+      "Saints and popes",
+      "Soldiers only"
+    ],
+    "correct": 1,
+    "fact": "November 1 is mainly for children."
+  },
+  {
+    "id": 335,
+    "topic": "dod",
+    "level": "medium",
+    "question": "What do many families say happens to ofrenda food after the visit?",
+    "options": [
+      "It turns to gold",
+      "It doubles in size",
+      "It loses its flavour and smell",
+      "It disappears completely"
+    ],
+    "correct": 2,
+    "fact": "The spirits are said to take in its essence."
+  },
+  {
+    "id": 336,
+    "topic": "halloween",
+    "level": "hard",
+    "question": "Which Scottish poet wrote a famous poem called Halloween in 1785?",
+    "options": [
+      "Walter Scott",
+      "Robert Louis Stevenson",
+      "James Hogg",
+      "Robert Burns"
+    ],
+    "correct": 3,
+    "fact": "The poem describes old Halloween games and fortune-telling."
+  },
+  {
+    "id": 337,
+    "topic": "halloween",
+    "level": "hard",
+    "question": "Which 8th-century pope is credited with first honouring all saints on November 1?",
+    "options": [
+      "Gregory III",
+      "Leo the Great",
+      "Urban II",
+      "Innocent III"
+    ],
+    "correct": 0,
+    "fact": "All Hallows' Eve is the evening before that feast."
+  },
+  {
+    "id": 338,
+    "topic": "halloween",
+    "level": "hard",
+    "question": "Why was Halloween rare in colonial New England?",
+    "options": [
+      "Pumpkins did not grow there",
+      "Puritan beliefs rejected it",
+      "The winter began in September",
+      "The British king banned it"
+    ],
+    "correct": 1,
+    "fact": "It spread widely in the US only in the 1800s."
+  },
+  {
+    "id": 339,
+    "topic": "halloween",
+    "level": "hard",
+    "question": "The \"een\" in Halloween comes from \"even\". What did that word mean?",
+    "options": [
+      "Holy",
+      "Equal",
+      "Evening",
+      "Ghost"
+    ],
+    "correct": 2,
+    "fact": "Older spellings include Hallowe'en."
+  },
+  {
+    "id": 340,
+    "topic": "halloween",
+    "level": "hard",
+    "question": "What is apple bobbing traditionally called in Scotland?",
+    "options": [
+      "Bogling",
+      "Ceilidh",
+      "Haggling",
+      "Dookin"
+    ],
+    "correct": 3,
+    "fact": "It comes from a Scots word for duck or dip."
+  },
+  {
+    "id": 341,
+    "topic": "halloween",
+    "level": "hard",
+    "question": "Which old name for Halloween in northern England comes from a fortune-telling game?",
+    "options": [
+      "Nutcrack Night",
+      "Candle Sunday",
+      "Plough Monday",
+      "Bell Eve"
+    ],
+    "correct": 0,
+    "fact": "Nuts were put on the fire to predict love."
+  },
+  {
+    "id": 342,
+    "topic": "halloween",
+    "level": "hard",
+    "question": "The Hill of Ward, linked with ancient Samhain fires, is in which Irish county?",
+    "options": [
+      "Kerry",
+      "Meath",
+      "Donegal",
+      "Cork"
+    ],
+    "correct": 1,
+    "fact": "The site is also known as Tlachtga."
+  },
+  {
+    "id": 343,
+    "topic": "halloween",
+    "level": "hard",
+    "question": "Colcannon, an Irish Halloween dish, is made mainly with...",
+    "options": [
+      "Rice and lamb",
+      "Turnip and honey",
+      "Potato and cabbage or kale",
+      "Oats and fish"
+    ],
+    "correct": 2,
+    "fact": "Coins or charms were sometimes hidden inside."
+  },
+  {
+    "id": 344,
+    "topic": "halloween",
+    "level": "hard",
+    "question": "The word pumpkin goes back to a Greek word meaning...",
+    "options": [
+      "Orange ball",
+      "Sweet root",
+      "Autumn gift",
+      "Large melon"
+    ],
+    "correct": 3,
+    "fact": "The Greek word is pepon."
+  },
+  {
+    "id": 345,
+    "topic": "halloween",
+    "level": "hard",
+    "question": "In 2013, which US state set the record for most lit jack-o'-lanterns, more than 30,000?",
+    "options": [
+      "New Hampshire",
+      "Texas",
+      "Oregon",
+      "Georgia"
+    ],
+    "correct": 0,
+    "fact": "The city of Keene displayed 30,581 of them."
+  },
+  {
+    "id": 346,
+    "topic": "halloween",
+    "level": "hard",
+    "question": "Which company, now named after its jelly beans, has made candy corn since 1900?",
+    "options": [
+      "Hershey's",
+      "Goelitz (now Jelly Belly)",
+      "Mars",
+      "Haribo"
+    ],
+    "correct": 1,
+    "fact": "The Goelitz family started in candy in 1869."
+  },
+  {
+    "id": 347,
+    "topic": "halloween",
+    "level": "hard",
+    "question": "In Celtic reckoning, when did a new day, and so Samhain, begin?",
+    "options": [
+      "At sunrise",
+      "At noon",
+      "At sunset",
+      "At midnight"
+    ],
+    "correct": 2,
+    "fact": "That is why the festival begins on the evening of October 31."
+  },
+  {
+    "id": 348,
+    "topic": "halloween",
+    "level": "hard",
+    "question": "Which Irish painter's 1833 work Snap-Apple Night shows a Halloween party?",
+    "options": [
+      "Jack B. Yeats",
+      "John Lavery",
+      "William Orpen",
+      "Daniel Maclise"
+    ],
+    "correct": 3,
+    "fact": "The painting shows apple games and fortune-telling."
+  },
+  {
+    "id": 349,
+    "topic": "halloween",
+    "level": "hard",
+    "question": "For decades, what did children in Des Moines, Iowa, tell for candy on Beggars' Night?",
+    "options": [
+      "A joke",
+      "Their age",
+      "A ghost's name",
+      "The time"
+    ],
+    "correct": 0,
+    "fact": "The city moved trick-or-treating to October 31 in 2025."
+  },
+  {
+    "id": 350,
+    "topic": "dod",
+    "level": "hard",
+    "question": "In which Mexican city is the famous Feria del Alfeñique held?",
+    "options": [
+      "Puebla",
+      "Toluca",
+      "Monterrey",
+      "Mérida"
+    ],
+    "correct": 1,
+    "fact": "Stalls fill the centre with sugar skulls and figures."
+  },
+  {
+    "id": 351,
+    "topic": "dod",
+    "level": "hard",
+    "question": "What was the Aztec festival of the dead, held in summer, called?",
+    "options": [
+      "Panquetzaliztli",
+      "Toxcatl",
+      "Miccailhuitontli",
+      "Atlcahualo"
+    ],
+    "correct": 2,
+    "fact": "The name is linked to the little feast of the dead."
+  },
+  {
+    "id": 352,
+    "topic": "dod",
+    "level": "hard",
+    "question": "In which Mexican state was José Guadalupe Posada, the creator of La Catrina, born?",
+    "options": [
+      "Oaxaca",
+      "Yucatán",
+      "Sinaloa",
+      "Aguascalientes"
+    ],
+    "correct": 3,
+    "fact": "The city of Aguascalientes holds a Festival de las Calaveras."
+  },
+  {
+    "id": 353,
+    "topic": "dod",
+    "level": "hard",
+    "question": "Which Mexican university builds a huge Megaofrenda each year?",
+    "options": [
+      "UNAM",
+      "Tec de Monterrey",
+      "Universidad de Guadalajara",
+      "IPN"
+    ],
+    "correct": 0,
+    "fact": "Students fill the campus with altars."
+  },
+  {
+    "id": 354,
+    "topic": "dod",
+    "level": "hard",
+    "question": "What are the giant Day of the Dead kites of Sumpango, Guatemala, called?",
+    "options": [
+      "Piñatas",
+      "Barriletes",
+      "Papalotes de oro",
+      "Alebrijes"
+    ],
+    "correct": 1,
+    "fact": "Some are more than ten metres wide."
+  },
+  {
+    "id": 355,
+    "topic": "dod",
+    "level": "hard",
+    "question": "On which date does La Paz, Bolivia, celebrate the Day of the Ñatitas?",
+    "options": [
+      "October 20",
+      "December 1",
+      "November 8",
+      "November 30"
+    ],
+    "correct": 2,
+    "fact": "It falls eight days after All Saints' Day."
+  },
+  {
+    "id": 356,
+    "topic": "dod",
+    "level": "hard",
+    "question": "In the Huasteca region of Mexico, what is Day of the Dead called?",
+    "options": [
+      "Hanal Pixán",
+      "Guelaguetza",
+      "Tlacololeros",
+      "Xantolo"
+    ],
+    "correct": 3,
+    "fact": "The word is linked to the Latin word for saint, sanctorum."
+  },
+  {
+    "id": 357,
+    "topic": "dod",
+    "level": "hard",
+    "question": "Which Los Angeles cemetery is known for its big Day of the Dead event?",
+    "options": [
+      "Hollywood Forever",
+      "Arlington",
+      "Père Lachaise",
+      "Green-Wood"
+    ],
+    "correct": 0,
+    "fact": "Altars and music fill the grounds."
+  },
+  {
+    "id": 358,
+    "topic": "dod",
+    "level": "hard",
+    "question": "Who gave La Catrina her name?",
+    "options": [
+      "Frida Kahlo",
+      "Diego Rivera",
+      "José Guadalupe Posada",
+      "Octavio Paz"
+    ],
+    "correct": 1,
+    "fact": "He named her in his 1947 mural."
+  },
+  {
+    "id": 359,
+    "topic": "compare",
+    "level": "hard",
+    "question": "In which century did Spanish colonisers bring All Saints' and All Souls' to Mexico?",
+    "options": [
+      "The 12th",
+      "The 14th",
+      "The 16th",
+      "The 18th"
+    ],
+    "correct": 2,
+    "fact": "Indigenous customs mixed with those Catholic days."
+  },
+  {
+    "id": 360,
+    "topic": "compare",
+    "level": "hard",
+    "question": "In 2013, what did Disney try and fail to do with the name Día de los Muertos?",
+    "options": [
+      "Translate it",
+      "Ban it",
+      "Buy a town with that name",
+      "Trademark it"
+    ],
+    "correct": 3,
+    "fact": "After protests it dropped the request. Coco came out in 2017."
   }
 ]

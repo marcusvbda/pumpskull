@@ -18,7 +18,7 @@ export function PlayHeader({ team, role, leftMs, play, plays }: { team: Team; ro
   // Last 5 seconds: the number pops each second.
   const pop = urgency.phase === 4 && urgency.timerScale > 1 ? "fx-pop" : "";
   return (
-    <header className="flex items-center justify-between gap-2">
+    <header className="flex items-center justify-between gap-2 pr-24">
       <div className="flex min-w-0 flex-col">
         <span className={`truncate text-sm font-black ${meta.title}`}>
           <TeamIcon team={team} /> {meta.name}

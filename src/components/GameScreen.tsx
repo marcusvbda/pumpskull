@@ -136,6 +136,7 @@ export function GameScreen({ snapshot, me, identity, offsetMs, refresh }: Props)
         scene={playRow.scene}
         backgroundId={playRow.background_id}
         describerTeam={playRow.describer_team}
+        difficulty={room.settings.difficulty}
         result={result}
         spiritMeter={Number(room.spirit_meter)}
         spiritMax={spiritMax}
@@ -168,6 +169,7 @@ export function GameScreen({ snapshot, me, identity, offsetMs, refresh }: Props)
         play={play}
         plays={plays}
         scores={scores}
+        reveals={snapshot.questionReveal}
         spiritMeter={Number(room.spirit_meter)}
         spiritMax={spiritMax}
         refresh={refresh}
@@ -181,7 +183,9 @@ export function GameScreen({ snapshot, me, identity, offsetMs, refresh }: Props)
         identity={identity}
         isHost={room.host_id === me.id}
         team={me.team}
+        plays={plays}
         scores={scores}
+        reveals={snapshot.questionReveal}
         spiritMeter={Number(room.spirit_meter)}
         spiritMax={spiritMax}
         refresh={refresh}

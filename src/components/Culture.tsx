@@ -101,7 +101,8 @@ export function Culture({ identity, team, play, plays, question, startedAt, now 
 
   return (
     <Shell>
-      <header className="flex items-center justify-between gap-2">
+      {/* Without the garland (short phones) the fixed audio buttons would sit on the timer. */}
+      <header className="flex items-center justify-between gap-2 [@media(max-height:620px)]:pr-24">
         <div className="flex min-w-0 flex-col">
           <span className={`truncate text-sm font-black ${meta.title}`}>
             <TeamIcon team={team} /> {meta.name}
@@ -123,7 +124,8 @@ export function Culture({ identity, team, play, plays, question, startedAt, now 
 
       <h1 className="rounded-2xl bg-indigo-900/70 p-3 text-center text-lg leading-snug font-black">{question.question}</h1>
 
-      <div className="grid min-h-0 flex-1 grid-cols-1 auto-rows-fr gap-2">
+      {/* Boxes fit their text; a long question on a short phone scrolls here instead of being cut off. */}
+      <div className="-m-1 flex min-h-0 flex-col gap-2 overflow-y-auto p-1">
         {question.options.map((text, i) => {
           const a = ANSWERS[i];
           const mine = chosen === i;
@@ -134,7 +136,7 @@ export function Culture({ identity, team, play, plays, question, startedAt, now 
               disabled={done || over}
               onClick={() => answer(i)}
               aria-label={`${a.name}: ${text}`}
-              className={`flex min-h-12 items-center gap-3 rounded-2xl border-b-4 px-4 py-1 text-left text-base leading-tight font-extrabold transition-transform enabled:active:translate-y-0.5 enabled:active:border-b-2 disabled:cursor-not-allowed ${a.className} ${
+              className={`flex min-h-14 shrink-0 items-center gap-3 rounded-2xl border-b-4 px-4 py-2 text-left text-base leading-tight font-extrabold transition-transform enabled:active:translate-y-0.5 enabled:active:border-b-2 disabled:cursor-not-allowed ${a.className} ${
                 done && !mine ? "opacity-40" : ""
               } ${mine ? "ring-4 ring-white" : ""}`}
             >

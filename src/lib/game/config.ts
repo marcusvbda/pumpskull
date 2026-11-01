@@ -10,13 +10,14 @@ export interface DifficultyConfig {
   trayColumns: number;
   rFull: number; // distance (scene widths) with full score
   rZero: number; // distance (scene widths) where score reaches zero
+  itemScale: number; // item size on every play screen, as a fraction of scene width (more items: a bit smaller, to overlap less)
   mascot: "smiling" | "sour" | "fire";
 }
 
 export const DIFFICULTY: Record<Difficulty, DifficultyConfig> = {
-  easy: { label: "Chocolate", items: 6, decoys: 1, showNames: true, trayColumns: 3, rFull: 0.08, rZero: 0.35, mascot: "smiling" },
-  medium: { label: "Sour Gummy", items: 8, decoys: 2, showNames: false, trayColumns: 4, rFull: 0.06, rZero: 0.28, mascot: "sour" },
-  hard: { label: "Chili Tamarind", items: 12, decoys: 4, showNames: false, trayColumns: 4, rFull: 0.04, rZero: 0.2, mascot: "fire" },
+  easy: { label: "Chocolate", items: 6, decoys: 1, showNames: true, trayColumns: 3, rFull: 0.08, rZero: 0.35, itemScale: 0.2, mascot: "smiling" },
+  medium: { label: "Sour Gummy", items: 8, decoys: 2, showNames: false, trayColumns: 4, rFull: 0.06, rZero: 0.28, itemScale: 0.18, mascot: "sour" },
+  hard: { label: "Chili Tamarind", items: 12, decoys: 4, showNames: false, trayColumns: 4, rFull: 0.04, rZero: 0.2, itemScale: 0.15, mascot: "fire" },
 };
 
 export const GAME = {
@@ -29,7 +30,7 @@ export const GAME = {
   roleBannerSeconds: 2,
   cultureSeconds: 15,
   cultureFastSeconds: 5,
-  cultureFeedbackSeconds: 6, // feedback screen, then the scoreboard comes by itself
+  cultureFeedbackSeconds: 8, // feedback screen, then the scoreboard comes by itself
   correctPoints: 1,
   fastBonus: 0.5,
   builderAutosaveSeconds: 5,
@@ -42,7 +43,6 @@ export const GAME = {
 export const PLAY = {
   finishGraceSeconds: 3, // after the timer, the building phone's last save is still accepted this long
   earlySeconds: 0.5, // timer transitions accepted this early, for clock differences between phone and server
-  builderItemScale: 0.1, // size of items the builder drags, as a fraction of scene width (slots use 0.09 to 0.1)
   maxPlacedItems: 40, // longest placement list the server accepts
   resultsRetrySeconds: 3, // reveal without results this long: ask the server to score again
   timerRetrySeconds: 2, // a phone asks again if a timer transition did not show up
@@ -62,6 +62,11 @@ export const MAX_EFFECT_HZ = 2; // never flash faster than this
 
 // Every scene file is 2048x1280 (docs/ASSETS.md). Height divided by width, used by the distance formula.
 export const SCENE_ASPECT = 1280 / 2048;
+
+// Phones show the middle of the scene wider: this fraction is cut from each side. Every slot stays well inside it
+// (slots use x from 0.115 to 0.885), so items at the edge keep their picture. Only the view changes: scores still
+// use whole-scene coordinates.
+export const SCENE_CROP_X = 0.05;
 
 // Layout generator (spec section 6). Distances use the same metric as scoring (scene widths).
 export const LAYOUT = {

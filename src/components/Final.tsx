@@ -9,9 +9,9 @@ import { COMPARE_CARDS } from "@/data/compareCards";
 import { decideWinner } from "@/lib/game/culture";
 import type { Team } from "@/lib/game/types";
 import type { Identity } from "@/lib/identity";
-import type { TeamScoreRow } from "@/lib/supabase/types";
+import type { QuestionRevealRow, TeamScoreRow } from "@/lib/supabase/types";
 import { SpiritMeter } from "./Reveal";
-import { TeamTotals } from "./Scoreboard";
+import { AnswerTable, TeamTotals } from "./Scoreboard";
 import { TEAM_META } from "./teams";
 import { Button, ErrorText, Shell } from "./ui";
 import { TeamIcon } from "./UiIcon";
@@ -20,13 +20,15 @@ interface Props {
   identity: Identity;
   isHost: boolean;
   team: Team;
+  plays: number;
   scores: TeamScoreRow[]; // rows of the last play
+  reveals: QuestionRevealRow[];
   spiritMeter: number;
   spiritMax: number;
   refresh: () => Promise<void>;
 }
 
-export function Final({ identity, isHost, team, scores, spiritMeter, spiritMax, refresh }: Props) {
+export function Final({ identity, isHost, team, plays, scores, reveals, spiritMeter, spiritMax, refresh }: Props) {
   const [cardIndex, setCardIndex] = useState(0);
   const card = COMPARE_CARDS[cardIndex];
   const [busy, setBusy] = useState(false);
@@ -73,6 +75,9 @@ export function Final({ identity, isHost, team, scores, spiritMeter, spiritMax, 
       </header>
 
       <TeamTotals scores={scores} myTeam={team} compact />
+      <div className="[@media(max-height:760px)]:hidden">
+        <AnswerTable reveals={reveals} plays={plays} />
+      </div>
       <SpiritMeter value={spiritMeter} max={spiritMax} />
 
       <section className="flex min-h-0 flex-col gap-1">

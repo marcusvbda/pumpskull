@@ -31,7 +31,7 @@ describe("timing", () => {
   it("Culture Check runs 15 s, accepts a late answer for the grace time, then shows feedback for 6 s", () => {
     expect(cultureEndsAt(t0)).toBe(t0 + 15_000);
     expect(cultureClosesAt(t0)).toBe(t0 + 15_000 + PLAY.finishGraceSeconds * 1000);
-    expect(feedbackEndsAt(t0)).toBe(t0 + 6_000);
+    expect(feedbackEndsAt(t0)).toBe(t0 + 8_000);
   });
 
   it("has two plays per round", () => {

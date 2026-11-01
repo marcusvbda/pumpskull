@@ -46,13 +46,14 @@ export function Garland() {
 
 // `center`: short screens sit in the middle of the whole screen. The bottom padding equals the garland height, so the
 // middle of the content is the middle of the viewport. Dense screens leave it off and use every pixel.
-export function Shell({ children, center = false }: { children: React.ReactNode; center?: boolean }) {
+// `garland={false}`: screens that need all the height for the game.
+export function Shell({ children, center = false, garland = true }: { children: React.ReactNode; center?: boolean; garland?: boolean }) {
   return (
     <div className="flex h-dvh flex-col overflow-hidden">
-      <Garland />
+      {garland && <Garland />}
       <main
         className={`mx-auto flex min-h-0 w-full max-w-md flex-1 flex-col gap-2 px-4 pt-1 pb-2 ${
-          center ? "justify-center pb-[calc(min(100vw,42rem)_*_640_/_2130)] [@media(max-height:620px)]:pb-2" : ""
+          center ? `justify-center ${garland ? "pb-[calc(min(100vw,42rem)_*_640_/_2130)] [@media(max-height:620px)]:pb-2" : ""}` : ""
         }`}
       >
         {children}

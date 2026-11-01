@@ -128,14 +128,14 @@ describe("the real question bank (data/questions.json)", () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const bank = parseQuestionBank(require("../../../data/questions.json"));
 
-  it("is valid and holds 300 questions, 100 of each level", () => {
-    expect(bank).toHaveLength(300);
-    for (const level of ["easy", "medium", "hard"] as const) expect(bank.filter((b) => b.level === level)).toHaveLength(100);
+  it("is valid and holds 210 questions, 70 of each level", () => {
+    expect(bank).toHaveLength(210);
+    for (const level of ["easy", "medium", "hard"] as const) expect(bank.filter((b) => b.level === level)).toHaveLength(70);
   });
 
-  it("has 100 of each topic and spreads the correct answer over all 4 positions", () => {
-    for (const topic of ["dod", "halloween", "compare"] as const) expect(bank.filter((b) => b.topic === topic)).toHaveLength(100);
-    for (let i = 0; i < 4; i++) expect(bank.filter((b) => b.correct === i).length).toBeGreaterThan(60);
+  it("covers every topic and spreads the correct answer over all 4 positions", () => {
+    for (const topic of ["dod", "halloween", "compare"] as const) expect(bank.filter((b) => b.topic === topic).length).toBeGreaterThan(0);
+    for (let i = 0; i < 4; i++) expect(bank.filter((b) => b.correct === i).length).toBeGreaterThan(40);
   });
 
   it("has no repeated question text", () => {
