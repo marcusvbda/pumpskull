@@ -9,7 +9,7 @@ import { generateLayout, planBackgrounds, type LayoutTarget } from "@/lib/game/l
 import { rolesForPlay } from "@/lib/game/roles";
 import { createRng } from "@/lib/game/rng";
 import { scorePlacement, type PlacedItem } from "@/lib/game/scoring";
-import type { PlayResultItem, PlayResultRow, RoomRow } from "@/lib/supabase/types";
+import type { PlayResultItem, RoomRow } from "@/lib/supabase/types";
 import { isUniqueViolation, must, type Db } from "./shared";
 
 // Private row: the seed and the target layout of one play.
@@ -99,7 +99,7 @@ export async function savePlacementRow(db: Db, pin: string, playIdx: number, bui
 }
 
 // Scores the play from the stored target and the last saved placement. Safe to call more than once: the
-// first result wins, and the Spirit Meter is the sum of all results rather than an increment.
+// first result wins. `spirit_gain` holds the sum of the item scores, which are the play's build points.
 export async function writeResults(db: Db, room: RoomRow, playIdx: number): Promise<void> {
   const existing = must(
     await db.from("play_results").select("play_idx").eq("room_pin", room.pin).eq("play_idx", playIdx).maybeSingle(),
@@ -123,9 +123,6 @@ export async function writeResults(db: Db, room: RoomRow, playIdx: number): Prom
       .insert({ room_pin: room.pin, play_idx: playIdx, results: { items, total }, spirit_gain: total });
     if (!isUniqueViolation(inserted.error)) must(inserted);
   }
-  const all = must(await db.from("play_results").select("spirit_gain").eq("room_pin", room.pin)) as Pick<PlayResultRow, "spirit_gain">[];
-  const meter = all.reduce((sum, r) => sum + Number(r.spirit_gain), 0);
-  must(await db.from("rooms").update({ spirit_meter: Math.round(meter * 1000) / 1000 }).eq("pin", room.pin));
 }
 
 // playing -> reveal for the current play. Only the call that wins the conditional update scores it,

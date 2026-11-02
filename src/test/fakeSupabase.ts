@@ -41,7 +41,7 @@ export function createFakeDb() {
   function fillDefaults(table: string, row: Row): Row {
     if (table === "rooms") {
       return {
-        status: "lobby", host_id: null, current_play: 0, phase: "lobby", spirit_meter: 0,
+        status: "lobby", host_id: null, current_play: 0, phase: "lobby",
         phase_started_at: tick(), play_started_at: null, created_at: tick(),
         settings: { time_minutes: 4, difficulty: "easy", rounds: 2 }, ...row,
       };

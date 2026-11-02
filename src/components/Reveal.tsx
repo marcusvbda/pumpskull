@@ -7,7 +7,7 @@ import { useState } from "react";
 import { startCulture } from "@/app/actions/culture";
 import { findItem } from "@/data/items";
 import { DIFFICULTY, type Difficulty } from "@/lib/game/config";
-import { revealColour, type RevealColour } from "@/lib/game/scoring";
+import { buildPoints, formatPoints, revealColour, type RevealColour } from "@/lib/game/scoring";
 import type { Scene, Team } from "@/lib/game/types";
 import type { Identity } from "@/lib/identity";
 import type { PlayResultItem, PlayResultRow } from "@/lib/supabase/types";
@@ -45,24 +45,6 @@ function headline(right: number, total: number): string {
   return "Tricky one!";
 }
 
-// Shared by both teams and never decides the winner, so it says so wherever it appears.
-export function SpiritMeter({ value, max }: { value: number; max: number }) {
-  const fill = max > 0 ? Math.min(1, value / max) : 0;
-  return (
-    <section className="flex flex-col gap-0.5">
-      <div className="flex items-baseline justify-between gap-2">
-        <h2 className="text-sm font-bold">
-          <span aria-hidden>🕯️</span> Spirit Meter <span className="font-normal text-indigo-200">(both teams share it)</span>
-        </h2>
-        <span className="text-sm font-black tabular-nums">{Math.round(fill * 100)}%</span>
-      </div>
-      <div role="meter" aria-valuemin={0} aria-valuemax={max} aria-valuenow={value} aria-label="Spirit Meter" className="h-3 overflow-hidden rounded-full bg-indigo-950">
-        <div className="h-full rounded-full bg-gradient-to-r from-pink-500 via-amber-400 to-teal-400" style={{ width: `${fill * 100}%` }} />
-      </div>
-    </section>
-  );
-}
-
 interface Props {
   identity: Identity;
   isHost: boolean;
@@ -73,12 +55,10 @@ interface Props {
   describerTeam: Team;
   difficulty: Difficulty;
   result: PlayResultRow | undefined;
-  spiritMeter: number;
-  spiritMax: number;
   refresh: () => Promise<void>;
 }
 
-export function Reveal({ identity, isHost, play, plays, scene, backgroundId, describerTeam, difficulty, result, spiritMeter, spiritMax, refresh }: Props) {
+export function Reveal({ identity, isHost, play, plays, scene, backgroundId, describerTeam, difficulty, result, refresh }: Props) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [view, setView] = useState<"target" | "build">("build");
@@ -124,6 +104,7 @@ export function Reveal({ identity, isHost, play, plays, scene, backgroundId, des
       <p className="-mt-1 text-lg leading-tight font-black">
         {right} of {items.length} items in the right spot
       </p>
+      <p className="-mt-1.5 text-sm font-black text-amber-300">+{formatPoints(buildPoints(result.spirit_gain))} build points for both teams</p>
 
       <div role="tablist" aria-label="Choose a picture" className="grid grid-cols-2 gap-1 rounded-2xl bg-indigo-950 p-1">
         {tabs.map((tab) => (
@@ -168,8 +149,6 @@ export function Reveal({ identity, isHost, play, plays, scene, backgroundId, des
           );
         })}
       </ul>
-
-      <SpiritMeter value={spiritMeter} max={spiritMax} />
 
       <div className="flex flex-col gap-1">
         <ErrorText>{error}</ErrorText>

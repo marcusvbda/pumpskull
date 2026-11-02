@@ -49,6 +49,17 @@ export function scoreForDistance(d: number, rFull: number, rZero: number): numbe
   return (1 - t) * (1 - t);
 }
 
+// Team points for the placement of one play (spec section 4): the sum of the item scores, to one decimal.
+// Both teams get the same amount, so a total is always Culture Check points plus these.
+export function buildPoints(total: number): number {
+  return Math.round(total * 10) / 10;
+}
+
+// Points as shown on screen: no trailing zero ("7", "7.3"). Also hides floating point noise from sums.
+export function formatPoints(points: number): string {
+  return String(Math.round(points * 10) / 10);
+}
+
 export type RevealColour = "green" | "yellow" | "red";
 
 export function revealColour(score: number): RevealColour {

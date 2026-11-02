@@ -157,7 +157,7 @@ export async function startGame(input: Credentials) {
 }
 
 // Either phone, at any phase: the same two phones go back to the lobby for another game. Not host only, so a
-// dead host phone cannot trap the class. Scores, plays and the Spirit Meter start from zero; the questions
+// dead host phone cannot trap the class. Scores and plays start from zero; the questions
 // already asked stay marked, so they do not come back. The room moves first: every other write checks the
 // phase, so nothing new starts while the rows are deleted. Already in the lobby (both phones tapped) is fine.
 export async function newGame(input: Credentials) {
@@ -176,7 +176,6 @@ export async function newGame(input: Credentials) {
           status: "lobby",
           phase: "lobby",
           current_play: 0,
-          spirit_meter: 0,
           play_started_at: null,
           phase_started_at: new Date().toISOString(),
         })

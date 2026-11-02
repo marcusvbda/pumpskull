@@ -5,7 +5,7 @@ const state = vi.hoisted(() => ({ db: undefined as unknown as FakeDb }));
 vi.mock("@/lib/supabase/server", () => ({ supabaseAdmin: () => state.db }));
 
 import questions from "../../../data/questions.json";
-import { GAME } from "@/lib/game/config";
+import { DIFFICULTY, GAME } from "@/lib/game/config";
 import { decideWinner } from "@/lib/game/culture";
 import { startCulture, submitAnswer } from "./culture";
 import { advanceTimer, nextPlay, savePlacement } from "./play";
@@ -44,16 +44,23 @@ async function startedGame(settings: object = { time_minutes: 2 }) {
   return { marigold, pumpkin, pin: marigold.pin };
 }
 
-// Plays play `play` up to the reveal.
-async function toReveal(marigold: Who, pumpkin: Who, play: number) {
+const targetsOf = (pin: string, play: number) =>
+  rows("play_targets", pin).find((t) => t.play_idx === play)!.targets as { item_id: string; x: number; y: number }[];
+
+// Plays play `play` up to the reveal. The builder drops the first `placed` items exactly on their targets
+// (none by default, which scores 0 build points).
+async function toReveal(marigold: Who, pumpkin: Who, play: number, placed = 0) {
   later(Date.parse(room(marigold.pin).phase_started_at as string) - now + 5000);
   await advanceTimer({ ...marigold, phase: "countdown", play });
   const builder = play % 2 === 0 ? pumpkin : marigold;
-  expect(await savePlacement({ ...builder, play, items: [], finish: true })).toMatchObject({ ok: true, ended: true });
+  const items = targetsOf(marigold.pin, play)
+    .slice(0, placed)
+    .map((t) => ({ itemId: t.item_id, x: t.x, y: t.y }));
+  expect(await savePlacement({ ...builder, play, items, finish: true })).toMatchObject({ ok: true, ended: true });
 }
 
-async function toCulture(marigold: Who, pumpkin: Who, play = 0) {
-  await toReveal(marigold, pumpkin, play);
+async function toCulture(marigold: Who, pumpkin: Who, play = 0, placed = 0) {
+  await toReveal(marigold, pumpkin, play, placed);
   expect(await startCulture({ ...marigold, play })).toMatchObject({ ok: true });
 }
 
@@ -256,6 +263,33 @@ describe("a whole game", () => {
     expect(decideWinner({ points: Number(last(1).points), totalMs: Number(last(1).total_ms) }, { points: Number(last(2).points), totalMs: Number(last(2).total_ms) })).toBe(1);
   });
 
+  it("adds the build points of every play to both teams, on top of the Culture Check points", async () => {
+    const { marigold, pumpkin, pin } = await startedGame();
+    const all = DIFFICULTY.easy.items;
+
+    // Play 0: every item on its target = all build points. Marigold answers right (1.5), Pumpkin wrong (0).
+    await toCulture(marigold, pumpkin, 0, all);
+    const right0 = correctOf(questionOf(pin, 0).question_id as number);
+    await submitAnswer({ ...marigold, play: 0, option: right0 });
+    await submitAnswer({ ...pumpkin, play: 0, option: (right0 + 1) % 4 });
+    const after = (play: number, team: number) => Number(rows("team_scores", pin).find((s) => s.play_idx === play && s.team === team)!.points);
+    expect(after(0, 1)).toBe(all + 1.5);
+    expect(after(0, 2)).toBe(all);
+
+    later(GAME.cultureFeedbackSeconds * 1000);
+    await advanceTimer({ ...marigold, phase: "culture_feedback", play: 0 });
+    await nextPlay({ ...marigold, play: 0 });
+
+    // Play 1: only 3 items placed = 3 build points for both teams. Both answer wrong.
+    await toCulture(marigold, pumpkin, 1, 3);
+    const right1 = correctOf(questionOf(pin, 1).question_id as number);
+    await submitAnswer({ ...marigold, play: 1, option: (right1 + 1) % 4 });
+    await submitAnswer({ ...pumpkin, play: 1, option: (right1 + 1) % 4 });
+    expect(after(1, 1)).toBe(all + 1.5 + 3);
+    expect(after(1, 2)).toBe(all + 3);
+    expect(Number(rows("play_results", pin).find((r) => r.play_idx === 1)!.spirit_gain)).toBe(3);
+  });
+
   it("brings the same phones back to a clean lobby with New game, from either phone", async () => {
     const { marigold, pumpkin, pin } = await startedGame();
     for (let play = 0; play < 4; play++) await playRound(marigold, pumpkin, pin, play, [1, 1]);
@@ -265,7 +299,7 @@ describe("a whole game", () => {
     expect(await newGame({ ...pumpkin, token: "z".repeat(32) })).toMatchObject({ error: "not_in_room" });
     expect(await newGame({ ...pumpkin })).toMatchObject({ ok: true });
     expect(await newGame({ ...marigold })).toMatchObject({ ok: true }); // both phones tapped: still fine
-    expect(room(pin)).toMatchObject({ status: "lobby", phase: "lobby", current_play: 0, spirit_meter: 0 });
+    expect(room(pin)).toMatchObject({ status: "lobby", phase: "lobby", current_play: 0 });
     for (const table of ["plays", "play_targets", "placements", "play_results", "question_public", "question_reveal", "team_scores", "answers"]) {
       expect(rows(table, pin)).toHaveLength(0);
     }

@@ -1,6 +1,6 @@
 # Pumpskull — Game Spec v1
 
-Last update: 2026-11-02 (item size tuned down, clearer results, questions only about the two holidays). Source of truth for the game. If code and spec disagree, ask before changing either.
+Last update: 2026-11-02 (team score is now Culture Check points plus build points; Spirit Meter removed). Source of truth for the game. If code and spec disagree, ask before changing either.
 
 ## 1. Overview
 
@@ -9,7 +9,7 @@ Pumpskull is a free, mobile-first, Kahoot-style web game for the classroom that 
 - **One phone per team:** a room has exactly 2 phones, one for Team Marigold and one for Team Pumpkin. Any number of classmates can play: each team gathers around its phone. A big class opens several rooms in parallel (ideal group: 3 to 5 people per phone).
 - **Join:** one phone creates the room, the other joins with the room PIN. No login, no nickname, no avatar.
 - **Core loop:** one team describes a hidden decorated scene in English, the other team drags items on its phone to rebuild it without seeing the target. Afterwards each team answers a culture question together (Culture Check).
-- **Winner:** the team with the best Culture Check score. Placement accuracy feeds a shared room meter (Spirit Meter) and does not decide the winner.
+- **Winner:** the team with the most points. A team's points are the sum of its Culture Check points and the build points of every play. Build points are the same for both teams, so the Culture Check is what separates them.
 - **All game text is English.** Code, comments and this spec are English.
 - **Everything free:** Vercel Hobby (non-commercial), Supabase free tier, GitHub.
 - **Audience:** school classmates, likely minors. No personal data is stored: only the team of each phone and its secret token. No analytics, no tracking.
@@ -60,7 +60,7 @@ A game is a lobby followed by an even number of rounds. Each round has two plays
 
 ## 4. Scoring
 
-The winner is decided only by Culture Check points. Placement accuracy is shared equally by both teams: if it went to the builders only, the describing team would win by describing badly, and if it went to the describers only, the building team would win by placing badly.
+A team's score is the sum of two things: Culture Check points and build points, added up over all plays. Build points (placement accuracy) are shared equally by both teams: if they went to the builders only, the describing team would win by describing badly, and if they went to the describers only, the building team would win by placing badly. Because both teams get the same build points, they raise both totals by the same amount and the Culture Check decides who is ahead.
 
 **Placement score (per item, 0 to 1).** The builder drops items anywhere, with no visible slots and no snapping. For each target item:
 
@@ -75,15 +75,15 @@ d = sqrt(dx^2 + (dy * h/w)^2)
 - `r_full` and `r_zero` come from the difficulty level (section 5) and are constants in one config file (`src/lib/game/config.ts`).
 - Each sprite defines an anchor point (bottom-centre for things that sit on a surface, centre for wall items). Targets store the same anchor.
 
-**Spirit Meter.** The sum of item scores of a play is added to the room's Spirit Meter, shown as one bar for the whole room. It is a celebration meter and has no effect on the winner. The reveal screen colours each item: green at 0.8 or more, yellow from 0.4 to 0.8, red below 0.4.
+**Build points.** The sum of the item scores of a play, rounded to one decimal (0 to the number of items), is added to the total of both teams once the play's Culture Check is done. The reveal screen colours each item: green at 0.8 or more, yellow from 0.4 to 0.8, red below 0.4.
 
 **Culture Check.** After each play, each team discusses and answers one multiple-choice question with 4 options on its phone, 15 seconds.
 
 - +1 for a correct answer, +0.5 extra if answered within 5 seconds. A wrong or missing answer scores 0.
-- The team score is the sum of its points. Both teams answer the same number of questions.
+- The Culture Check part of the team score is the sum of its points. Both teams answer the same number of questions.
 - Questions come from a bank of 210 (70 per level), drawn at random without repeating in the same room. The question level follows the difficulty chosen for the game: Chocolate asks easy questions, Sour Gummy medium and Chili Tamarind hard. If a room somehow uses all 70 of its level, that level starts over.
 
-**Winner.** The team with the higher Culture Check total after the last play. Tie-break: lower total response time across all answers. If still tied, show a draw.
+**Winner.** The team with the higher total (Culture Check points plus build points) after the last play. Tie-break: lower total response time across all answers. If still tied, show a draw.
 
 ## 5. Difficulty levels
 
@@ -140,11 +140,11 @@ All screens are portrait, English only, with large touch targets and the visual 
 | 6B | Describer, Medium/Hard | Describing phone | Larger target picture only, hint line "Describe it in English. The other team can't see this." |
 | 7A | Builder, Easy | Building phone | Empty scene, tray with named icons, Finish button, timer |
 | 7B | Builder, Medium/Hard | Building phone | Same, icons only with count badges (Hard: 4-column grid), Finish |
-| 9 | Reveal | Both phones | "X of Y items in the right spot", one big picture that switches between the build and the correct picture, a status for each item (right spot, close, too far, not placed), Spirit Meter bar, Next (host) |
+| 9 | Reveal | Both phones | "X of Y items in the right spot", "+N build points for both teams", one big picture that switches between the build and the correct picture, a status for each item (right spot, close, too far, not placed), Next (host) |
 | 10 | Culture Check question | Both phones | Question, 15 s ring, +0.5 fast badge (first 5 s), 4 colour buttons with shapes. Hint: "Talk with your team, then tap" |
 | 11 | Culture Check feedback | Both phones | Verdict for this team, the right answer, what each team picked and its points, short fun fact |
-| 12 | Scoreboard | Both phones | Who is winning, team totals, table of right and wrong answers per question, Spirit Meter total |
-| 13 | Final | Both phones | Winning team banner, final team totals, total Spirit Meter, 5 cards "Day of the Dead vs Halloween", Play again |
+| 12 | Scoreboard | Both phones | Who is winning, team totals with "Quiz + Build" under each, table per play (build points, and each team's answer icon with its points) |
+| 13 | Final | Both phones | Winning team banner, final team totals (Culture Check + build), 5 cards "Day of the Dead vs Halloween", Play again |
 | 14 | Errors and edge cases | Both phones | Room closed, connection lost with auto-retry, other phone left (new host banner) |
 
 Sound toggle appears on every screen. A New game button appears on every screen after the lobby. Each team is shown by its emblem (marigold or pumpkin) and colour, never by personal avatars.

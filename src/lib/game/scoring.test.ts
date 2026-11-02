@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { DIFFICULTY } from "./config";
-import { revealColour, sceneDistance, scoreForDistance, scorePlacement } from "./scoring";
+import { buildPoints, formatPoints, revealColour, sceneDistance, scoreForDistance, scorePlacement } from "./scoring";
 
 const { rFull, rZero } = DIFFICULTY.medium;
 const opts = { rFull, rZero, aspect: 0.625 };
@@ -148,5 +148,21 @@ describe("revealColour", () => {
     expect(revealColour(0.79)).toBe("yellow");
     expect(revealColour(0.4)).toBe("yellow");
     expect(revealColour(0.39)).toBe("red");
+  });
+});
+
+describe("build points", () => {
+  it("are the sum of the item scores to one decimal", () => {
+    expect(buildPoints(6)).toBe(6);
+    expect(buildPoints(4.347)).toBe(4.3);
+    expect(buildPoints(4.35)).toBe(4.4);
+    expect(buildPoints(0)).toBe(0);
+  });
+
+  it("show without a trailing zero and without floating point noise", () => {
+    expect(formatPoints(7)).toBe("7");
+    expect(formatPoints(7.3)).toBe("7.3");
+    expect(formatPoints(4.3 + 1.5)).toBe("5.8");
+    expect(formatPoints(0.1 + 0.2)).toBe("0.3");
   });
 });

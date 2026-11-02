@@ -6,8 +6,9 @@ import { randomBytes } from "node:crypto";
 import questionsJson from "../../../data/questions.json";
 import { MISSING_ANSWER_MS, drawQuestion, parseQuestionBank, type Question } from "@/lib/game/culture";
 import { createRng } from "@/lib/game/rng";
+import { buildPoints } from "@/lib/game/scoring";
 import type { Team } from "@/lib/game/types";
-import type { CultureAnswer, QuestionPublicRow, RoomRow, TeamScoreRow } from "@/lib/supabase/types";
+import type { CultureAnswer, PlayResultRow, QuestionPublicRow, RoomRow, TeamScoreRow } from "@/lib/supabase/types";
 import { getPlayers, isUniqueViolation, must, type Db } from "./shared";
 
 let bank: Question[] | undefined;
@@ -73,7 +74,8 @@ export async function closeQuestion(db: Db, room: RoomRow): Promise<boolean> {
   return true;
 }
 
-// Team totals and the correct answer, written only when the phase is feedback (spec section 9).
+// Team totals and the correct answer, written only when the phase is feedback (spec section 9). A total is the
+// Culture Check points plus the build points of the play (the same for both teams, spec section 4).
 // The reveal row goes last: it is the sign that everything else is there. Safe to call more than once.
 export async function writeCultureResults(db: Db, pin: string, playIdx: number): Promise<void> {
   const done = must(await db.from("question_reveal").select("play_idx").eq("room_pin", pin).eq("play_idx", playIdx).maybeSingle());
@@ -95,6 +97,12 @@ export async function writeCultureResults(db: Db, pin: string, playIdx: number):
     return a ? { team, option: a.option, ms: a.ms, points: Number(a.points) } : { team, option: null, ms: MISSING_ANSWER_MS, points: 0 };
   });
 
+  // The play was scored before its question opened (startCulture / advanceTimer), so the row is there.
+  const scored = must(
+    await db.from("play_results").select("spirit_gain").eq("room_pin", pin).eq("play_idx", playIdx).maybeSingle(),
+  ) as Pick<PlayResultRow, "spirit_gain"> | null;
+  const build = buildPoints(Number(scored?.spirit_gain ?? 0));
+
   for (const e of entries) {
     const prev =
       playIdx > 0
@@ -106,7 +114,7 @@ export async function writeCultureResults(db: Db, pin: string, playIdx: number):
       room_pin: pin,
       play_idx: playIdx,
       team: e.team,
-      points: Number(prev?.points ?? 0) + e.points,
+      points: Math.round((Number(prev?.points ?? 0) + e.points + build) * 10) / 10,
       total_ms: Number(prev?.total_ms ?? 0) + e.ms,
     });
     if (!isUniqueViolation(inserted.error)) must(inserted);

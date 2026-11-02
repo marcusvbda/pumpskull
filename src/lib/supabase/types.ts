@@ -20,7 +20,6 @@ export interface RoomRow {
   phase: Phase;
   phase_started_at: string;
   play_started_at: string | null;
-  spirit_meter: number;
   created_at: string;
 }
 
@@ -54,7 +53,7 @@ export interface PlayResultRow {
   room_pin: string;
   play_idx: number;
   results: { items: PlayResultItem[]; total: number };
-  spirit_gain: number;
+  spirit_gain: number; // sum of the item scores = the build points of the play (old column name)
 }
 
 export interface QuestionPublicRow {
@@ -85,7 +84,7 @@ export interface TeamScoreRow {
   room_pin: string;
   play_idx: number;
   team: Team;
-  points: number; // sum of Culture Check points so far
+  points: number; // sum so far of Culture Check points and build points
   total_ms: number; // sum of answer times, the tie-break
 }
 

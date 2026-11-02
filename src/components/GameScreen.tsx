@@ -6,7 +6,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { advanceTimer, getPlayView, type PlayView } from "@/app/actions/play";
-import { DIFFICULTY, GAME, PLAY } from "@/lib/game/config";
+import { GAME, PLAY } from "@/lib/game/config";
 import { countdownEndsAt, cultureClosesAt, cultureEndsAt, feedbackEndsAt, playClosesAt, playDurationMs, playEndsAt, totalPlays } from "@/lib/game/flow";
 import { rolesForPlay } from "@/lib/game/roles";
 import type { Identity } from "@/lib/identity";
@@ -104,8 +104,6 @@ export function GameScreen({ snapshot, me, identity, offsetMs, refresh }: Props)
       .catch(() => {});
   }, [due, now, room.phase, play, identity, refresh]);
 
-  const spiritMax = plays * DIFFICULTY[room.settings.difficulty].items;
-
   if (room.phase === "countdown") {
     return <Countdown leftMs={countdownEndsAt(room.phase_started_at) - now} myTeam={me.team} describing={me.team === roles.describerTeam} play={play} plays={plays} />;
   }
@@ -138,8 +136,6 @@ export function GameScreen({ snapshot, me, identity, offsetMs, refresh }: Props)
         describerTeam={playRow.describer_team}
         difficulty={room.settings.difficulty}
         result={result}
-        spiritMeter={Number(room.spirit_meter)}
-        spiritMax={spiritMax}
         refresh={refresh}
       />
     );
@@ -170,8 +166,7 @@ export function GameScreen({ snapshot, me, identity, offsetMs, refresh }: Props)
         plays={plays}
         scores={scores}
         reveals={snapshot.questionReveal}
-        spiritMeter={Number(room.spirit_meter)}
-        spiritMax={spiritMax}
+        playResults={snapshot.playResults}
         refresh={refresh}
       />
     );
@@ -185,8 +180,7 @@ export function GameScreen({ snapshot, me, identity, offsetMs, refresh }: Props)
         plays={plays}
         scores={scores}
         reveals={snapshot.questionReveal}
-        spiritMeter={Number(room.spirit_meter)}
-        spiritMax={spiritMax}
+        playResults={snapshot.playResults}
         refresh={refresh}
       />
     );

@@ -172,7 +172,6 @@ describe("advanceTimer", () => {
     expect(room(pin).phase).toBe("reveal");
     const result = rows("play_results", pin)[0];
     expect((result.results as { total: number }).total).toBeGreaterThanOrEqual(1);
-    expect(room(pin).spirit_meter).toBe(result.spirit_gain);
   });
 
   it("ignores a phone that saw an older phase", async () => {
@@ -186,13 +185,12 @@ describe("advanceTimer", () => {
     const { marigold, pumpkin, pin } = await startedGame();
     await toPlaying(marigold);
     await savePlacement({ ...pumpkin, play: 0, items: [], finish: true });
-    const meter = room(pin).spirit_meter;
+    const gain = rows("play_results", pin)[0].spirit_gain;
     state.db.tables.play_results = [];
-    room(pin).spirit_meter = 0;
     await advanceTimer({ ...pumpkin, phase: "reveal", play: 0 });
     await advanceTimer({ ...marigold, phase: "reveal", play: 0 });
     expect(rows("play_results", pin)).toHaveLength(1);
-    expect(room(pin).spirit_meter).toBe(meter);
+    expect(rows("play_results", pin)[0].spirit_gain).toBe(gain);
   });
 });
 
@@ -274,7 +272,7 @@ describe("nextPlay", () => {
     expect(room(pin).current_play).toBe(1);
   });
 
-  it("finishes the game after the last play and adds every play to the Spirit Meter", async () => {
+  it("finishes the game after the last play, every play scored in full", async () => {
     const { marigold, pumpkin, pin } = await startedGame(); // 2 rounds = 4 plays
     for (let play = 0; play < 4; play++) {
       const builder = play % 2 === 0 ? pumpkin : marigold;
@@ -285,6 +283,6 @@ describe("nextPlay", () => {
       expect(await nextPlay({ ...marigold, play })).toMatchObject({ ok: true, finished: play === 3 });
     }
     expect(room(pin)).toMatchObject({ phase: "finished", status: "finished" });
-    expect(room(pin).spirit_meter).toBe(4 * DIFFICULTY.easy.items);
+    expect(rows("play_results", pin).map((r) => Number(r.spirit_gain))).toEqual(Array(4).fill(DIFFICULTY.easy.items));
   });
 });

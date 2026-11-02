@@ -31,7 +31,7 @@ export async function startCulture(input: Credentials & { play: number }) {
     if (room.host_id !== me.id) return fail("not_host");
     if (room.phase !== "reveal" || room.current_play !== play) return fail("play_over");
 
-    await writeResults(db, room, play); // the Spirit Meter of this play must be final before moving on
+    await writeResults(db, room, play); // the build points of this play must be final before moving on
     if (!(await openQuestion(db, room))) return fail("play_over"); // double tap: the first one already moved on
     return { ok: true };
   });

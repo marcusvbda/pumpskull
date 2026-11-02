@@ -1,6 +1,7 @@
 "use client";
 
-// Screen 13: winner (or draw), final totals, total Spirit Meter, the five comparison cards and Play again.
+// Screen 13: winner (or draw), final totals (Culture Check + build points), the five
+// comparison cards and Play again.
 
 import Link from "next/link";
 import { useState } from "react";
@@ -9,9 +10,8 @@ import { COMPARE_CARDS } from "@/data/compareCards";
 import { decideWinner } from "@/lib/game/culture";
 import type { Team } from "@/lib/game/types";
 import type { Identity } from "@/lib/identity";
-import type { QuestionRevealRow, TeamScoreRow } from "@/lib/supabase/types";
-import { SpiritMeter } from "./Reveal";
-import { AnswerTable, TeamTotals } from "./Scoreboard";
+import type { PlayResultRow, QuestionRevealRow, TeamScoreRow } from "@/lib/supabase/types";
+import { PointsTable, TeamTotals } from "./Scoreboard";
 import { TEAM_META } from "./teams";
 import { Button, ErrorText, Shell } from "./ui";
 import { TeamIcon } from "./UiIcon";
@@ -22,12 +22,11 @@ interface Props {
   plays: number;
   scores: TeamScoreRow[]; // rows of the last play
   reveals: QuestionRevealRow[];
-  spiritMeter: number;
-  spiritMax: number;
+  playResults: PlayResultRow[];
   refresh: () => Promise<void>;
 }
 
-export function Final({ identity, team, plays, scores, reveals, spiritMeter, spiritMax, refresh }: Props) {
+export function Final({ identity, team, plays, scores, reveals, playResults, refresh }: Props) {
   const [cardIndex, setCardIndex] = useState(0);
   const card = COMPARE_CARDS[cardIndex];
   const [busy, setBusy] = useState(false);
@@ -73,11 +72,10 @@ export function Final({ identity, team, plays, scores, reveals, spiritMeter, spi
         </div>
       </header>
 
-      <TeamTotals scores={scores} myTeam={team} compact />
+      <TeamTotals scores={scores} myTeam={team} reveals={reveals} playResults={playResults} compact />
       <div className="[@media(max-height:760px)]:hidden">
-        <AnswerTable reveals={reveals} plays={plays} />
+        <PointsTable reveals={reveals} playResults={playResults} plays={plays} />
       </div>
-      <SpiritMeter value={spiritMeter} max={spiritMax} />
 
       <section className="flex min-h-0 flex-col gap-1">
         <div className="flex items-center justify-between gap-2">
