@@ -119,7 +119,7 @@ export function Scoreboard({ identity, isHost, team, play, plays, scores, reveal
 
   return (
     <Shell center garland={false}>
-      <header className="pr-24">
+      <header className="pr-[132px]">
         <p className="text-sm font-bold text-indigo-200">
           Play {play + 1} of {plays} done
         </p>

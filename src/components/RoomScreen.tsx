@@ -18,6 +18,7 @@ import type { Phase } from "@/lib/supabase/types";
 import { useRoom } from "@/lib/useRoom";
 import { GameScreen } from "./GameScreen";
 import { Lobby } from "./Lobby";
+import { NewGameButton } from "./NewGameButton";
 import { TEAM_META } from "./teams";
 import { Button, ErrorText, Shell } from "./ui";
 import { TeamIcon } from "./UiIcon";
@@ -185,5 +186,10 @@ function Room({ pin }: { pin: string }) {
     );
   }
 
-  return <GameScreen snapshot={snapshot} me={me} identity={identity} offsetMs={offsetMs} refresh={refresh} />;
+  return (
+    <>
+      <GameScreen snapshot={snapshot} me={me} identity={identity} offsetMs={offsetMs} refresh={refresh} />
+      <NewGameButton identity={identity} refresh={refresh} />
+    </>
+  );
 }

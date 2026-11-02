@@ -4,7 +4,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { playAgain } from "@/app/actions/room";
+import { newGame } from "@/app/actions/room";
 import { COMPARE_CARDS } from "@/data/compareCards";
 import { decideWinner } from "@/lib/game/culture";
 import type { Team } from "@/lib/game/types";
@@ -18,7 +18,6 @@ import { TeamIcon } from "./UiIcon";
 
 interface Props {
   identity: Identity;
-  isHost: boolean;
   team: Team;
   plays: number;
   scores: TeamScoreRow[]; // rows of the last play
@@ -28,7 +27,7 @@ interface Props {
   refresh: () => Promise<void>;
 }
 
-export function Final({ identity, isHost, team, plays, scores, reveals, spiritMeter, spiritMax, refresh }: Props) {
+export function Final({ identity, team, plays, scores, reveals, spiritMeter, spiritMax, refresh }: Props) {
   const [cardIndex, setCardIndex] = useState(0);
   const card = COMPARE_CARDS[cardIndex];
   const [busy, setBusy] = useState(false);
@@ -44,7 +43,7 @@ export function Final({ identity, isHost, team, plays, scores, reveals, spiritMe
     setBusy(true);
     setError(null);
     try {
-      const res = await playAgain(identity);
+      const res = await newGame(identity);
       if (!res.ok) setError(res.message);
       await refresh();
     } catch {
@@ -118,13 +117,9 @@ export function Final({ identity, isHost, team, plays, scores, reveals, spiritMe
 
       <div className="flex flex-col gap-1">
         <ErrorText>{error}</ErrorText>
-        {isHost ? (
-          <Button onClick={again} disabled={busy} className="w-full text-xl">
-            Play again
-          </Button>
-        ) : (
-          <p className="rounded-2xl bg-indigo-900/70 p-3 text-center font-bold text-indigo-100">The host can start a new game.</p>
-        )}
+        <Button onClick={again} disabled={busy} className="w-full text-xl">
+          Play again
+        </Button>
         <Link href="/" className="flex min-h-10 items-center justify-center rounded-2xl border-b-4 border-indigo-900 bg-indigo-600 px-6 text-base font-extrabold">
           Home
         </Link>

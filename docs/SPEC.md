@@ -98,7 +98,7 @@ Hard removes all text help and adds more items, so the describing team must use 
 | `r_full` (full score radius) | 0.08 | 0.06 | 0.04 |
 | `r_zero` (zero score radius) | 0.35 | 0.28 | 0.20 |
 | Mascot | smiling | sour face | on fire |
-| Item size (fraction of scene width) | 0.14 | 0.13 | 0.11 |
+| Item size (fraction of scene width) | 0.11 | 0.10 | 0.085 |
 | Culture Check questions | easy (70 in the bank) | medium (70) | hard (70) |
 
 Same on every level: count badges (such as "2") on repeated items remain visible, the time per play is chosen by the host.
@@ -144,10 +144,10 @@ All screens are portrait, English only, with large touch targets and the visual 
 | 10 | Culture Check question | Both phones | Question, 15 s ring, +0.5 fast badge (first 5 s), 4 colour buttons with shapes. Hint: "Talk with your team, then tap" |
 | 11 | Culture Check feedback | Both phones | Verdict for this team, the right answer, what each team picked and its points, short fun fact |
 | 12 | Scoreboard | Both phones | Who is winning, team totals, table of right and wrong answers per question, Spirit Meter total |
-| 13 | Final | Both phones | Winning team banner, final team totals, total Spirit Meter, 5 cards "Day of the Dead vs Halloween", Play again (host) |
+| 13 | Final | Both phones | Winning team banner, final team totals, total Spirit Meter, 5 cards "Day of the Dead vs Halloween", Play again |
 | 14 | Errors and edge cases | Both phones | Room closed, connection lost with auto-retry, other phone left (new host banner) |
 
-Sound toggle appears on every screen. Each team is shown by its emblem (marigold or pumpkin) and colour, never by personal avatars.
+Sound toggle appears on every screen. A New game button appears on every screen after the lobby. Each team is shown by its emblem (marigold or pumpkin) and colour, never by personal avatars.
 
 ## 8. Urgency effects, audio and accessibility
 
@@ -189,7 +189,7 @@ Public tables (browser may read with the anon key, never write): `rooms`, `playe
 - The correct answer of a Culture Check question is written to `question_reveal` only when the phase moves to feedback. That row also holds how each team answered (`answers`: option, time, points), see `supabase/migrations/0004_culture_feedback.sql`.
 - After every play the room goes `reveal` (host taps Culture Check) -> `culture` (ends when both teams answered or after 15 s) -> `culture_feedback` (8 s, then moves by itself) -> `scoreboard` (host taps Next). A team that does not answer scores 0 and counts as 15 s for the tie-break.
 - Answer time is measured by the server from `phase_started_at`; an answer in flight is still accepted for 3 s after the 15 s.
-- Play again (host, final screen) returns the same two phones to the lobby; questions already asked stay marked so the next game gets new ones.
+- New game (either phone, on every screen after the lobby, with a confirmation) and Play again (either phone, final screen) return the same two phones to the lobby, at any phase. This is the one exception to "only the host advances the phase", so a dead host phone can never trap a class. Questions already asked stay marked so the next game gets new ones.
 - Only the describing phone receives the target layout; the building phone never gets the seed or targets before the reveal.
 - A room holds at most 2 phones, one per team; a third join fails.
 

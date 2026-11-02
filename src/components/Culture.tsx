@@ -102,7 +102,7 @@ export function Culture({ identity, team, play, plays, question, startedAt, now 
   return (
     <Shell>
       {/* Without the garland (short phones) the fixed audio buttons would sit on the timer. */}
-      <header className="flex items-center justify-between gap-2 [@media(max-height:620px)]:pr-24">
+      <header className="flex items-center justify-between gap-2 [@media(max-height:620px)]:pr-[132px]">
         <div className="flex min-w-0 flex-col">
           <span className={`truncate text-sm font-black ${meta.title}`}>
             <TeamIcon team={team} /> {meta.name}

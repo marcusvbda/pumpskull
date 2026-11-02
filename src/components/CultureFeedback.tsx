@@ -66,7 +66,7 @@ export function CultureFeedback({ team, question, reveal, phaseStartedAt, now }:
 
   return (
     <Shell garland={false}>
-      <h1 className={`pr-24 text-3xl leading-tight font-black ${verdict === "correct" ? "text-green-300" : "text-amber-400"}`}>{title}</h1>
+      <h1 className={`pr-[132px] text-3xl leading-tight font-black ${verdict === "correct" ? "text-green-300" : "text-amber-400"}`}>{title}</h1>
       <p className="text-base leading-snug font-bold text-indigo-100">{question.question}</p>
 
       <section className="rounded-2xl border-b-4 border-green-800 bg-green-500 px-4 py-2 text-indigo-950">

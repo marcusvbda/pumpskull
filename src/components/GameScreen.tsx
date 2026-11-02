@@ -181,7 +181,6 @@ export function GameScreen({ snapshot, me, identity, offsetMs, refresh }: Props)
     return (
       <Final
         identity={identity}
-        isHost={room.host_id === me.id}
         team={me.team}
         plays={plays}
         scores={scores}

@@ -143,6 +143,8 @@ export async function startGame(input: Credentials) {
     if (started.length === 0) return fail("game_started");
 
     try {
+      // A write still in flight when New game was tapped may have landed after its cleanup.
+      await resetGame(db, creds.pin);
       await createPlays(db, room);
     } catch (error) {
       // Back to the lobby so the host can press Start again.
@@ -154,9 +156,11 @@ export async function startGame(input: Credentials) {
   });
 }
 
-// Host only, after the last play: the same two phones go back to the lobby for another game. Scores, plays
-// and the Spirit Meter start from zero; the questions already asked stay marked, so they do not come back.
-export async function playAgain(input: Credentials) {
+// Either phone, at any phase: the same two phones go back to the lobby for another game. Not host only, so a
+// dead host phone cannot trap the class. Scores, plays and the Spirit Meter start from zero; the questions
+// already asked stay marked, so they do not come back. The room moves first: every other write checks the
+// phase, so nothing new starts while the rows are deleted. Already in the lobby (both phones tapped) is fine.
+export async function newGame(input: Credentials) {
   return guard<object>(async () => {
     const creds = parseCredentials(input);
     if (!creds) return fail("invalid_request");
@@ -164,13 +168,8 @@ export async function playAgain(input: Credentials) {
     const db = supabaseAdmin();
     const player = await authenticate(db, creds);
     if (!player) return fail("not_in_room");
-    const room = await getRoom(db, creds.pin);
-    if (!room) return fail("unknown_pin");
-    if (room.host_id !== player.id) return fail("not_host");
-    if (room.phase !== "finished") return fail("not_allowed");
 
-    await resetGame(db, creds.pin);
-    const moved = must(
+    must(
       await db
         .from("rooms")
         .update({
@@ -181,11 +180,9 @@ export async function playAgain(input: Credentials) {
           play_started_at: null,
           phase_started_at: new Date().toISOString(),
         })
-        .eq("pin", creds.pin)
-        .eq("phase", "finished")
-        .select("pin"),
-    ) as unknown[];
-    if (moved.length === 0) return fail("not_allowed"); // double tap: already back in the lobby
+        .eq("pin", creds.pin),
+    );
+    await resetGame(db, creds.pin);
     return { ok: true };
   });
 }

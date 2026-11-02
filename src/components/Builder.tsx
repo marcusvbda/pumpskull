@@ -149,7 +149,7 @@ export function Builder({ identity, play, scene, backgroundId, tray, initialPlac
     const rect = sceneRef.current!.getBoundingClientRect();
     const px = event.clientX - rect.left;
     const py = event.clientY - rect.top;
-    const reach = itemSize * 0.6;
+    const reach = Math.max(itemSize * 0.6, PLAY.grabReachMinPx);
     let item: Placed | null = null;
     let best = reach;
     for (const p of placed) {

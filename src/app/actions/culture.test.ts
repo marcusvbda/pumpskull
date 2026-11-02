@@ -9,7 +9,7 @@ import { GAME } from "@/lib/game/config";
 import { decideWinner } from "@/lib/game/culture";
 import { startCulture, submitAnswer } from "./culture";
 import { advanceTimer, nextPlay, savePlacement } from "./play";
-import { createRoom, joinRoom, playAgain, startGame, updateSettings } from "./room";
+import { createRoom, joinRoom, newGame, startGame, updateSettings } from "./room";
 
 type Who = { pin: string; playerId: string; token: string };
 
@@ -256,15 +256,15 @@ describe("a whole game", () => {
     expect(decideWinner({ points: Number(last(1).points), totalMs: Number(last(1).total_ms) }, { points: Number(last(2).points), totalMs: Number(last(2).total_ms) })).toBe(1);
   });
 
-  it("brings the same phones back to a clean lobby with Play again, host only", async () => {
+  it("brings the same phones back to a clean lobby with New game, from either phone", async () => {
     const { marigold, pumpkin, pin } = await startedGame();
     for (let play = 0; play < 4; play++) await playRound(marigold, pumpkin, pin, play, [1, 1]);
     const usedBefore = rows("questions_used", pin).map((q) => q.question_id);
     expect(usedBefore).toHaveLength(4);
 
-    expect(await playAgain({ ...pumpkin })).toMatchObject({ error: "not_host" });
-    expect(await playAgain({ ...marigold })).toMatchObject({ ok: true });
-    expect(await playAgain({ ...marigold })).toMatchObject({ ok: false });
+    expect(await newGame({ ...pumpkin, token: "z".repeat(32) })).toMatchObject({ error: "not_in_room" });
+    expect(await newGame({ ...pumpkin })).toMatchObject({ ok: true });
+    expect(await newGame({ ...marigold })).toMatchObject({ ok: true }); // both phones tapped: still fine
     expect(room(pin)).toMatchObject({ status: "lobby", phase: "lobby", current_play: 0, spirit_meter: 0 });
     for (const table of ["plays", "play_targets", "placements", "play_results", "question_public", "question_reveal", "team_scores", "answers"]) {
       expect(rows(table, pin)).toHaveLength(0);
@@ -277,8 +277,21 @@ describe("a whole game", () => {
     expect(usedBefore).not.toContain(questionOf(pin, 0).question_id);
   });
 
-  it("refuses Play again before the game is over", async () => {
-    const { marigold } = await startedGame();
-    expect(await playAgain({ ...marigold })).toMatchObject({ error: "not_allowed" });
+  it("restarts in the middle of a play, and the next game does not see the old rows", async () => {
+    const { marigold, pumpkin, pin } = await startedGame();
+    later((GAME.countdownSeconds + GAME.roleBannerSeconds) * 1000 + 1000);
+    await advanceTimer({ ...pumpkin, phase: "countdown", play: 0 });
+    expect(room(pin).phase).toBe("playing");
+
+    expect(await newGame({ ...pumpkin })).toMatchObject({ ok: true });
+    expect(room(pin)).toMatchObject({ status: "lobby", phase: "lobby", current_play: 0, play_started_at: null });
+    expect(rows("plays", pin)).toHaveLength(0);
+    expect(await savePlacement({ ...pumpkin, play: 0, items: [] })).toMatchObject({ error: "play_over" }); // a late autosave
+
+    // A write that was in flight during the reset must not clash with the next game.
+    state.db.tables.play_results.push({ room_pin: pin, play_idx: 0 });
+    expect(await startGame(marigold)).toMatchObject({ ok: true });
+    expect(rows("play_results", pin)).toHaveLength(0);
+    expect(rows("plays", pin).length).toBeGreaterThan(0);
   });
 });
