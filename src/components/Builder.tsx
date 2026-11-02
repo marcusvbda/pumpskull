@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { savePlacement } from "@/app/actions/play";
 import { findItem } from "@/data/items";
 import { playSfx } from "@/lib/audio";
-import { DIFFICULTY, GAME, SCENE_CROP_X, type Difficulty } from "@/lib/game/config";
+import { DIFFICULTY, GAME, PLAY, SCENE_CROP_X, type Difficulty } from "@/lib/game/config";
 import type { TrayEntry } from "@/lib/game/flow";
 import type { PlacedItem } from "@/lib/game/scoring";
 import type { Scene, Team } from "@/lib/game/types";
@@ -239,8 +239,8 @@ export function Builder({ identity, play, scene, backgroundId, tray, initialPlac
 
       <section
         aria-label="Items"
-        className="grid min-h-0 flex-1 auto-rows-fr grid-cols-[repeat(var(--cols),minmax(0,1fr))] gap-1.5 [@media(max-height:620px)]:grid-cols-[repeat(calc(var(--cols)+2),minmax(0,1fr))]"
-        style={{ "--cols": level.trayColumns } as React.CSSProperties}
+        className="grid min-h-0 flex-1 auto-rows-[minmax(0,var(--row))] grid-cols-[repeat(var(--cols),minmax(0,1fr))] content-start gap-1.5 [@media(max-height:620px)]:grid-cols-[repeat(calc(var(--cols)+2),minmax(0,1fr))]"
+        style={{ "--cols": level.trayColumns, "--row": `${PLAY.trayRowMaxPx}px` } as React.CSSProperties}
       >
         {tray.map((entry) => {
           const item = findItem(scene, entry.itemId);

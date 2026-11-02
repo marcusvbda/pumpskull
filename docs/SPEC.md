@@ -1,6 +1,6 @@
 # Pumpskull — Game Spec v1
 
-Last update: 2026-11-01 (bigger items, clearer results, questions only about the two holidays). Source of truth for the game. If code and spec disagree, ask before changing either.
+Last update: 2026-11-02 (item size tuned down, clearer results, questions only about the two holidays). Source of truth for the game. If code and spec disagree, ask before changing either.
 
 ## 1. Overview
 
@@ -98,7 +98,7 @@ Hard removes all text help and adds more items, so the describing team must use 
 | `r_full` (full score radius) | 0.08 | 0.06 | 0.04 |
 | `r_zero` (zero score radius) | 0.35 | 0.28 | 0.20 |
 | Mascot | smiling | sour face | on fire |
-| Item size (fraction of scene width) | 0.20 | 0.18 | 0.15 |
+| Item size (fraction of scene width) | 0.14 | 0.13 | 0.11 |
 | Culture Check questions | easy (70 in the bank) | medium (70) | hard (70) |
 
 Same on every level: count badges (such as "2") on repeated items remain visible, the time per play is chosen by the host.

@@ -15,9 +15,9 @@ export interface DifficultyConfig {
 }
 
 export const DIFFICULTY: Record<Difficulty, DifficultyConfig> = {
-  easy: { label: "Chocolate", items: 6, decoys: 1, showNames: true, trayColumns: 3, rFull: 0.08, rZero: 0.35, itemScale: 0.2, mascot: "smiling" },
-  medium: { label: "Sour Gummy", items: 8, decoys: 2, showNames: false, trayColumns: 4, rFull: 0.06, rZero: 0.28, itemScale: 0.18, mascot: "sour" },
-  hard: { label: "Chili Tamarind", items: 12, decoys: 4, showNames: false, trayColumns: 4, rFull: 0.04, rZero: 0.2, itemScale: 0.15, mascot: "fire" },
+  easy: { label: "Chocolate", items: 6, decoys: 1, showNames: true, trayColumns: 3, rFull: 0.08, rZero: 0.35, itemScale: 0.14, mascot: "smiling" },
+  medium: { label: "Sour Gummy", items: 8, decoys: 2, showNames: false, trayColumns: 4, rFull: 0.06, rZero: 0.28, itemScale: 0.13, mascot: "sour" },
+  hard: { label: "Chili Tamarind", items: 12, decoys: 4, showNames: false, trayColumns: 4, rFull: 0.04, rZero: 0.2, itemScale: 0.11, mascot: "fire" },
 };
 
 export const GAME = {
@@ -43,6 +43,7 @@ export const GAME = {
 export const PLAY = {
   finishGraceSeconds: 3, // after the timer, the building phone's last save is still accepted this long
   earlySeconds: 0.5, // timer transitions accepted this early, for clock differences between phone and server
+  trayRowMaxPx: 84, // tallest row of the builder tray, so tray items stay close to their size on the scene; rows shrink on short screens
   maxPlacedItems: 40, // longest placement list the server accepts
   resultsRetrySeconds: 3, // reveal without results this long: ask the server to score again
   timerRetrySeconds: 2, // a phone asks again if a timer transition did not show up
