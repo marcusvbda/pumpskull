@@ -10,6 +10,7 @@ import type { Identity } from "@/lib/identity";
 import type { SyncMode } from "@/lib/supabase/subscribeRoom";
 import type { PlayerRow, RoomSnapshot } from "@/lib/supabase/types";
 import { SettingsPanel } from "./SettingsPanel";
+import { ShareModal } from "./ShareModal";
 import { TEAM_META } from "./teams";
 import { Button, ErrorText, Shell } from "./ui";
 import { TeamIcon } from "./UiIcon";
@@ -48,31 +49,6 @@ function TeamCard({ team, phone, hostId, myId }: { team: Team; phone: PlayerRow 
   );
 }
 
-// Clipboard API needs https; the old execCommand route also works on http (testing over the LAN).
-async function copyText(text: string): Promise<boolean> {
-  try {
-    // A browser that waits on a permission prompt never answers: give up after a second.
-    await Promise.race([navigator.clipboard.writeText(text), new Promise((_, reject) => setTimeout(reject, 1000))]);
-    return true;
-  } catch {
-    // fall through to the textarea trick
-  }
-  const area = document.createElement("textarea");
-  area.value = text;
-  area.setAttribute("readonly", "");
-  area.style.position = "fixed";
-  area.style.opacity = "0";
-  document.body.appendChild(area);
-  area.select();
-  try {
-    return document.execCommand("copy");
-  } catch {
-    return false;
-  } finally {
-    area.remove();
-  }
-}
-
 export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Props) {
   const { room, players } = snapshot;
   const isHost = room.host_id === me.id;
@@ -80,8 +56,7 @@ export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Pro
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [confirmLeave, setConfirmLeave] = useState(false);
-  const [shared, setShared] = useState<string | null>(null);
-  const [showLink, setShowLink] = useState(false);
+  const [showShare, setShowShare] = useState(false);
 
   const ready = canStart(players);
   const link = typeof window === "undefined" ? "" : `${window.location.origin}/room/${room.pin}`;
@@ -110,24 +85,6 @@ export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Pro
     onLeft();
   }
 
-  async function share() {
-    try {
-      // The native sheet is only worth it on a phone; on a computer it often shows nothing, so copy the link instead.
-      if (navigator.share && window.matchMedia("(pointer: coarse)").matches) {
-        await navigator.share({ url: link, title: "Pumpskull" });
-        return;
-      }
-    } catch (err) {
-      if (err instanceof DOMException && err.name === "AbortError") return; // the person closed the share sheet
-    }
-    if (await copyText(link)) {
-      setShared("Link copied!");
-      setTimeout(() => setShared(null), 2500);
-    } else {
-      setShowLink(true); // no share, no clipboard (plain http): show the link to copy by hand
-    }
-  }
-
   return (
     <Shell>
       <section className="flex items-center justify-between gap-3 rounded-2xl border-2 border-indigo-400 bg-indigo-900/70 px-3 py-2">
@@ -137,20 +94,12 @@ export function Lobby({ snapshot, me, identity, syncMode, refresh, onLeft }: Pro
             {room.pin}
           </span>
         </div>
-        <Button variant="secondary" onClick={share} className="min-h-11 shrink-0 text-base">
-          {shared ?? "Share"}
+        <Button variant="secondary" onClick={() => setShowShare(true)} className="min-h-11 shrink-0 text-base">
+          Share
         </Button>
       </section>
 
-      {showLink ? (
-        <input
-          readOnly
-          value={link}
-          aria-label="Room link"
-          onFocus={(e) => e.currentTarget.select()}
-          className="min-h-11 w-full rounded-xl border-2 border-indigo-400 bg-indigo-950 px-3 text-base font-bold text-white"
-        />
-      ) : null}
+      {showShare && <ShareModal pin={room.pin} link={link} onClose={() => setShowShare(false)} />}
 
       <div role="tablist" className="grid grid-cols-2 gap-2">
         {(["teams", "settings"] as const).map((t) => (

@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes } from "react";
+import type { ComponentProps } from "react";
 import { playSfx } from "@/lib/audio";
 import { DIFFICULTY, type Difficulty } from "@/lib/game/config";
 import { GameImage } from "./GameImage";
@@ -15,7 +15,7 @@ export function Button({
   className = "",
   onClick,
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: keyof typeof VARIANTS }) {
+}: ComponentProps<"button"> & { variant?: keyof typeof VARIANTS }) {
   return (
     <button
       type="button"
